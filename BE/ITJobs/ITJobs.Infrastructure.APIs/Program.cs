@@ -1,4 +1,25 @@
+﻿using ITJobs.Infrastructure.SqlServer;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+//Add DbContext
+builder.Services.AddDbContext<ITJobsDbContext>(options =>
+{
+    options.UseLazyLoadingProxies();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnectString"));
+
+    //logging sql to console
+    options.EnableSensitiveDataLogging();//kiểu mấy cái tham số á
+    options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+});
+
+
+
+
+
+
 
 // Add services to the container.
 
