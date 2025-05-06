@@ -1,4 +1,6 @@
-﻿using ITJobs.Infrastructure.SqlServer;
+﻿using ITJobs.Infrastructure.APIs.MyMiddlewares;
+using ITJobs.Infrastructure.SqlServer;
+using ITJobs.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -6,19 +8,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//usecase service
+builder.Services.AddUsecaseServices();
 
-//Add DbContext
-builder.Services.AddDbContext<ITJobsDbContext>(options =>
-{
-    options.UseLazyLoadingProxies();
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnectString"));
-
-    //logging sql to console
-    options.EnableSensitiveDataLogging();//kiểu mấy cái tham số á
-    options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
-});
-
-
+//sql server service
+builder.Services.AddSqlServerServices(builder.Configuration);
 
 
 //add jwt
@@ -64,6 +58,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -73,9 +69,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<FluentValidationExceptionHandlingMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+
 
 //Area
 app.MapAreaControllerRoute(
