@@ -11,7 +11,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("Awards")]
     public class Award:BaseModel
     {
-        public long CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         [ForeignKey(nameof(CandidateId))]
         public virtual Candidate Candidate { get; set; }
 

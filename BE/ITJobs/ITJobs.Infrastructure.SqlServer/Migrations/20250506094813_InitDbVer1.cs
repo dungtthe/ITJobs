@@ -15,8 +15,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "SearchFilters",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     SearchFilterType = table.Column<byte>(type: "tinyint", nullable: false),
                     Values = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -30,8 +29,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Skills",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
                 },
@@ -44,8 +42,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "SystemValues",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PostingFeePerDay = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -57,8 +54,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
@@ -82,9 +78,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Candidates",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AboutMe = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     SkillIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FollowedEmployerIds = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -103,10 +98,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Conversations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId1 = table.Column<long>(type: "bigint", nullable: false),
-                    UserId2 = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId2 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,9 +121,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "CVTemplates",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SortOrder = table.Column<int>(type: "int", nullable: false)
                 },
@@ -147,9 +140,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Employers",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     GeneralInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyIntroduction = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -173,11 +165,10 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationType = table.Column<byte>(type: "tinyint", nullable: false),
-                    ReferenceId = table.Column<long>(type: "bigint", nullable: false),
+                    ReferenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Link = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
@@ -197,9 +188,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -225,9 +215,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Awards",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Organization = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -248,9 +237,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Certifications",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -271,9 +259,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "CVs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SortOrder = table.Column<int>(type: "int", nullable: false)
                 },
@@ -291,9 +278,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Educations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Degree = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -316,9 +302,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     IsOnGoing = table.Column<bool>(type: "bit", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -340,9 +325,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "WorkExperiences",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JobTitle = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -365,13 +349,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ConversationId = table.Column<long>(type: "bigint", nullable: false),
-                    SenderId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConversationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ParrentMessageId = table.Column<long>(type: "bigint", nullable: true),
+                    ParrentMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ReactionType = table.Column<byte>(type: "tinyint", nullable: false),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false)
@@ -400,10 +383,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Reviews",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployerId = table.Column<long>(type: "bigint", nullable: false),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     RatingType = table.Column<byte>(type: "tinyint", nullable: false),
                     IsRecommend = table.Column<bool>(type: "bit", nullable: false),
@@ -430,14 +412,13 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SenderId = table.Column<long>(type: "bigint", nullable: false),
-                    ParrentCommentId = table.Column<long>(type: "bigint", nullable: true),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParrentCommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ReactionType_UserId_Ids = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -465,10 +446,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "JobApplications",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
-                    CandidateId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CandidateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CVLink = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     CoverLetter = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     StatusJobApplication = table.Column<byte>(type: "tinyint", nullable: false)
@@ -492,9 +472,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "PostHistories",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -512,8 +491,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "SearchFilter_Post",
                 columns: table => new
                 {
-                    SearchFilterId = table.Column<long>(type: "bigint", nullable: false),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    SearchFilterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Values = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -535,9 +514,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 name: "CommentHistories",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CommentId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

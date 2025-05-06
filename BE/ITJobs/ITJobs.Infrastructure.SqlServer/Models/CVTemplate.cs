@@ -10,7 +10,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("CVTemplates")]
     public class CVTemplate:BaseModel
     {
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual AppUser User { get; set; }
 

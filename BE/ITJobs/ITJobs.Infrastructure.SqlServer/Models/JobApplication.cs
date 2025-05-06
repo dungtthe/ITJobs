@@ -12,11 +12,11 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("JobApplications")]
     public class JobApplication:BaseModel
     {
-        public long PostId { get; set; }
+        public Guid PostId { get; set; }
         [ForeignKey(nameof(PostId))]
         public virtual Post Post { get; set; }
 
-        public long CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         [ForeignKey(nameof(CandidateId))]
         public virtual Candidate Candidate { get; set; }
 

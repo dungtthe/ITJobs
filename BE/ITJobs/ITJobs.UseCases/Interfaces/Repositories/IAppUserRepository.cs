@@ -8,6 +8,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 {
     public interface IAppUserRepository
     {
-        Task <Entities.AppUser> RegisterAsync(string userName,string passWord,string email,string fullName);
+        Task RegisterAsync(Guid id,string userName,string passWord,string email,string fullName);
+        Task <bool> IsUserNameExistsAsync(string userName);
+        Task <bool> IsEmailExistsAsync(string email);
     }
 }

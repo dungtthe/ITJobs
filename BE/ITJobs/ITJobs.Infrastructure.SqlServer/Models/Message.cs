@@ -12,11 +12,11 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("Messages")]
     public class Message:BaseModel
     {
-        public long ConversationId { get; set; }
+        public Guid ConversationId { get; set; }
         [ForeignKey(nameof(ConversationId))]
         public virtual Conversation Conversation { get; set; }
 
-        public long SenderId { get; set; }
+        public Guid SenderId { get; set; }
         [ForeignKey(nameof(SenderId))]
         public virtual AppUser Sender { get; set; }
 
@@ -24,7 +24,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public long? ParrentMessageId { get; set; }
+        public Guid? ParrentMessageId { get; set; }
         [ForeignKey(nameof(ParrentMessageId))]
         public virtual Message ParrentMessage { get; set; }
 

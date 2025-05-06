@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITJobs.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(ITJobsDbContext))]
-    [Migration("20250505232819_InitDbVer1")]
+    [Migration("20250506094813_InitDbVer1")]
     partial class InitDbVer1
     {
         /// <inheritdoc />
@@ -30,11 +30,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.AppUser", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("AccountBalance")
                         .HasColumnType("bigint");
@@ -95,14 +93,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Award", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
@@ -133,14 +129,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.CV", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -158,11 +152,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.CVTemplate", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -170,8 +162,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -182,11 +174,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Candidate", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AboutMe")
                         .HasMaxLength(2000)
@@ -198,8 +188,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("SkillIds")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -210,14 +200,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Certification", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
@@ -248,11 +236,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Comment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasMaxLength(2000)
@@ -264,17 +250,17 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("bit");
 
-                    b.Property<long?>("ParrentCommentId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("ParrentCommentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReactionType_UserId_Ids")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -292,14 +278,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.CommentHistory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CommentId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasMaxLength(2000)
@@ -317,17 +301,15 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Conversation", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("UserId1")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("UserId1")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId2")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId2")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -340,14 +322,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Education", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Degree")
                         .HasMaxLength(500)
@@ -384,11 +364,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Employer", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AdditionalInfo")
                         .HasColumnType("nvarchar(max)");
@@ -416,8 +394,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("SkillIds")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -428,25 +406,23 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.JobApplication", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CVLink")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CoverLetter")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte>("StatusJobApplication")
                         .HasColumnType("tinyint");
@@ -462,18 +438,16 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Message", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<long>("ConversationId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -484,14 +458,14 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("bit");
 
-                    b.Property<long?>("ParrentMessageId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("ParrentMessageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte>("ReactionType")
                         .HasColumnType("tinyint");
 
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -506,11 +480,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Notification", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasMaxLength(500)
@@ -529,11 +501,11 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<byte>("NotificationType")
                         .HasColumnType("tinyint");
 
-                    b.Property<long>("ReferenceId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ReferenceId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -544,11 +516,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Post", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -578,8 +548,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("ViewCount")
                         .HasColumnType("bigint");
@@ -593,11 +563,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.PostHistory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -606,8 +574,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -618,14 +586,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Project", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
@@ -658,14 +624,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Review", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -674,8 +638,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("EmployerId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("EmployerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -701,11 +665,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.SearchFilter", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -725,11 +687,11 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.SearchFilter_Post", b =>
                 {
-                    b.Property<long>("SearchFilterId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("SearchFilterId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Values")
                         .HasColumnType("nvarchar(max)");
@@ -743,11 +705,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Skill", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -766,11 +726,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.SystemValue", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PostingFeePerDay")
                         .HasColumnType("int");
@@ -782,14 +740,12 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.WorkExperience", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CompanyName")
                         .HasMaxLength(500)

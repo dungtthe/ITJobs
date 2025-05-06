@@ -12,7 +12,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("Comments")]
     public class Comment:BaseModel
     {
-        public long PostId { get; set; }
+        public Guid PostId { get; set; }
         [ForeignKey(nameof(PostId))]
         public virtual Post Post { get; set; }
 
@@ -21,11 +21,11 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
 
-        public long SenderId { get; set; }
+        public Guid SenderId { get; set; }
         [ForeignKey(nameof(SenderId))]
         public virtual AppUser Sender { get; set; }
 
-        public long? ParrentCommentId { get; set; }
+        public Guid? ParrentCommentId { get; set; }
         [ForeignKey(nameof(ParrentCommentId))]
         public virtual Comment ParrentComment { get; set; }
         public string ReactionType_UserId_Ids { get; set; }

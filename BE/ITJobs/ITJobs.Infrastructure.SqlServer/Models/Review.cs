@@ -13,11 +13,11 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     public class Review:BaseModel
     {
 
-        public long EmployerId { get; set; }
+        public Guid EmployerId { get; set; }
         [ForeignKey(nameof(EmployerId))]
         public virtual Employer Employer { get; set; }
 
-        public long CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         [ForeignKey(nameof(CandidateId))]
         public virtual Candidate Candidate { get; set; }
 

@@ -8,6 +8,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 {
     public interface ICandidateRepository
     {
-        Task AddAsync(Entities.AppUser appUser);
+        Task AddAsync(Guid userId);
     }
 }

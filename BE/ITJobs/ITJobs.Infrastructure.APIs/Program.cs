@@ -58,6 +58,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 
 // Configure the HTTP request pipeline.
@@ -69,7 +70,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<FluentValidationExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

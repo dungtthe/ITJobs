@@ -11,7 +11,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("CVs")]
     public class CV:BaseModel
     {
-        public long CandidateId { get; set; }
+        public Guid CandidateId { get; set; }
         [ForeignKey(nameof(CandidateId))]
         public virtual Candidate Candidate { get; set; }
 

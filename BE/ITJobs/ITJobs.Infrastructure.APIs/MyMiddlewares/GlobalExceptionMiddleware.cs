@@ -1,12 +1,13 @@
 ﻿using FluentValidation;
+using ITJobs.Infrastructure.Commons.Consts;
 
 namespace ITJobs.Infrastructure.APIs.MyMiddlewares
 {
-    public class FluentValidationExceptionHandlingMiddleware
+    public class GlobalExceptionMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public FluentValidationExceptionHandlingMiddleware(RequestDelegate next)
+        public GlobalExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -35,6 +36,12 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
                 };
 
                 await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = 500;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsJsonAsync(HttpStatusCode.HeThongGapSuCo);
             }
         }
     }

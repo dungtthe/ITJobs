@@ -10,10 +10,10 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("SearchFilter_Post")]
     public class SearchFilter_Post
     {
-        public long SearchFilterId { get; set; }
+        public Guid SearchFilterId { get; set; }
         [ForeignKey(nameof(SearchFilterId))]
         public virtual SearchFilter SearchFilter { get; set; }
-        public long PostId { get; set; }
+        public Guid PostId { get; set; }
         [ForeignKey(nameof(PostId))]
         public virtual Post Post { get; set; }
         public string Values { get; set; }

@@ -11,7 +11,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("PostHistories")]
     public class PostHistory:BaseModel
     {
-        public long PostId { get; set; }
+        public Guid PostId { get; set; }
         [ForeignKey(nameof(PostId))]
         public virtual Post Post { get; set; }
 

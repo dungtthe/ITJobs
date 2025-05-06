@@ -10,6 +10,6 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     public abstract class BaseModel
     {
         [Key]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

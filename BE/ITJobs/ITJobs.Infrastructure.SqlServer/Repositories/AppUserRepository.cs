@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities;
 using ITJobs.UseCases.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +16,31 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<Entities.AppUser> RegisterAsync(string userName, string passWord, string email, string fullName)
+
+        public async Task<bool> IsEmailExistsAsync(string email)
+        {
+            email = email.ToLower().Trim();
+            return await _dbContext.Users.AnyAsync(x => x.Email.ToLower() == email);
+
+        }
+
+        public async Task<bool> IsUserNameExistsAsync(string userName)
+        {
+            userName = userName.ToLower().Trim();
+            return await _dbContext.Users.AnyAsync(x => x.UserName.ToLower() == userName);
+        }
+
+        public async Task RegisterAsync(Guid id,string userName, string passWord, string email, string fullName)
         {
             var userEntity = new Models.AppUser
             {
+                Id =id,
                 UserName = userName,
                 Password = passWord,
                 Email = email,
                 FullName = fullName
             };
-
             await _dbContext.Users.AddAsync(userEntity);
-            return new Entities.AppUser()
-            {
-                Id = userEntity.Id,
-                UserName = userEntity.UserName,
-                Password = userEntity.Password,
-                Email = userEntity.Email,
-                FullName = userEntity.FullName
-            };
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("CommentHistories")]
     public class CommentHistory:BaseModel
     {
-        public long CommentId { get; set; }
+        public Guid CommentId { get; set; }
         [ForeignKey(nameof(CommentId))]
         public virtual Comment Comment { get; set; }
 

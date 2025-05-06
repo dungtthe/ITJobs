@@ -8,7 +8,7 @@ namespace ITJobs.Entities
 {
     public class Candidate:BaseEntity
     {
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         public AppUser User { get; set; }
         public string AboutMe { get; set; }
         public List<Skill> Skills { get; set; }

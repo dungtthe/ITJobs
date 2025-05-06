@@ -12,7 +12,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("Candidates")]
     public class Candidate:BaseModel
     {
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual AppUser User { get; set; }
 
