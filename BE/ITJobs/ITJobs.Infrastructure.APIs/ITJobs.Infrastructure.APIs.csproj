@@ -22,6 +22,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ITJobs.Infrastructure.Commons\ITJobs.Infrastructure.Commons.csproj" />
+		<ProjectReference Include="..\ITJobs.Infrastructure.ExternalServices\ITJobs.Infrastructure.ExternalServices.csproj" />
 		<ProjectReference Include="..\ITJobs.Infrastructure.SqlServer\ITJobs.Infrastructure.SqlServer.csproj" />
 		<ProjectReference Include="..\ITJobs.UseCases\ITJobs.UseCases.csproj" />
 	</ItemGroup>

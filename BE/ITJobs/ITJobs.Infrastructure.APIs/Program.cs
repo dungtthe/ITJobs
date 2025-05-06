@@ -1,4 +1,5 @@
 ﻿using ITJobs.Infrastructure.APIs.MyMiddlewares;
+using ITJobs.Infrastructure.ExternalServices;
 using ITJobs.Infrastructure.SqlServer;
 using ITJobs.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +14,9 @@ builder.Services.AddUsecaseServices();
 
 //sql server service
 builder.Services.AddSqlServerServices(builder.Configuration);
+
+//external service
+builder.Services.AddExternalServices();
 
 
 //add jwt

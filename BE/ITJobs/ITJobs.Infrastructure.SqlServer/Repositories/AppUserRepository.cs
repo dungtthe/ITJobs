@@ -17,6 +17,31 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<Entities.AppUser> GetUserByUserNameAsync(string userName)
+        {
+            var rs =  await _dbContext.Users.SingleOrDefaultAsync(u=>u.UserName== userName);
+            if (rs == null)
+            {
+                return null;
+            }
+            return new Entities.AppUser
+            {
+                Id = rs.Id,
+                UserName = rs.UserName,
+                Password = rs.Password,
+                FullName = rs.FullName,
+                Email = rs.Email,
+                PhoneNumber = rs.PhoneNumber,
+                Address = rs.Address,
+                Gender = rs.Gender,
+                DateOfBirth = rs.DateOfBirth,
+                Image = rs.Image,
+                AccountBalance = rs.AccountBalance,
+                RoleType = rs.RoleType,
+                IsLocked = rs.IsLocked,
+            };
+        }
+
         public async Task<bool> IsEmailExistsAsync(string email)
         {
             email = email.ToLower().Trim();
