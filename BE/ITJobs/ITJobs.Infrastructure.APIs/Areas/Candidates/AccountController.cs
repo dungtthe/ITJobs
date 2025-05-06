@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITJobs.Infrastructure.APIs.Areas.Candidates
 {
     [Area("Candidate")]
-    [Route("api/candidate/register")]
+    [Route("api/candidate")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
         }
 
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterAccountCommand command)
         {
             var rs = await _mediator.Send(command);

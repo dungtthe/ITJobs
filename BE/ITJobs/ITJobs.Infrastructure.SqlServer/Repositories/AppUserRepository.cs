@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities;
+using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -55,7 +56,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return await _dbContext.Users.AnyAsync(x => x.UserName.ToLower() == userName);
         }
 
-        public async Task RegisterAsync(Guid id,string userName, string passWord, string email, string fullName)
+        public async Task RegisterAsync(Guid id,string userName, string passWord, string email, string fullName, RoleType roleType)
         {
             var userEntity = new Models.AppUser
             {
@@ -63,7 +64,8 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 UserName = userName,
                 Password = passWord,
                 Email = email,
-                FullName = fullName
+                FullName = fullName,
+                RoleType = roleType
             };
             await _dbContext.Users.AddAsync(userEntity);
         }

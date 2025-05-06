@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using ITJobs.Entities.Enums;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Commons;
@@ -55,9 +56,12 @@ namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
 
                 await _unitOfWork.BeginTransactionAsync();
                 var id = Guid.NewGuid();
-                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(request.Password), request.Email, request.FullName);
+                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(request.Password), request.Email, request.FullName,RoleType.Candidate);
                 await _candidateRepository.AddAsync(id);
                 await _unitOfWork.CommitAsync();
+
+                await LoggerHelper.LogInfomationAsync("Handle(RegisterAccountCommand request, CancellationToken cancellationToken)","đăng ký thành công: "+ JsonConvert.SerializeObject(request));
+
                 return new ResponeMessage()
                 {
                     HttpStatusCode = HttpStatusCode.Ok,
