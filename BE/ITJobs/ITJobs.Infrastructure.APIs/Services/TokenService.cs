@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.Infrastructure.ExternalServices
+namespace ITJobs.Infrastructure.APIs.Services
 {
     public class TokenService : ITokenService
     {

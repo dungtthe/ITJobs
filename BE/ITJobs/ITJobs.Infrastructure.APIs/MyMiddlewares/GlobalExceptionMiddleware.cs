@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
+using ITJobs.UseCases.Interfaces.Services;
 
 namespace ITJobs.Infrastructure.APIs.MyMiddlewares
 {
@@ -40,7 +41,10 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
             }
             catch (Exception ex)
             {
-                await LoggerHelper.LogExceptionAsync("GlobalExceptionMiddleware","",ex);
+                // Lấy IHttpContextInfoAccessor từ DI container
+                var infoAccessor = context.RequestServices.GetService<IHttpContextInfoAccessor>();
+                var clientIp = infoAccessor?.GetClientIpV4() ?? "";
+                await LoggerHelper.LogExceptionAsync(clientIp, "GlobalExceptionMiddleware","",ex);
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsJsonAsync(HttpStatusCode.HeThongGapSuCo);

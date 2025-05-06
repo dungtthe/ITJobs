@@ -11,7 +11,7 @@ namespace ITJobs.Infrastructure.Commons.Helpers
         private static readonly SemaphoreSlim _logLockEX = new(1, 1);
         private static readonly SemaphoreSlim _logLockInfo = new(1, 1);
 
-        public static async Task LogExceptionAsync(string methodName, string msgInfo, Exception ex)
+        public static async Task LogExceptionAsync(string ip ,string methodName, string msgInfo, Exception ex)
         {
             await _logLockEX.WaitAsync();
             try
@@ -31,6 +31,7 @@ namespace ITJobs.Infrastructure.Commons.Helpers
                 {
                     string content = @$"
 ================== {DateTime.Now:yyyy-MM-dd HH:mm:ss} ==================
+IP         : {ip}
 Method     : {methodName}
 Message    : {msgInfo}
 Exception  : {ex.Message}--{ex.StackTrace}
@@ -52,7 +53,7 @@ Exception  : {ex.Message}--{ex.StackTrace}
 
 
 
-        public static async Task LogInfomationAsync(string methodName, string msgInfo)
+        public static async Task LogInfomationAsync(string ip, string methodName, string msgInfo)
         {
             await _logLockInfo.WaitAsync();
             try
@@ -72,6 +73,7 @@ Exception  : {ex.Message}--{ex.StackTrace}
                 {
                     string content = @$"
 ================== {DateTime.Now:yyyy-MM-dd HH:mm:ss} ==================
+IP         : {ip}
 Method     : {methodName}
 Message    : {msgInfo}
 ========================================================================";

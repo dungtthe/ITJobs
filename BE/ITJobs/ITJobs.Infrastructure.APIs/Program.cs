@@ -1,7 +1,9 @@
 ﻿using ITJobs.Infrastructure.APIs.MyMiddlewares;
+using ITJobs.Infrastructure.APIs.Services;
 using ITJobs.Infrastructure.ExternalServices;
 using ITJobs.Infrastructure.SqlServer;
 using ITJobs.UseCases;
+using ITJobs.UseCases.Interfaces.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +19,10 @@ builder.Services.AddSqlServerServices(builder.Configuration);
 
 //external service
 builder.Services.AddExternalServices();
+
+//service in webapi
+builder.Services.AddHttpContextAccessor(); // Cho phép truy cập HttpContext, hỗ trợ cái IHttpContextInfoAccessor
+builder.Services.AddWebApiServices();
 
 
 //add jwt

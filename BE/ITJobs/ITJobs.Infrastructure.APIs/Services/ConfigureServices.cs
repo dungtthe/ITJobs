@@ -1,4 +1,5 @@
 ﻿using ITJobs.UseCases.Interfaces.ExternalServices;
+using ITJobs.UseCases.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.Infrastructure.ExternalServices
+namespace ITJobs.Infrastructure.APIs.Services
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddExternalServices(this IServiceCollection services)
+        public static IServiceCollection AddWebApiServices(this IServiceCollection services)
         {
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IHttpContextInfoAccessor, HttpContextInfoAccessor>();
             return services;
         }
     }

@@ -2,6 +2,7 @@
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
+using ITJobs.UseCases.Interfaces.Services;
 using MediatR;
 using Newtonsoft.Json;
 using System;
@@ -16,19 +17,24 @@ namespace ITJobs.UseCases.Commons.Accounts.Queries.Login
     {
         private readonly IAppUserRepository _appUserRepository;
         private readonly ITokenService _tokenService;
-        public LoginQueryHandler(IAppUserRepository appUserRepository,ITokenService tokenService)
+        private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
+
+        public LoginQueryHandler(IAppUserRepository appUserRepository,ITokenService tokenService, IHttpContextInfoAccessor httpContextInfoAccessor)
         {
             _appUserRepository = appUserRepository;
             _tokenService = tokenService;
+            _httpContextInfoAccessor = httpContextInfoAccessor;
         }
         public async Task<ResponeLoginDTO> Handle(RequestLoginDTO request, CancellationToken cancellationToken)
         {
-            await LoggerHelper.LogInfomationAsync("LoginQueryHandler", JsonConvert.SerializeObject(request));
+            string ipClient = _httpContextInfoAccessor.GetClientIpV4();
+
+            await LoggerHelper.LogInfomationAsync(ipClient,"LoginQueryHandler", JsonConvert.SerializeObject(request));
             var user = await _appUserRepository.GetUserByUserNameAsync(request.UserName);
             if (user == null || user.Password != Security.HashPassword(request.Password))
             {
                 string error = (user == null) ? "Sai tên tài khoản" : "Sai mật khẩu";
-                await LoggerHelper.LogInfomationAsync("LoginQueryHandler ",error + JsonConvert.SerializeObject(request));
+                await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler ",error + JsonConvert.SerializeObject(request));
                 return new ResponeLoginDTO()
                 {
                     HttpStatusCode = HttpStatusCode.NotFound,
@@ -39,7 +45,7 @@ namespace ITJobs.UseCases.Commons.Accounts.Queries.Login
             if (user.IsLocked)
             {
 
-                await LoggerHelper.LogInfomationAsync("LoginQueryHandler", "locked " + JsonConvert.SerializeObject(request));
+                await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler", "locked " + JsonConvert.SerializeObject(request));
 
                 return new ResponeLoginDTO()
                 {
@@ -48,7 +54,7 @@ namespace ITJobs.UseCases.Commons.Accounts.Queries.Login
                 };
             }
 
-            await LoggerHelper.LogInfomationAsync("LoginQueryHandler","login ok " + JsonConvert.SerializeObject(request));
+            await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler","login ok " + JsonConvert.SerializeObject(request));
 
             return new ResponeLoginDTO()
             {
