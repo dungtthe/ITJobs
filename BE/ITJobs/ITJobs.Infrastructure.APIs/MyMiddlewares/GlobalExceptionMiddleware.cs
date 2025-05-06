@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ITJobs.Infrastructure.Commons.Consts;
+using ITJobs.Infrastructure.Commons.Helpers;
 
 namespace ITJobs.Infrastructure.APIs.MyMiddlewares
 {
@@ -39,6 +40,7 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
             }
             catch (Exception ex)
             {
+                await LoggerHelper.LogExceptionAsync("GlobalExceptionMiddleware","",ex);
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsJsonAsync(HttpStatusCode.HeThongGapSuCo);

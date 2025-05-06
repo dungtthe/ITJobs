@@ -6,6 +6,7 @@ using ITJobs.UseCases.Commons;
 using ITJobs.UseCases.Interfaces.Repositories;
 using ITJobs.UseCases.Interfaces.UnitOfWork;
 using MediatR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
         {
             try
             {
+                await LoggerHelper.LogInfomationAsync("Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", JsonConvert.SerializeObject(request));
+
                 if (await _appUserRepository.IsUserNameExistsAsync(request.UserName))
                 {
                     throw new ValidationException(new List<ValidationFailure>
