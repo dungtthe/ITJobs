@@ -14,5 +14,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task <bool> IsUserNameExistsAsync(string userName);
         Task <bool> IsEmailExistsAsync(string email);
         Task<Entities.AppUser> GetUserByUserNameAsync(string userName);
+        Task<bool> IsUserAdminExistsAsync(Guid userId);
     }
 }

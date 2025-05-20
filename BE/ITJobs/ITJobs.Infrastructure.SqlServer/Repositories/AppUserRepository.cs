@@ -20,7 +20,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         public async Task<Entities.AppUser> GetUserByUserNameAsync(string userName)
         {
-            var rs =  await _dbContext.Users.SingleOrDefaultAsync(u=>u.UserName== userName);
+            var rs = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName);
             if (rs == null)
             {
                 return null;
@@ -50,17 +50,22 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         }
 
+        public async Task<bool> IsUserAdminExistsAsync(Guid userId)
+        {
+            return await _dbContext.Users.AnyAsync(user => user.Id == userId && user.RoleType == RoleType.Admin);
+        }
+
         public async Task<bool> IsUserNameExistsAsync(string userName)
         {
             userName = userName.ToLower().Trim();
             return await _dbContext.Users.AnyAsync(x => x.UserName.ToLower() == userName);
         }
 
-        public async Task RegisterAsync(Guid id,string userName, string passWord, string email, string fullName, RoleType roleType)
+        public async Task RegisterAsync(Guid id, string userName, string passWord, string email, string fullName, RoleType roleType)
         {
             var userEntity = new Models.AppUser
             {
-                Id =id,
+                Id = id,
                 UserName = userName,
                 Password = passWord,
                 Email = email,

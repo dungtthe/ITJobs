@@ -10,6 +10,9 @@ namespace ITJobs.Entities
 {
     public class Post : BaseEntity
     {
+        public string Title { get; set; }
+        public string ShortContent { get; set; }
+        public string MainImage { get; set; }
         public string Content { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }

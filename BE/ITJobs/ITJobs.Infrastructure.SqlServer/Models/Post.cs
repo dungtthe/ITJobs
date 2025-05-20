@@ -17,6 +17,16 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public virtual AppUser User { get; set; }
 
         [Required]
+        [MaxLength(500)]
+        public string Title { get; set; }
+
+        [Required]
+        [MaxLength(2000)]
+        public string ShortContent { get; set; }
+
+        public string MainImage { get; set; }
+
+        [Required]
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

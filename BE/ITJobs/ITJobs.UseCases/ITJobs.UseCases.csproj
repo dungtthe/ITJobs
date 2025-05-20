@@ -19,4 +19,8 @@
     <ProjectReference Include="..\ITJobs.Infrastructure.Commons\ITJobs.Infrastructure.Commons.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Admins\Posts\Commands\CreateJobPost\" />
+  </ItemGroup>
+
 </Project>

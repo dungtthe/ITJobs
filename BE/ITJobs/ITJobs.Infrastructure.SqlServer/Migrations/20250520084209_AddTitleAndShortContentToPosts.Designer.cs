@@ -4,6 +4,7 @@ using ITJobs.Infrastructure.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITJobs.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(ITJobsDbContext))]
-    partial class ITJobsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520084209_AddTitleAndShortContentToPosts")]
+    partial class AddTitleAndShortContentToPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -531,9 +534,6 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Keywords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MainImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("PostType")
