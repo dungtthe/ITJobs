@@ -1,10 +1,12 @@
 ﻿using ITJobs.Entities.Exceptions;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.LockAccountEmployer;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Writers;
 
 namespace ITJobs.Infrastructure.APIs.Areas.Admins
 {
@@ -40,5 +42,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
                 return NotFound(new { message = e.Message });
             }
         }
+
+        [HttpGet("")] 
+        public async Task<IActionResult> GetEmployersSummarAsync([FromQuery] GetEmployersSummaryQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
+
     }
 }

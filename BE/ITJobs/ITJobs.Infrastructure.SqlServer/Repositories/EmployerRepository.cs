@@ -1,5 +1,8 @@
-﻿using ITJobs.Entities.Enums;
+﻿using ITJobs.Entities;
+using ITJobs.Entities.Enums;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using ITJobs.UseCases.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,27 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 UserId = userId,
                 CompanyName = companyname
             });
+        }
+
+        public async Task<List<UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary.EmployerSummaryDto>> GetEmployersSummarAsync()
+        {
+            var employers = new List<EmployerSummaryDto>();
+
+            var fEmployers = await _dbContext.Employers.ToListAsync();
+
+            foreach (var fEmployer in fEmployers)
+            {
+                employers.Add(new EmployerSummaryDto()
+                {
+                    UserId = fEmployer.UserId,
+                    CompanyName = fEmployer.CompanyName,
+                    Image = fEmployer.User.Image,
+                    AccountBalance= fEmployer.User.AccountBalance,
+                    Email= fEmployer.User.Email,
+                    IsLock= fEmployer.User.IsLocked
+                });
+            }
+            return employers;
         }
 
         public async Task<bool> LockAccountAsync(Guid userId)
