@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITJobs.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ITJobs.Entities
 {
-    public class SearchFilterCheckBox:SearchFilter
+    public class SearchFilterCombobox:SearchFilter
     {
         public List<string> Values { get; set; }
 
-        public SearchFilterCheckBox()
+        public SearchFilterCombobox()
         {
-            SearchFilterType = Enums.SearchFilterType.Checkbox;
+            SearchFilterType = Enums.SearchFilterType.Combobox;
         }
     }
 }

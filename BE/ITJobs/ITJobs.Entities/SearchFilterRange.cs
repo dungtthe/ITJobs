@@ -10,5 +10,10 @@ namespace ITJobs.Entities
     {
         public long Min { get; set; }
         public long Max { get; set; }
+
+        public SearchFilterRange()
+        {
+            SearchFilterType = Enums.SearchFilterType.Range;
+        }
     }
 }

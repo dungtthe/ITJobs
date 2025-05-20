@@ -9,6 +9,7 @@ namespace ITJobs.Entities.Enums
     public enum SearchFilterType:byte
     {
         Range,
-        Checkbox
+        Checkbox,
+        Combobox
     }
 }

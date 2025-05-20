@@ -32,6 +32,7 @@ namespace ITJobs.Infrastructure.SqlServer
             services.AddScoped<ICandidateRepository,CandidateRepository>();
             services.AddScoped<IEmployerRepository, EmployerRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ISearchFilterRepository, SearchFilterRepository>();
 
             //unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
