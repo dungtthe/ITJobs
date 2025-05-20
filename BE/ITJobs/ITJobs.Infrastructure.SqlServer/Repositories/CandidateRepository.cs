@@ -1,7 +1,11 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.Infrastructure.SqlServer.Models;
+using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using ITJobs.UseCases.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +27,27 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             {
                 UserId = userId
             });
+        }
+
+        public async Task<List<CandidateSummaryDto>> GetCandidatesSummarAsync()
+        {
+            var candidates = new List<CandidateSummaryDto>();
+
+            var fCandidates = await _dbContext.Candidates.ToListAsync();
+
+            foreach (var fUser in fCandidates)
+            {
+                candidates.Add(new CandidateSummaryDto()
+                {
+                    UserId = fUser.UserId,
+                    Image = fUser.User.Image,
+                    FullName = fUser.User.FullName,
+                    Email = fUser.User.Email,
+                    IsLock = fUser.User.IsLocked,
+                    SocialMedias = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fUser.User.SocialMediaLinks)
+                });
+            }
+            return candidates;
         }
 
         public async Task<bool> LockAccountAsync(Guid userId)

@@ -1,5 +1,7 @@
 ﻿using ITJobs.Entities.Exceptions;
 using ITJobs.UseCases.Admins.Users.Candidates.Commands.LockAccountCandidate;
+using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +31,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             {
                 return NotFound(new { message = e.Message });
             }
+        }
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetCandidatesSummaryAsync([FromQuery] GetCandidateSummaryQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
         }
     }
 }
