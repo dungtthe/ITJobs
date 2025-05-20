@@ -1,5 +1,6 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.UseCases.Admins.Posts.Commands.CreateBlogPost;
+using ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
 
             var rs = await _mediator.Send(command);
             return Ok(new { id = rs });
+        }
+
+        [HttpGet("blog")]
+        public async Task<IActionResult> GetBlogPostsSummarAsync([FromQuery] GetBlogPostsSummaryQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
         }
     }
 }
