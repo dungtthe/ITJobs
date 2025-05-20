@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
-using ITJobs.UseCases.Interfaces.Services;
+using ITJobs.UseCases.Interfaces.ExternalServices;
 
 namespace ITJobs.Infrastructure.APIs.MyMiddlewares
 {

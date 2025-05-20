@@ -3,7 +3,6 @@ using ITJobs.Infrastructure.APIs.Services;
 using ITJobs.Infrastructure.ExternalServices;
 using ITJobs.Infrastructure.SqlServer;
 using ITJobs.UseCases;
-using ITJobs.UseCases.Interfaces.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

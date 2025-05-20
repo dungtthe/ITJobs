@@ -12,35 +12,30 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
+namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
 {
-
-    public class RegisterAccountCommandHandler : IRequestHandler<RegisterAccountCommand, ResponeMessage>
+    public class CreateEmployerCommandHandler : IRequestHandler<CreateEmployerCommand, Guid>
     {
         private readonly IAppUserRepository _appUserRepository;
-        private readonly ICandidateRepository _candidateRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmployerRepository _employerRepository;
         private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
-        public RegisterAccountCommandHandler(IAppUserRepository appUserRepository, ICandidateRepository candidateRepository, IUnitOfWork unitOfWork, IHttpContextInfoAccessor httpContextInfoAccessor)
+        public CreateEmployerCommandHandler(IAppUserRepository userRepository, IUnitOfWork unitOfWork, IEmployerRepository employerRepository,IHttpContextInfoAccessor httpContextInfoAccessor)
         {
-            _appUserRepository = appUserRepository;
-            _candidateRepository = candidateRepository;
+            _appUserRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _employerRepository = employerRepository;
             _httpContextInfoAccessor = httpContextInfoAccessor;
         }
-
-
-
-        public async Task<ResponeMessage> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
-                await LoggerHelper.LogInfomationAsync(ipClient,"Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", JsonConvert.SerializeObject(request));
+                await LoggerHelper.LogInfomationAsync(ipClient, "CreateEmployerCommandHandler", JsonConvert.SerializeObject(request));
 
                 if (await _appUserRepository.IsUserNameExistsAsync(request.UserName))
                 {
@@ -60,17 +55,14 @@ namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
 
                 await _unitOfWork.BeginTransactionAsync();
                 var id = Guid.NewGuid();
-                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(request.Password), request.Email, request.FullName, RoleType.Candidate);
-                await _candidateRepository.AddAsync(id);
+                var passGenerated = PasswordGenerator.Generate();
+                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(passGenerated), request.Email, request.FullName, RoleType.Employer);
+                await _employerRepository.AddAsync(id,request.FullName);
                 await _unitOfWork.CommitAsync();
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", "đăng ký thành công: " + JsonConvert.SerializeObject(request));
 
-                return new ResponeMessage()
-                {
-                    HttpStatusCode = HttpStatusCode.Ok,
-                    Message = "Đăng ký tài khoản thành công"
-                };
+                return id;
             }
             catch
             {

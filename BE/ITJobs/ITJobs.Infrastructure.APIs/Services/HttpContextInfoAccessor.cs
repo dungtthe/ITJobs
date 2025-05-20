@@ -1,4 +1,4 @@
-﻿using ITJobs.UseCases.Interfaces.Services;
+﻿using ITJobs.UseCases.Interfaces.ExternalServices;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

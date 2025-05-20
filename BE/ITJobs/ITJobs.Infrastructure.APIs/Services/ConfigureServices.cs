@@ -1,5 +1,4 @@
 ﻿using ITJobs.UseCases.Interfaces.ExternalServices;
-using ITJobs.UseCases.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

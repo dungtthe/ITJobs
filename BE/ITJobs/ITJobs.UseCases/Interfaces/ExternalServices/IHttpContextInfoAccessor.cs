@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Interfaces.Services
+namespace ITJobs.UseCases.Interfaces.ExternalServices
 {
     public interface IHttpContextInfoAccessor
     {

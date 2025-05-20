@@ -2,7 +2,6 @@
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
-using ITJobs.UseCases.Interfaces.Services;
 using MediatR;
 using Newtonsoft.Json;
 using System;
