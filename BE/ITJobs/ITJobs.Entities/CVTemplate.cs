@@ -8,7 +8,9 @@ namespace ITJobs.Entities
 {
     public class CVTemplate:BaseEntity
     {
-        public AppUser AppUser { get; set; }
+        public Guid UserId { get; set; }//tac gia tao ra template
+        public string AuthorName {  get; set; }
+        public string AuthorImage { get; set; }
         public string Content { get; set; }
         public int SortOrder { get; set; }
     }
