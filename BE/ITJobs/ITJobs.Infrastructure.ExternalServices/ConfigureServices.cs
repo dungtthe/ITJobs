@@ -13,6 +13,7 @@ namespace ITJobs.Infrastructure.ExternalServices
     {
         public static IServiceCollection AddExternalServices(this IServiceCollection services)
         {
+            services.AddTransient<IEmailService, EmailService>();
             return services;
         }
     }

@@ -17,6 +17,7 @@ builder.Services.AddUsecaseServices();
 builder.Services.AddSqlServerServices(builder.Configuration);
 
 //external service
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddExternalServices();
 
 //service in webapi

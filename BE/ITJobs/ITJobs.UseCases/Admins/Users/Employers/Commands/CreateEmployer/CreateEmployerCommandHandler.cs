@@ -23,12 +23,14 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployerRepository _employerRepository;
         private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
-        public CreateEmployerCommandHandler(IAppUserRepository userRepository, IUnitOfWork unitOfWork, IEmployerRepository employerRepository,IHttpContextInfoAccessor httpContextInfoAccessor)
+        private readonly IEmailService _emailService;
+        public CreateEmployerCommandHandler(IAppUserRepository userRepository, IUnitOfWork unitOfWork, IEmployerRepository employerRepository,IHttpContextInfoAccessor httpContextInfoAccessor, IEmailService emailService)
         {
             _appUserRepository = userRepository;
             _unitOfWork = unitOfWork;
             _employerRepository = employerRepository;
             _httpContextInfoAccessor = httpContextInfoAccessor;
+            _emailService = emailService;
         }
         public async Task<Guid> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
         {
@@ -56,6 +58,7 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
                 await _unitOfWork.BeginTransactionAsync();
                 var id = Guid.NewGuid();
                 var passGenerated = PasswordGenerator.Generate();
+                await _emailService.SendEmailAsync(request.Email, "Tài khoản nhà tuyển dụng", $"Tài khoản của bạn đã được tạo thành công. Tên tài khoản: {request.UserName} - Mật khẩu: {passGenerated}");
                 await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(passGenerated), request.Email, request.FullName, RoleType.Employer);
                 await _employerRepository.AddAsync(id,request.FullName);
                 await _unitOfWork.CommitAsync();
