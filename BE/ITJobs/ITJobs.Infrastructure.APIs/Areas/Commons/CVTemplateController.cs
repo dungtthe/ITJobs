@@ -1,5 +1,6 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.UseCases.Commons.CVTemplates.Commands.CreateCVTemplate;
+using ITJobs.UseCases.Commons.CVTemplates.Queries.GetCVTemplates;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,5 +34,12 @@ namespace ITJobs.Infrastructure.APIs.Areas.Commons
             return Ok(new { id = rs });
         }
 
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetCVTemplatesAsync([FromQuery] GetCVTemplatesQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 }
