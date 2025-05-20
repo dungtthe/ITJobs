@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities;
+using ITJobs.Entities.Enums;
 using ITJobs.Infrastructure.SqlServer.Models;
 using ITJobs.UseCases.Interfaces.Repositories;
 using System;
@@ -22,6 +23,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             {
                 UserId = userId
             });
+        }
+
+        public async Task<bool> LockAccountAsync(Guid userId)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null || fUser.RoleType != RoleType.Candidate)
+            {
+                return false;
+            }
+            fUser.IsLocked = true;
+            return true;
         }
     }
 }

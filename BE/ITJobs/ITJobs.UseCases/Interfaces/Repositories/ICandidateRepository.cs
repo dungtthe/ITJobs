@@ -9,5 +9,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     public interface ICandidateRepository
     {
         Task AddAsync(Guid userId);
+        Task<bool> LockAccountAsync(Guid userId);
     }
 }

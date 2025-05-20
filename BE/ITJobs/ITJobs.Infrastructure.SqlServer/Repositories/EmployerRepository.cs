@@ -1,4 +1,5 @@
-﻿using ITJobs.UseCases.Interfaces.Repositories;
+﻿using ITJobs.Entities.Enums;
+using ITJobs.UseCases.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 UserId = userId,
                 CompanyName = companyname
             });
+        }
+
+        public async Task<bool> LockAccountAsync(Guid userId)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null || fUser.RoleType!=RoleType.Employer)
+            {
+                return false;
+            }
+            fUser.IsLocked = true;
+            return true;
         }
     }
 }
