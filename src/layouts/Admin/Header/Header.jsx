@@ -1,9 +1,11 @@
 import React from "react";
-
+import { SidebarTrigger } from "@/components/ui/sidebar";
 export default function Header() {
   return (
     <header className="bg-background border-b border-border">
       <div className="flex h-16 items-center justify-between px-4">
+        <SidebarTrigger></SidebarTrigger>
+
         {/* Avatar + Dropdown Container */}
         <div className="relative hidden md:block ml-auto mr-50">
           <div className="group relative">

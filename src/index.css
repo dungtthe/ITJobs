@@ -14,7 +14,8 @@
   /* admin */
 
   /* user */
-  --color-u-white: #FFFFFF;
+  /* nao định nghĩa lại cho giống phong cách của shacdn */
+  /* --color-u-white: #FFFFFF;
   --color-u-black-one: #121212;
   --color-u-black-two: #414042;
   --color-u-grey-one: #A6A6A6;
@@ -22,7 +23,7 @@
   --color-u-grey-three: #F7F7F7;
   --color-u-red-one: #ED1B2F;
   --color-u-green-one: #5EB305;
-  --color-u-blue-one: #0E2EED;
+  --color-u-blue-one: #0E2EED; */
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

@@ -27,7 +27,7 @@ import {
 import logo from "@/assets/icons/logo.png";
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
-const SIDEBAR_WIDTH = "16rem";
+const SIDEBAR_WIDTH = "16.5rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
@@ -302,16 +302,14 @@ function SidebarInput({ className, ...props }) {
     />
   );
 }
-
 function SidebarHeader() {
   return (
     <>
-      <div className="cursor-pointer flex items-center justify-center gap-2 px-4 py-4 border-b border-border bg-gray-900">
-        <img
-          src={logo}
-          alt="itJobs Logo"
-          className="h-8 w-auto drop-shadow-md"
-        />
+      <div className="flex items-center justify-center px-4 py-3 mb-2 mt-4">
+        <div className="flex items-center">
+          <span className="text-primary font-bold text-4xl">it</span>
+          <span className="text-foreground font-bold text-4xl">Jobs</span>
+        </div>
       </div>
     </>
   );
