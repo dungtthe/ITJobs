@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Helpers.Paginations;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,6 +14,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     {
         Task AddAsync(Guid userId, string companyname);
         Task<bool> LockAccountAsync(Guid userId);
-        Task<List<EmployerSummaryDto>> GetEmployersSummarAsync();
+        Task<PagedResult<EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,26 +29,49 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             });
         }
 
-        public async Task<List<UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary.EmployerSummaryDto>> GetEmployersSummarAsync()
+        public async Task<PagedResult<EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters)
         {
-            var employers = new List<EmployerSummaryDto>();
+            var query = _dbContext.Employers.AsQueryable();
 
-            var fEmployers = await _dbContext.Employers.ToListAsync();
-
-            foreach (var fEmployer in fEmployers)
+            if (!string.IsNullOrEmpty(parameters.SearchTerm))
             {
-                employers.Add(new EmployerSummaryDto()
+                var searchTerm = parameters.SearchTerm.ToLower();
+                query = query.Where(e =>
+                    e.CompanyName.ToLower().Contains(searchTerm) ||
+                    e.User.Email.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var employers = await query
+                .Include(e => e.User)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .Select(fEmployer => new EmployerSummaryDto()
                 {
                     UserId = fEmployer.UserId,
                     CompanyName = fEmployer.CompanyName,
                     Image = fEmployer.User.Image,
-                    AccountBalance= fEmployer.User.AccountBalance+"",
-                    Email= fEmployer.User.Email,
-                    IsLock= fEmployer.User.IsLocked
-                });
-            }
-            return employers;
+                    AccountBalance = fEmployer.User.AccountBalance + "",
+                    Email = fEmployer.User.Email,
+                    IsLock = fEmployer.User.IsLocked
+                })
+                .ToListAsync();
+
+            var result = new PagedResult<EmployerSummaryDto>
+            {
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+                TotalRecords = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)parameters.PageSize),
+                Items = employers
+            };
+
+            return result;
         }
+
+
 
         public async Task<bool> LockAccountAsync(Guid userId)
         {

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ITJobs.UseCases.Helpers.Paginations;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary
 {
-    public class GetEmployersSummaryQuery : IRequest<List<EmployerSummaryDto>>
+    public class GetEmployersSummaryQuery : BasePaginationParameters, IRequest<PagedResult<EmployerSummaryDto>>
     {
+
     }
 }
