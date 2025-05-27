@@ -18,10 +18,12 @@ export default function Index() {
     <>
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="bg-background-secondary">
           <Header></Header>
-          <main>
-            <Outlet />
+          <main className="p-10">
+            <div className="bg-background rounded-xl border pb-10">
+              <Outlet />
+            </div>
           </main>
         </SidebarInset>
       </SidebarProvider>
