@@ -12,7 +12,7 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmploye
         public string Image { get; set; }
         public string CompanyName { get; set; }
         public string Email { get; set; }
-        public long AccountBalance { get; set; }
+        public string AccountBalance { get; set; }
         public bool IsLock { get; set; }
     }
 }

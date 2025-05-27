@@ -41,7 +41,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     UserId = fEmployer.UserId,
                     CompanyName = fEmployer.CompanyName,
                     Image = fEmployer.User.Image,
-                    AccountBalance= fEmployer.User.AccountBalance,
+                    AccountBalance= fEmployer.User.AccountBalance+"",
                     Email= fEmployer.User.Email,
                     IsLock= fEmployer.User.IsLocked
                 });

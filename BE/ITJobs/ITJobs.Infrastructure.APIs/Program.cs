@@ -59,6 +59,19 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+
+// Cấu hình CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin() // Cho phép bất kỳ nguồn gốc nào
+               .AllowAnyHeader() // Cho phép bất kỳ header nào
+               .AllowAnyMethod(); // Cho phép bất kỳ phương thức HTTP nào
+    });
+});
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -79,6 +92,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
