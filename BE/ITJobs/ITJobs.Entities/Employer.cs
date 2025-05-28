@@ -11,7 +11,7 @@ namespace ITJobs.Entities
         public Guid UserId { get; set; }
         public AppUser User { get; set; }
         public string CompanyName { get; set; }
-        public string GeneralInfo { get; set; }
+        public List<GeneralInfoItem> GeneralInfo { get; set; }
         public string CompanyIntroduction { get; set; }
         public List<Skill> Skills { get; set; }
         public string AdditionalInfo { get; set; }
@@ -19,5 +19,16 @@ namespace ITJobs.Entities
         public List<Candidate> Employees { get; set; }  //người đang làm, đã từng làm ở công ty, dùng cho mục đích đánh giá
         public List<Candidate> BlacklistedCandidates { get; set; }
         public List<Review> Reviews { get; set; }
+
+        public string WebsiteUrl { get; set; }
+        public string CompanyType { get; set; }
     }
+
+
+    public class GeneralInfoItem
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+    }
+
 }

@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities.Exceptions;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.LockAccountEmployer;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using MediatR;
@@ -43,12 +44,27 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             }
         }
 
-        [HttpGet("")] 
+        [HttpGet("")]
         public async Task<IActionResult> GetEmployersSummarAsync([FromQuery] GetEmployersSummaryQuery query)
         {
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
 
+
+        [HttpGet("{UserId}")]
+        public async Task<IActionResult> GetEmployerByUserIdAsync([FromRoute] GetEmployerByUserIdQuery query)
+        {
+            try
+            {
+                var rs = await _mediator.Send(query);
+                return Ok(rs);
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+
+        }
     }
 }

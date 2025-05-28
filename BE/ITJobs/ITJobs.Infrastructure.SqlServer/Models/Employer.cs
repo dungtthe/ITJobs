@@ -28,12 +28,20 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public string EmployeeIds { get; set; }//những ứng viên từng, đang làm (để phục vụ cái review cty á)
         public string BlacklistedCandidateIds { get; set; }
 
+
+        [MaxLength(1000)]
+        public string WebsiteUrl { get; set; }
+
+        [MaxLength(1000)]
+        public string CompanyType { get; set; }//Startup, Agency, Product,....
+
         public Employer()
         {
             Locations = "[]";
             SkillIds = "[]";
             EmployeeIds = "[]";
             BlacklistedCandidateIds = "[]";
+            GeneralInfo = "[]";
         }
 
     }

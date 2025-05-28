@@ -12,8 +12,12 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 {
     public interface IEmployerRepository
     {
+
+        #region admin
         Task AddAsync(Guid userId, string companyname);
         Task<bool> LockAccountAsync(Guid userId);
         Task<PagedResult<EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters);
+        Task<UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId.EmployerDto> GetEmployerByUserIdForAdminAsync(Guid userId);
+        #endregion
     }
 }
