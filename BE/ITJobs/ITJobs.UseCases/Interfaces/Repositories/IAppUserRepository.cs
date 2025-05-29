@@ -10,10 +10,9 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 {
     public interface IAppUserRepository
     {
-        Task RegisterAsync(Guid id,string userName,string passWord,string email,string fullName, RoleType roleType);
-        Task <bool> IsUserNameExistsAsync(string userName);
+        Task RegisterAsync(Guid id,string passWord,string email,string fullName, RoleType roleType);
         Task <bool> IsEmailExistsAsync(string email);
-        Task<Entities.AppUser> GetUserByUserNameAsync(string userName);
+        Task<Entities.AppUser> GetUserByEmailAsync(string email);
         Task<bool> IsUserAdminExistsAsync(Guid userId);
     }
 }

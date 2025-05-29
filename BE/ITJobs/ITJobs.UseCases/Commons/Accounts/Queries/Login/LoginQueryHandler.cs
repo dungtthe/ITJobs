@@ -1,4 +1,5 @@
-﻿using ITJobs.Infrastructure.Commons.Consts;
+﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
@@ -9,10 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ITJobs.UseCases.Commons.Accounts.Queries.Login
 {
-    public class LoginQueryHandler : IRequestHandler<RequestLoginDTO, ResponeLoginDTO>
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, UserDto>
     {
         private readonly IAppUserRepository _appUserRepository;
         private readonly ITokenService _tokenService;
@@ -24,42 +26,34 @@ namespace ITJobs.UseCases.Commons.Accounts.Queries.Login
             _tokenService = tokenService;
             _httpContextInfoAccessor = httpContextInfoAccessor;
         }
-        public async Task<ResponeLoginDTO> Handle(RequestLoginDTO request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             string ipClient = _httpContextInfoAccessor.GetClientIpV4();
 
             await LoggerHelper.LogInfomationAsync(ipClient,"LoginQueryHandler", JsonConvert.SerializeObject(request));
-            var user = await _appUserRepository.GetUserByUserNameAsync(request.UserName);
+            var user = await _appUserRepository.GetUserByEmailAsync(request.Email);
             if (user == null || user.Password != Security.HashPassword(request.Password))
             {
                 string error = (user == null) ? "Sai tên tài khoản" : "Sai mật khẩu";
                 await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler ",error + JsonConvert.SerializeObject(request));
-                return new ResponeLoginDTO()
-                {
-                    HttpStatusCode = HttpStatusCode.NotFound,
-                    Message = "Tài khoản hoặc mật khẩu không đúng"
-                };
+                throw new UserNotFoundException("Tên tài khoản hoặc mật khẩu không chính xác!");
             }
 
             if (user.IsLocked)
             {
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler", "locked " + JsonConvert.SerializeObject(request));
-
-                return new ResponeLoginDTO()
-                {
-                    HttpStatusCode = HttpStatusCode.Forbidden,
-                    Message = "Tài khoản đã bị khóa"
-                };
+                throw new UserLockedException();
             }
 
             await LoggerHelper.LogInfomationAsync(ipClient, "LoginQueryHandler","login ok " + JsonConvert.SerializeObject(request));
 
-            return new ResponeLoginDTO()
+            return new UserDto()
             {
-                FullName = user.FullName,
+                Name = user.FullName,
                 Image = user.Image,
                 Token = _tokenService.GenerateJwtToken(user),
+                RoleType = user.RoleType
             };
         }
     }

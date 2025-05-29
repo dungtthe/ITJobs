@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
 {
-    public class RegisterAccountCommand:IRequest<ResponeMessage>
+    public class RegisterAccountCommand:IRequest<string>
     {
-        public string UserName { get; set; }
         public string Password { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }

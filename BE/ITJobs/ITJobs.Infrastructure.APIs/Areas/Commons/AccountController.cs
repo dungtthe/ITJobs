@@ -1,4 +1,5 @@
-﻿using ITJobs.Infrastructure.Commons.Consts;
+﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using ITJobs.UseCases.Commons.Accounts.Queries.Login;
 using MediatR;
@@ -19,14 +20,21 @@ namespace ITJobs.Infrastructure.APIs.Areas.Commons
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] RequestLoginDTO data)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginQuery data)
         {
-            var rs = await _mediator.Send(data);
-            if (rs.HttpStatusCode == HttpStatusCode.Forbidden|| rs.HttpStatusCode == HttpStatusCode.BadRequest)
+            try
             {
-                return StatusCode(rs.HttpStatusCode,new { message = rs.Message });
+                var rs = await _mediator.Send(data);
+                return Ok(rs);
             }
-            return Ok(rs);
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+            catch (UserLockedException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
     }
 }

@@ -15,16 +15,10 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         [Required]
         [MinLength(4)]
         [MaxLength(300)]
-        public string UserName { get; set; }
-
-        [Required]
-        [MinLength(4)]
-        [MaxLength(300)]
         public string Password { get; set; }
 
         [Required]
-        [MinLength(4)]
-        [MaxLength(300)]
+        [MaxLength(500)]
         public string FullName { get; set; }
 
         [Required]

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ITJobs.Infrastructure.SqlServer.Migrations
 {
     /// <inheritdoc />
-    public partial class DBVer3_IntegrateSkillToSearchFilter : Migration
+    public partial class Remove_UserName_From_AppUser_And_Maxlength_500_For_FullName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,9 +47,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),

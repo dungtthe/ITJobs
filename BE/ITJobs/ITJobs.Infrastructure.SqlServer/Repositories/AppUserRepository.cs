@@ -18,9 +18,9 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Entities.AppUser> GetUserByUserNameAsync(string userName)
+        public async Task<Entities.AppUser> GetUserByEmailAsync(string email)
         {
-            var rs = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName);
+            var rs = await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (rs == null)
             {
                 return null;
@@ -28,7 +28,6 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return new Entities.AppUser
             {
                 Id = rs.Id,
-                UserName = rs.UserName,
                 Password = rs.Password,
                 FullName = rs.FullName,
                 Email = rs.Email,
@@ -55,18 +54,12 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return await _dbContext.Users.AnyAsync(user => user.Id == userId && user.RoleType == RoleType.Admin);
         }
 
-        public async Task<bool> IsUserNameExistsAsync(string userName)
-        {
-            userName = userName.ToLower().Trim();
-            return await _dbContext.Users.AnyAsync(x => x.UserName.ToLower() == userName);
-        }
-
-        public async Task RegisterAsync(Guid id, string userName, string passWord, string email, string fullName, RoleType roleType)
+       
+        public async Task RegisterAsync(Guid id,  string passWord, string email, string fullName, RoleType roleType)
         {
             var userEntity = new Models.AppUser
             {
                 Id = id,
-                UserName = userName,
                 Password = passWord,
                 Email = email,
                 FullName = fullName,

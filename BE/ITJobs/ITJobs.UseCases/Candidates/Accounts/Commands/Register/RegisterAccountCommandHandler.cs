@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using ITJobs.Entities.Enums;
+using ITJobs.Entities.Exceptions;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Commons;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
 {
 
-    public class RegisterAccountCommandHandler : IRequestHandler<RegisterAccountCommand, ResponeMessage>
+    public class RegisterAccountCommandHandler : IRequestHandler<RegisterAccountCommand, string>
     {
         private readonly IAppUserRepository _appUserRepository;
         private readonly ICandidateRepository _candidateRepository;
@@ -35,42 +36,27 @@ namespace ITJobs.UseCases.Candidates.Accounts.Commands.Register
 
 
 
-        public async Task<ResponeMessage> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
-                await LoggerHelper.LogInfomationAsync(ipClient,"Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", JsonConvert.SerializeObject(request));
+                await LoggerHelper.LogInfomationAsync(ipClient, "Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", JsonConvert.SerializeObject(request));
 
-                if (await _appUserRepository.IsUserNameExistsAsync(request.UserName))
-                {
-                    throw new ValidationException(new List<ValidationFailure>
-                                                    {
-                                                        new ValidationFailure("UserName", "Tên tài khoản đã có người sử dụng."),
-                                                    });
-                }
 
                 if (await _appUserRepository.IsEmailExistsAsync(request.Email))
                 {
-                    throw new ValidationException(new List<ValidationFailure>
-                                                    {
-                                                        new ValidationFailure("Email", "Email đã có người sử dụng."),
-                                                    });
+                    throw new EmailAlreadyExistsException();
                 }
 
                 await _unitOfWork.BeginTransactionAsync();
                 var id = Guid.NewGuid();
-                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(request.Password), request.Email, request.FullName, RoleType.Candidate);
+                await _appUserRepository.RegisterAsync(id, Security.HashPassword(request.Password), request.Email, request.FullName, RoleType.Candidate);
                 await _candidateRepository.AddAsync(id);
                 await _unitOfWork.CommitAsync();
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", "đăng ký thành công: " + JsonConvert.SerializeObject(request));
-
-                return new ResponeMessage()
-                {
-                    HttpStatusCode = HttpStatusCode.Ok,
-                    Message = "Đăng ký tài khoản thành công"
-                };
+                return "Đăng ký tài khoản thành công";
             }
             catch
             {

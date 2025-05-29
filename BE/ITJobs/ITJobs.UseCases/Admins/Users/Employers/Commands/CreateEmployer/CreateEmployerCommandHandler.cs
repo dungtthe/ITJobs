@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using ITJobs.Entities.Enums;
+using ITJobs.Entities.Exceptions;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Commons;
@@ -24,7 +25,7 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
         private readonly IEmployerRepository _employerRepository;
         private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
         private readonly IEmailService _emailService;
-        public CreateEmployerCommandHandler(IAppUserRepository userRepository, IUnitOfWork unitOfWork, IEmployerRepository employerRepository,IHttpContextInfoAccessor httpContextInfoAccessor, IEmailService emailService)
+        public CreateEmployerCommandHandler(IAppUserRepository userRepository, IUnitOfWork unitOfWork, IEmployerRepository employerRepository, IHttpContextInfoAccessor httpContextInfoAccessor, IEmailService emailService)
         {
             _appUserRepository = userRepository;
             _unitOfWork = unitOfWork;
@@ -39,28 +40,19 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
                 await LoggerHelper.LogInfomationAsync(ipClient, "CreateEmployerCommandHandler", JsonConvert.SerializeObject(request));
 
-                if (await _appUserRepository.IsUserNameExistsAsync(request.UserName))
-                {
-                    throw new ValidationException(new List<ValidationFailure>
-                                                    {
-                                                        new ValidationFailure("UserName", "Tên tài khoản đã có người sử dụng."),
-                                                    });
-                }
-
                 if (await _appUserRepository.IsEmailExistsAsync(request.Email))
                 {
-                    throw new ValidationException(new List<ValidationFailure>
-                                                    {
-                                                        new ValidationFailure("Email", "Email đã có người sử dụng."),
-                                                    });
+                    throw new EmailAlreadyExistsException();
                 }
 
                 await _unitOfWork.BeginTransactionAsync();
                 var id = Guid.NewGuid();
                 var passGenerated = PasswordGenerator.Generate();
-                await _emailService.SendEmailAsync(request.Email, "Tài khoản nhà tuyển dụng", $"Tài khoản của bạn đã được tạo thành công. Tên tài khoản: {request.UserName} - Mật khẩu: {passGenerated}");
-                await _appUserRepository.RegisterAsync(id, request.UserName, Security.HashPassword(passGenerated), request.Email, request.FullName, RoleType.Employer);
-                await _employerRepository.AddAsync(id,request.FullName);
+
+                //nao demo gui sau
+                //await _emailService.SendEmailAsync(request.Email, "Tài khoản nhà tuyển dụng", $"Tài khoản của bạn đã được tạo thành công. Tên tài khoản: {request.Email} - Mật khẩu: {passGenerated}");
+                await _appUserRepository.RegisterAsync(id, Security.HashPassword(passGenerated), request.Email, request.CompanyName, RoleType.Employer);
+                await _employerRepository.AddAsync(id, request.CompanyName);
                 await _unitOfWork.CommitAsync();
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "Handle(RegisterAccountCommand request, CancellationToken cancellationToken)", "đăng ký thành công: " + JsonConvert.SerializeObject(request));

@@ -13,15 +13,10 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
     {
         public CreateEmployerCommandValidator()
         {
-            RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("Tên đăng nhập không được để trống")
-                .MinimumLength(4).WithMessage("Tên đăng nhập phải có ít nhất 4 ký tự")
-                .MaximumLength(300).WithMessage("Tên đăng nhập không được vượt quá 300 ký tự");
 
-            RuleFor(x => x.FullName)
-                .NotEmpty().WithMessage("Họ tên không được để trống")
-                .MinimumLength(4).WithMessage("Họ tên phải có ít nhất 4 ký tự")
-                .MaximumLength(300).WithMessage("Họ tên không được vượt quá 300 ký tự");
+            RuleFor(x => x.CompanyName)
+                .NotEmpty().WithMessage("Tên công ty không được để trống")
+                .MaximumLength(500).WithMessage("Tên công ty không được vượt quá 500 ký tự");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email không được để trống")

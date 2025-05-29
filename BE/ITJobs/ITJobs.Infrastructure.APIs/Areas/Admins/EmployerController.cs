@@ -25,8 +25,15 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
         [HttpPost("add")]
         public async Task<IActionResult> AddAsync([FromBody] CreateEmployerCommand command)
         {
-            var rs = await _mediator.Send(command);
-            return Ok(rs);
+            try
+            {
+                var rs = await _mediator.Send(command);
+                return Ok(new { id = rs });
+            }
+            catch (EmailAlreadyExistsException e)
+            {
+                return Conflict(new { message = e.Message });
+            }
         }
 
         [HttpPatch("lock/{UserId}")]

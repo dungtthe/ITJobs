@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITJobs.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(ITJobsDbContext))]
-    [Migration("20250529130145_DBVer3_IntegrateSkillToSearchFilter")]
-    partial class DBVer3_IntegrateSkillToSearchFilter
+    [Migration("20250529161813_Remove_UserName_From_AppUser_And_Maxlength_500_For_FullName")]
+    partial class Remove_UserName_From_AppUser_And_Maxlength_500_For_FullName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,8 +51,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(3)
@@ -80,11 +80,6 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("SocialMediaLinks")
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 

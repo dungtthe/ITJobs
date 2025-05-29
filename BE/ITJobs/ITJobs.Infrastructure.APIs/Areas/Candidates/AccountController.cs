@@ -1,4 +1,5 @@
-﻿using ITJobs.Infrastructure.Commons.Consts;
+﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,15 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterAccountCommand command)
         {
-            var rs = await _mediator.Send(command);
-
-            if(rs.HttpStatusCode == HttpStatusCode.Ok)
+            try
             {
-                return Ok(new { message = rs.Message});
+                var rs = await _mediator.Send(command);
+                return Ok(new { message = rs });
             }
-            return BadRequest(rs.Message);
+            catch (EmailAlreadyExistsException e)
+            {
+                return Conflict(new { message = e.Message });
+            }
         }
     }
 }

@@ -9,8 +9,7 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer
 {
     public class CreateEmployerCommand:IRequest<Guid>
     {
-        public string UserName { get; set; }
-        public string FullName { get; set; }
+        public string CompanyName { get; set; }
         public string Email { get; set; }
     }
 }

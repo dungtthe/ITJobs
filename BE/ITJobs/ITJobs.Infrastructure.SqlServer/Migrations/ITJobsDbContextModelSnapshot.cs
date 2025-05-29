@@ -48,8 +48,8 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(3)
@@ -77,11 +77,6 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("SocialMediaLinks")
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
