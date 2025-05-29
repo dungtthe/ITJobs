@@ -1,0 +1,15 @@
+﻿using ITJobs.UseCases.Helpers.Paginations;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ITJobs.UseCases.Commons.Skills.Queries.GetSkills
+{
+    public class GetSkillsQuery : BasePaginationParameters, IRequest<PagedResult<SkillDto>>
+    {
+
+    }
+}
