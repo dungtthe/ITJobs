@@ -22,7 +22,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
 
         public string GeneralInfo { get; set; }
         public string CompanyIntroduction { get; set; }
-        public string SkillIds { get; set; }
+        public string Skills { get; set; }
         public string AdditionalInfo { get; set; }
         public string Locations { get; set; }
         public string EmployeeIds { get; set; }//những ứng viên từng, đang làm (để phục vụ cái review cty á)
@@ -38,7 +38,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public Employer()
         {
             Locations = "[]";
-            SkillIds = "[]";
+            Skills = "[]";
             EmployeeIds = "[]";
             BlacklistedCandidateIds = "[]";
             GeneralInfo = "[]";

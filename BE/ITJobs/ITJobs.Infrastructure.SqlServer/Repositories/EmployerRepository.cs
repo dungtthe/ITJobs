@@ -108,7 +108,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 IsLocked = employer.User.IsLocked,
                 PhoneNumber = employer.User.PhoneNumber,
                 SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(employer.User.SocialMediaLinks),
-
+                Skills = JsonConvert.DeserializeObject<List<string>>(employer.Skills),
                 CompanyName = employer.CompanyName,
                 GeneralInfo = JsonConvert.DeserializeObject<List<Entities.GeneralInfoItem>>(employer.GeneralInfo),
                 CompanyIntroduction = employer.CompanyIntroduction,
@@ -119,24 +119,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 PostedBlogCount = await _dbContext.Posts.CountAsync(p => p.UserId == userId && p.PostType == PostType.News),
                 PostedJobCount = await _dbContext.Posts.CountAsync(p => p.UserId == userId && p.PostType == PostType.JobPosting),
             };
-
-            //skill
-            employerDto.Skills = new List<Entities.Skill>();
-            var skillIds = JsonConvert.DeserializeObject<List<Guid>>(employer.SkillIds);
-            foreach (var skillId in skillIds)
-            {
-                var fSkill = await _dbContext.Skills.FindAsync(skillId);
-                if (fSkill != null)
-                {
-                    employerDto.Skills.Add(new Entities.Skill
-                    {
-                        Id = fSkill.Id,
-                        Name = fSkill.Name,
-                        Description = fSkill.Description
-                    });
-                }
-
-            }
+         
 
             return employerDto;
         }

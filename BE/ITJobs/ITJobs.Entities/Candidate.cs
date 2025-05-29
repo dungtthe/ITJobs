@@ -11,7 +11,7 @@ namespace ITJobs.Entities
         public Guid UserId { get; set; }
         public AppUser User { get; set; }
         public string AboutMe { get; set; }
-        public List<Skill> Skills { get; set; }
+        public List<string> Skills { get; set; }
         public List<Employer> FollowedEmployers { get; set; }
         public List<CV> CVs { get; set; }  
         public List<Certification> Certifications { get; set; } 

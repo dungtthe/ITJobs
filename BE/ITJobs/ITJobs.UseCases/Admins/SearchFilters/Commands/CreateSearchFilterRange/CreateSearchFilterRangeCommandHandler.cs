@@ -44,7 +44,9 @@ namespace ITJobs.UseCases.Admins.SearchFilters.Commands.CreateSearchFilterRange
                     Min = request.Min,
                     Max = request.Max,
                 };
-
+                var order = await _searchFilterRepository.GetMaxOrderAsync() + 1;
+                searchFilterRange.ViewOrder = order;
+                searchFilterRange.IsCreatedBySystem = false;
                 await _searchFilterRepository.AddSearchFilterRangeAsync(searchFilterRange);
 
                 await _unitOfWork.CommitAsync();

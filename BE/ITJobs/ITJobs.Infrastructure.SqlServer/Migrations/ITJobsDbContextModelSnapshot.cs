@@ -182,7 +182,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("FollowedEmployerIds")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SkillIds")
+                    b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
@@ -392,7 +392,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.Property<string>("Locations")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SkillIds")
+                    b.Property<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
@@ -687,6 +687,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsCreatedBySystem")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -697,6 +700,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
                     b.Property<string>("Values")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -721,35 +727,23 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     b.ToTable("SearchFilter_Post");
                 });
 
-            modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.Skill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Skills");
-                });
-
             modelBuilder.Entity("ITJobs.Infrastructure.SqlServer.Models.SystemValue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PostingFeePerDay")
-                        .HasColumnType("int");
+                    b.Property<bool>("CanEdit")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Values")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -13,7 +13,7 @@ namespace ITJobs.Entities
         public string CompanyName { get; set; }
         public List<GeneralInfoItem> GeneralInfo { get; set; }
         public string CompanyIntroduction { get; set; }
-        public List<Skill> Skills { get; set; }
+        public List<string> Skills { get; set; }
         public string AdditionalInfo { get; set; }
         public List<Location> Locations { get; set; }
         public List<Candidate> Employees { get; set; }  //người đang làm, đã từng làm ở công ty, dùng cho mục đích đánh giá

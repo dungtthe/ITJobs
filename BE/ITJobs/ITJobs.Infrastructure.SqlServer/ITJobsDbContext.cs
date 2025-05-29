@@ -30,7 +30,6 @@ namespace ITJobs.Infrastructure.SqlServer
         public DbSet<Review> Reviews { get; set; }
         public DbSet<SearchFilter> SearchFilters { get; set; }
         public DbSet<SearchFilter_Post> SearchFilter_Posts { get; set; }
-        public DbSet<Skill> Skills { get; set; }
         public DbSet<SystemValue> SystemValues { get; set; }
         public DbSet<WorkExperience> WorkExperiences { get; set; }
 

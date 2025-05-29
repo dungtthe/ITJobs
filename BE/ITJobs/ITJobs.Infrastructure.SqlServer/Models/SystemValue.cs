@@ -10,6 +10,9 @@ namespace ITJobs.Infrastructure.SqlServer.Models
     [Table("SystemValues")]
     public class SystemValue:BaseModel
     {
-        public int PostingFeePerDay { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Values { get; set; }
+        public bool CanEdit { get; set; }
     }
 }

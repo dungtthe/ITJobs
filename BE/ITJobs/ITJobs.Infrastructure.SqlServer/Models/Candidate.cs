@@ -18,12 +18,12 @@ namespace ITJobs.Infrastructure.SqlServer.Models
 
         [MaxLength(2000)]
         public string AboutMe { get; set; }
-        public string SkillIds { get; set; }
+        public string Skills { get; set; }
         public string FollowedEmployerIds { get; set; }
 
         public Candidate()
         {
-            SkillIds = "[]";
+            Skills = "[]";
             FollowedEmployerIds = "[]";
         }
     }

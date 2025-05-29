@@ -22,7 +22,7 @@ namespace ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId
         public string CompanyName { get; set; }
         public List<Entities.GeneralInfoItem> GeneralInfo { get; set; }
         public string CompanyIntroduction { get; set; }
-        public List<Entities.Skill> Skills { get; set; }
+        public List<string> Skills { get; set; }
         public string AdditionalInfo { get; set; }
         public List<Entities.Location> Locations { get; set; }
         public string WebsiteUrl { get; set; }

@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Commons.Skills.Queries.GetSuggestedSkillsSummary
+namespace ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills
 {
-    public class GetSuggestedSkillsSummaryQuery : BasePaginationParameters, IRequest<PagedResult<SkillSummaryDto>>
+    public class GetSuggestedSkillsQuery :IRequest<List<string>>
     {
-
+        public int Count { get; set; }
     }
 }

@@ -44,7 +44,9 @@ namespace ITJobs.UseCases.Admins.SearchFilters.Commands.CreateSearchFilterCheckB
                     Name = request.Name,
                     Values = request.Values,
                 };
-
+                var order = await _searchFilterRepository.GetMaxOrderAsync()+1;
+                searchFilterCheckBox.IsCreatedBySystem = false;
+                searchFilterCheckBox.ViewOrder = order;
                 await _searchFilterRepository.AddSearchFilterCheckboxOrComboboxAsync(searchFilterCheckBox);
 
                 await _unitOfWork.CommitAsync();

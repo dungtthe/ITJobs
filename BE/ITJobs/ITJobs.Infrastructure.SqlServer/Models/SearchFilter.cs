@@ -17,5 +17,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public string Name { get; set; }
         public SearchFilterType SearchFilterType { get; set; }
         public string Values { get; set; }
+        public int ViewOrder { get; set; }
+        public bool IsCreatedBySystem { get; set; }//true la khong duoc xoa
     }
 }

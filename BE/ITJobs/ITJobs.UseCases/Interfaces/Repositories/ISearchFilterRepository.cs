@@ -1,4 +1,6 @@
 ﻿using ITJobs.Entities;
+using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills;
+using ITJobs.UseCases.Helpers.Paginations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     {
         Task AddSearchFilterCheckboxOrComboboxAsync(SearchFilter searchFilter);
         Task AddSearchFilterRangeAsync(Entities.SearchFilterRange searchFilterRange);
+        Task<int> GetMaxOrderAsync();
+        Task<List<string>> GetSuggestedSkillsForCommonAsync(GetSuggestedSkillsQuery request);
     }
 }

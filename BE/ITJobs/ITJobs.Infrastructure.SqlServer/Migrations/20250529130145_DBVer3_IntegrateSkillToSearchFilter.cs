@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ITJobs.Infrastructure.SqlServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDbVer1 : Migration
+    public partial class DBVer3_IntegrateSkillToSearchFilter : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     SearchFilterType = table.Column<byte>(type: "tinyint", nullable: false),
-                    Values = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Values = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ViewOrder = table.Column<int>(type: "int", nullable: false),
+                    IsCreatedBySystem = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,24 +28,14 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SystemValues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PostingFeePerDay = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Values = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CanEdit = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,7 +73,7 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AboutMe = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    SkillIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FollowedEmployerIds = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -145,11 +137,13 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                     CompanyName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     GeneralInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyIntroduction = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SkillIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdditionalInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Locations = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmployeeIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BlacklistedCandidateIds = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    BlacklistedCandidateIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WebsiteUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    CompanyType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -190,6 +184,9 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ShortContent = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -701,9 +698,6 @@ namespace ITJobs.Infrastructure.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "SearchFilter_Post");
-
-            migrationBuilder.DropTable(
-                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "SystemValues");
