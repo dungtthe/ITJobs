@@ -1,5 +1,4 @@
 ﻿using ITJobs.Infrastructure.Commons.Helpers;
-using ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
 using ITJobs.UseCases.Interfaces.UnitOfWork;

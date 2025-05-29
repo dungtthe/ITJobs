@@ -1,7 +1,6 @@
 ﻿using ITJobs.Entities.Exceptions;
 using ITJobs.UseCases.Admins.Users.Candidates.Commands.LockAccountCandidate;
-using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary;
-using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

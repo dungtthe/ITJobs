@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary
+namespace ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary
 {
     public class CandidateSummaryDto
     {

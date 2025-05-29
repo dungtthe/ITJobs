@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary
+namespace ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary
 {
     public class GetEmployersSummaryQuery : BasePaginationParameters, IRequest<PagedResult<EmployerSummaryDto>>
     {

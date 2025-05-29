@@ -1,4 +1,4 @@
-﻿using ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary;
+﻿using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

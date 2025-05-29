@@ -1,8 +1,7 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.Infrastructure.SqlServer.Models;
-using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary;
-using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

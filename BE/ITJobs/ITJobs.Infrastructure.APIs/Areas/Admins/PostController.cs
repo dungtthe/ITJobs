@@ -1,6 +1,6 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.UseCases.Admins.Posts.Commands.CreateBlogPost;
-using ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary;
+using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,5 +1,5 @@
 ﻿using ITJobs.Entities;
-using ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary;
+using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

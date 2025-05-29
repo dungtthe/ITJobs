@@ -1,7 +1,7 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
-using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidates.GetCandidateSummary;
+﻿using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using ITJobs.Infrastructure.Commons.Helpers;
-using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
 using MediatR;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Admins.Posts.Queries.GetPosts.GetBlogPosts.GetBlogPostsSummary
+namespace ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary
 {
     public class GetBlogPostsSummaryQueryHandler : IRequestHandler<GetBlogPostsSummaryQuery, List<BlogPostSummaryDto>>
     {

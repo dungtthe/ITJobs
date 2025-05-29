@@ -1,5 +1,5 @@
 ﻿using ITJobs.Entities;
-using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployers.GetEmployersSummary;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
 using ITJobs.UseCases.Helpers.Paginations;
 using System;
 using System.Collections.Generic;
