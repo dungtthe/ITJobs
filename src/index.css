@@ -136,6 +136,38 @@
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
 
+
+.user-theme {
+  --radius: 0.5rem;
+  --background: oklch(0.9761 0 0);
+  --background-secondary: oklch(1 0 0);
+  --foreground: oklch(0.1822 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.1822 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.1822 0 0);
+  --primary: oklch(0.6036 0.2342 24.84);
+  --primary-foreground: oklch(1 0 0);
+
+  /* header,footer dung cai nay */
+  --secondary: oklch(0.1822 0 0);
+  --secondary-foreground: oklch(1 0 0);
+
+
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.7252 0 0);
+  --accent: oklch(0.5376 0.2 27.29);
+  --accent-foreground: oklch(0.967 0.001 286.375);
+  --destructive: oklch(0.6 0.28 15);
+  --success: oklch(0.65 0.18 140);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.5376 0.2 27.29);
+
+  @apply bg-background text-foreground;
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

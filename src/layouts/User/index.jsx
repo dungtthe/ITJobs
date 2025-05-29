@@ -5,11 +5,13 @@ import Footer from "./Footer";
 export default function Index() {
   return (
     <>
-      <Header />
-      <div>
-        <Outlet />
+      <div className="user-theme">
+        <Header />
+        <div>
+          <Outlet />
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }
