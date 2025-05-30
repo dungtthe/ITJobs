@@ -1,23 +1,12 @@
-import React from "react";
-import Header from "./Header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarAdmin } from "@/layouts/admin/SidebarAdmin";
 import { Outlet } from "react-router-dom";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarInset } from "@/components/ui/sidebar";
+import Header from "./Header";
 export default function Index() {
   return (
     <>
       <SidebarProvider>
-        <AppSidebar />
+        <SidebarAdmin />
         <SidebarInset className="bg-background-secondary">
           <Header></Header>
           <main className="p-10">
