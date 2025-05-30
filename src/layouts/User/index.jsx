@@ -7,7 +7,7 @@ export default function Index() {
     <>
       <div className="user-theme">
         <Header />
-        <div>
+        <div className="container mx-auto px-15">
           <Outlet />
         </div>
         <Footer />

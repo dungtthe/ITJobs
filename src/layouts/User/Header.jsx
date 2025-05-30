@@ -1,42 +1,27 @@
-import React from "react";
-import "./style.css";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
-import { TbFileCv } from "react-icons/tb";
-import { MdHistory } from "react-icons/md";
-import { IoPersonAddOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { MdHistory } from "react-icons/md";
+import { TbFileCv } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import "./style.css";
+import Logo from "@/components/my-components/users/Logo";
 export default function Header() {
   return (
     <>
       <header className="main-gradient py-3.5">
         <div className="flex justify-between items-center px-25">
           {/* logo */}
-          <h1 className="flex items-center justify-start hover:cursor-pointer">
-            <div className="flex items-center">
-              <span className="relative inline-block">
-                <div className="bg-primary w-8 h-10 rounded-full transform rotate-14 flex items-center justify-center">
-                  <span className="text-secondary-foreground text-3xl font-bold transform -rotate-14">
-                    it
-                  </span>
-                </div>
-              </span>
-              <span className="ml-1 font-bold text-secondary-foreground text-3xl">
-                Jobs
-              </span>
-            </div>
-          </h1>
+          <Logo as="h1" size="medium" />
           {/* login and avatar */}
           <div className="flex justify-end ">
             <DropdownMenu>

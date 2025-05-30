@@ -2,7 +2,7 @@ import React from "react";
 import { FiFacebook } from "react-icons/fi";
 import { RiYoutubeLine } from "react-icons/ri";
 import { SiInstagram } from "react-icons/si";
-
+import Logo from "@/components/my-components/users/Logo";
 export default function Footer() {
   return (
     <>
@@ -11,20 +11,7 @@ export default function Footer() {
           <div className="flex justify-between items-start text-secondary-foreground/60 gap-8">
             {/* logo and social*/}
             <div>
-              <div className="flex items-center justify-start hover:cursor-pointer">
-                <div className="flex items-center">
-                  <span className="relative inline-block">
-                    <div className="bg-primary w-11 h-14 rounded-full transform rotate-14 flex items-center justify-center">
-                      <span className="text-secondary-foreground text-5xl font-bold transform -rotate-14">
-                        it
-                      </span>
-                    </div>
-                  </span>
-                  <span className="ml-1 font-bold text-secondary-foreground text-5xl">
-                    Jobs
-                  </span>
-                </div>
-              </div>
+              <Logo as="div" size="large" />
               <p className="text-secondary-foreground pt-1.5">Job ít mà chất</p>
               <div>
                 <div className="flex items-center gap-4 mt-4">

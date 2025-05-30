@@ -11,20 +11,6 @@
   /* font */
   --font-inter: Inter;
   /* color */
-  /* admin */
-
-  /* user */
-  /* nao định nghĩa lại cho giống phong cách của shacdn */
-  /* --color-u-white: #FFFFFF;
-  --color-u-black-one: #121212;
-  --color-u-black-two: #414042;
-  --color-u-grey-one: #A6A6A6;
-  --color-u-grey-two: #F0F0F0;
-  --color-u-grey-three: #F7F7F7;
-  --color-u-red-one: #ED1B2F;
-  --color-u-green-one: #5EB305;
-  --color-u-blue-one: #0E2EED; */
-
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -62,6 +48,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-mlink: var(--mlink);
 }
 
 :root {
@@ -163,6 +150,9 @@
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.5376 0.2 27.29);
+
+
+  --mlink: oklch(0.488 0.243 264.376);
 
   @apply bg-background text-foreground;
 }

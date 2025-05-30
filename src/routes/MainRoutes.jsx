@@ -9,6 +9,7 @@ import Admin_CandidateManagements from "@/features/admin/users/candidate-managem
 //user
 import User_Layout from "@/layouts/user/Index.jsx";
 import User_Home from "@/features/user/views/Index.jsx";
+import Login from "@/features/auth/views/Login.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ export default function MainRoutes() {
         {/* USER*/}
         <Route path="/" element={<User_Layout />}>
           <Route index element={<User_Home />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
