@@ -1,11 +1,13 @@
+import { getJwtToken } from "@/stores/authStore";
+
 const BE_ENDPOINT = "https://localhost:7049";
 const HEADERS = {
   "Content-Type": "application/json",
   accept: "application/json",
 };
 
-const GetHeaders = () => {
-  const token = localStorage.getItem("jwtToken");
+const GetHeaderWithToken = () => {
+  const token = getJwtToken();
   if (token === null) {
     return HEADERS;
   }
@@ -23,7 +25,7 @@ export const ApiGetRequest = async (
   onException
 ) => {
   try {
-    const headers = isUseJwt ? GetHeaders() : HEADERS;
+    const headers = isUseJwt ? GetHeaderWithToken() : HEADERS;
     const res = await fetch(`${BE_ENDPOINT}${uri}`, {
       method: "GET",
       headers,
@@ -48,7 +50,7 @@ export const ApiPostRequest = async (
   onException
 ) => {
   try {
-    const headers = isUseJwt ? GetHeaders() : HEADERS;
+    const headers = isUseJwt ? GetHeaderWithToken() : HEADERS;
     const res = await fetch(`${BE_ENDPOINT}${uri}`, {
       method: "POST",
       headers,

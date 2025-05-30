@@ -2,7 +2,7 @@ import Logo from "@/components/my-components/users/Logo";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { TiTick } from "react-icons/ti";
 import { login } from "../usecases/login";
@@ -10,7 +10,16 @@ import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
 } from "@/components/my-components/common/MyToast";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/stores/authStore";
 export default function Login() {
+  const setUser = useUserStore((state) => state.setUser);
+  const clearUser = useUserStore((state) => state.clearUser);
+  useEffect(() => {
+    clearUser();
+  }, []);
+  const navigate = useNavigate();
+
   // state check required
   const [notiRequiredEmail, setNotiRequiredEmail] = useState("");
   const [notiRequiredPass, setNotiRequiredPass] = useState("");
@@ -62,6 +71,16 @@ export default function Login() {
             "bottom-right"
           );
         }, 1000);
+
+        setUser({ name: sus.name, image: sus.image });
+
+        if (sus.roleType === 0) {
+          navigate("/admin");
+        } else if (sus.roleType === 1) {
+          navigate("/employer");
+        } else {
+          navigate("/");
+        }
       },
       (fail) => {
         showErrorToastHasTitle(

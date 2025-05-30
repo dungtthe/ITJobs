@@ -1,7 +1,7 @@
 import Header from "@/components/my-components/common/admin-employer/Header";
 import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
-export default function HeaderAdmin() {
+export default function HeaderEmployer() {
   const user = useUserStore((state) => state.user);
 
   let name = null;

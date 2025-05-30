@@ -6,6 +6,11 @@ import Admin_Layout from "@/layouts/admin/Index.jsx";
 import Admin_Home from "@/features/admin/dashboard/views/Index.jsx";
 import Admin_EmployerManagements from "@/features/admin/users/employer-managements/views/Index.jsx";
 import Admin_CandidateManagements from "@/features/admin/users/candidate-managements/views/Index.jsx";
+
+//employer
+import Employer_Layout from "@/layouts/employer/Index.jsx";
+import Employer_Home from "@/features/employer/dashboard/views/Index.jsx";
+
 //user
 import User_Layout from "@/layouts/user/Index.jsx";
 import User_Home from "@/features/user/views/Index.jsx";
@@ -20,6 +25,10 @@ export default function MainRoutes() {
           <Route index element={<Admin_Home />} />
           <Route path="employer" element={<Admin_EmployerManagements />} />
           <Route path="candidate" element={<Admin_CandidateManagements />} />
+        </Route>
+        {/* EMPLOYER */}
+        <Route path="/employer" element={<Employer_Layout />}>
+          <Route index element={<Employer_Home />} />
         </Route>
         {/* USER*/}
         <Route path="/" element={<User_Layout />}>
