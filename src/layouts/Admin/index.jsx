@@ -1,7 +1,7 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarAdmin } from "@/layouts/admin/SidebarAdmin";
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import Header from "./HeaderAdmin";
 export default function Index() {
   return (
     <>
