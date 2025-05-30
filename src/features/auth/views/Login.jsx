@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { TiTick } from "react-icons/ti";
-
+import { login } from "../usecases/login";
+import {
+  showErrorToastHasTitle,
+  showSuccessToastHasTitle,
+} from "@/components/my-components/common/MyToast";
 export default function Login() {
   // state check required
   const [notiRequiredEmail, setNotiRequiredEmail] = useState("");
@@ -16,7 +20,11 @@ export default function Login() {
   const inputPassRef = useRef(null);
 
   const handleLoginWithGoogle = () => {
-    alert("hihi");
+    showErrorToastHasTitle(
+      "Đăng nhập thất bại",
+      "Sắp ra mắt tính năng đăng nhập bằng Google, vui lòng thử lại sau",
+      "top-center"
+    );
   };
 
   const handleSubmit = () => {
@@ -24,17 +32,53 @@ export default function Login() {
     const pass = inputPassRef.current.value;
     console.log(inputEmailRef.current.value);
     console.log(inputPassRef.current.value);
-
+    let flag = true;
     if (email === "" || email === null) {
       setNotiRequiredEmail("required");
+      flag = false;
     } else {
       setNotiRequiredEmail("");
     }
     if (pass === "" || pass === null) {
       setNotiRequiredPass("required");
+      flag = false;
     } else {
       setNotiRequiredPass("");
     }
+    if (!flag) {
+      return;
+    }
+
+    login(
+      inputEmailRef.current.value,
+      inputPassRef.current.value,
+      (sus) => {
+        console.log("Login success:", sus);
+
+        setTimeout(() => {
+          showSuccessToastHasTitle(
+            "Đăng nhập thành công",
+            `Xin chào ${sus.name}, chúc bạn tìm được công việc phù hợp với mình!`,
+            "bottom-right"
+          );
+        }, 1000);
+      },
+      (fail) => {
+        showErrorToastHasTitle(
+          "Đăng nhập thất bại",
+          fail.message,
+          "top-center"
+        );
+      },
+      (exception) => {
+        showErrorToastHasTitle(
+          "Đăng nhập thất bại",
+          "Hệ thống đang có sự cố, vui lòng thử lại sau",
+          "top-center"
+        );
+        console.error("Exception during login:", exception);
+      }
+    );
   };
 
   return (
@@ -124,7 +168,7 @@ export default function Login() {
             {/* submit */}
             <Button
               onClick={handleSubmit}
-              className="w-full py-5.5 mt-5 hover:cursor-pointer"
+              className="w-full py-5.5 mt-5 hover:cursor-pointer text-lg"
             >
               Đăng nhập
             </Button>

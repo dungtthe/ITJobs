@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import { Toaster } from "@/components/ui/sonner";
 export default function Index() {
   return (
     <>
@@ -11,6 +12,7 @@ export default function Index() {
           <Outlet />
         </div>
         <Footer />
+        <Toaster></Toaster>
       </div>
     </>
   );

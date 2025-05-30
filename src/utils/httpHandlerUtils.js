@@ -38,3 +38,29 @@ export const ApiGetRequest = async (
     onException(error);
   }
 };
+
+export const ApiPostRequest = async (
+  uri,
+  body,
+  isUseJwt,
+  onSuccess,
+  onFail,
+  onException
+) => {
+  try {
+    const headers = isUseJwt ? GetHeaders() : HEADERS;
+    const res = await fetch(`${BE_ENDPOINT}${uri}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      onSuccess(data);
+    } else {
+      onFail(data);
+    }
+  } catch (error) {
+    onException(error);
+  }
+};
