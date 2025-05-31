@@ -20,7 +20,7 @@ export default function HeaderEmployer() {
       <Header
         name={name}
         avatartLink={image}
-        profileLink="/admin/profile"
+        profileLink="/employer/profile"
       ></Header>
     </>
   );

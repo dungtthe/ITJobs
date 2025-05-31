@@ -10,6 +10,7 @@ import Admin_CandidateManagements from "@/features/admin/users/candidate-managem
 //employer
 import Employer_Layout from "@/layouts/employer/Index.jsx";
 import Employer_Home from "@/features/employer/dashboard/views/Index.jsx";
+import Employer_CompanyProfile from "@/features/employer/company-profile/views/Index.jsx";
 
 //user
 import User_Layout from "@/layouts/user/Index.jsx";
@@ -29,6 +30,7 @@ export default function MainRoutes() {
         {/* EMPLOYER */}
         <Route path="/employer" element={<Employer_Layout />}>
           <Route index element={<Employer_Home />} />
+          <Route path="profile" element={<Employer_CompanyProfile />} />
         </Route>
         {/* USER*/}
         <Route path="/" element={<User_Layout />}>

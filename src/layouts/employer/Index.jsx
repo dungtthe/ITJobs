@@ -10,7 +10,7 @@ export default function Index() {
         <SidebarInset className="bg-background-secondary">
           <Header></Header>
           <main className="p-10">
-            <div className="bg-background rounded-xl border pb-10">
+            <div>
               <Outlet />
             </div>
           </main>

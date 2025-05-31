@@ -11,7 +11,7 @@ import {
   showSuccessToastHasTitle,
 } from "@/components/my-components/common/MyToast";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "@/stores/authStore";
+import { useUserStore, setJwtToken } from "@/stores/authStore";
 export default function Login() {
   const setUser = useUserStore((state) => state.setUser);
   const clearUser = useUserStore((state) => state.clearUser);
@@ -71,7 +71,7 @@ export default function Login() {
             "bottom-right"
           );
         }, 1000);
-
+        setJwtToken(sus.token);
         setUser({ name: sus.name, image: sus.image });
 
         if (sus.roleType === 0) {

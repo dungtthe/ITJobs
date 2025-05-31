@@ -10,9 +10,16 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUserStore, removeJwtToken } from "@/stores/authStore";
 export default function Header({ name, avatartLink, profileLink }) {
+  const clearUser = useUserStore((state) => state.clearUser);
+  const navigate = useNavigate();
   const handleLogout = () => {
-    alert("hihi logout");
+    //tam thoi nhu nay da
+    navigate("/login");
+    clearUser();
+    removeJwtToken();
   };
   return (
     <header className="bg-background border-b border-border sticky top-0 z-50">
