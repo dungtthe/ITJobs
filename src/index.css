@@ -171,3 +171,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+.tinymce-content {
+  * {
+    all: revert;
+    font-family: var(--font-inter), sans-serif !important;
+  }
+
+  p,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  div {
+    line-height: 1.5;
+    font-family: var(--font-inter), sans-serif !important;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 0.7em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+}
