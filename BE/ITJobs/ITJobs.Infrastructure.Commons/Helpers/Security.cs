@@ -13,6 +13,15 @@ namespace ITJobs.Infrastructure.Commons.Helpers
         {
             return password; 
         }
-       
+
+        public static string SanitizeHtmlContent(string content)
+        {
+            return content;
+        }
+        public static string DeSanitizeHtmlContent(string content)
+        {
+            return content;
+        }
+
     }
 }

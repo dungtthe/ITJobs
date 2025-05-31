@@ -174,5 +174,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
             return true;
         }
+
+        public async Task<bool> UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction)
+        {
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e => e.UserId == userId);
+            if (fEmployer == null)
+            {
+                return false;
+            }
+            fEmployer.CompanyIntroduction = companyIntroduction;
+            _dbContext.Employers.Update(fEmployer);
+            return true;
+        }
     }
 }

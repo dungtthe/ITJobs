@@ -36,6 +36,7 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile
                     throw new UserNotFoundException("Không tìm thấy thông tin của công ty. Vui lòng liên hệ admin");
                 }
                 await LoggerHelper.LogInfomationAsync(ipClient, "GetCompanyProfileQueryHandler", "thành công: " + JsonConvert.SerializeObject(request));
+                companyProfile.CompanyIntroduction = Security.DeSanitizeHtmlContent(companyProfile.CompanyIntroduction);
                 return companyProfile;
             }
             catch

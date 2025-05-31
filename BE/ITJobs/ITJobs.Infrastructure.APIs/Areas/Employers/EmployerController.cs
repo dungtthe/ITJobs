@@ -54,6 +54,24 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
                 return NotFound(new { message = e.Message });
             }
         }
-
+        [HttpPatch("profile/update/company-introduction")]
+        public async Task<IActionResult> UpdateCompanyIntroductionAsync([FromBody] UseCases.Employers.CompanyProfiles.Commands.UpdateCompanyIntroduction.UpdateCompanyIntroductionCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            try
+            {
+                var rs = await _mediator.Send(command);
+                return Ok(new { companyIntroduction = rs });
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+        }
     }
 }
