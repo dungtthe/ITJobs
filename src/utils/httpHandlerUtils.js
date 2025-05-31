@@ -66,3 +66,55 @@ export const ApiPostRequest = async (
     onException(error);
   }
 };
+
+export const ApiPutRequest = async (
+  uri,
+  body,
+  isUseJwt,
+  onSuccess,
+  onFail,
+  onException
+) => {
+  try {
+    const headers = isUseJwt ? GetHeaderWithToken() : HEADERS;
+    const res = await fetch(`${BE_ENDPOINT}${uri}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      onSuccess(data);
+    } else {
+      onFail(data);
+    }
+  } catch (error) {
+    onException(error);
+  }
+};
+
+export const ApiPatchRequest = async (
+  uri,
+  body,
+  isUseJwt,
+  onSuccess,
+  onFail,
+  onException
+) => {
+  try {
+    const headers = isUseJwt ? GetHeaderWithToken() : HEADERS;
+    const res = await fetch(`${BE_ENDPOINT}${uri}`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      onSuccess(data);
+    } else {
+      onFail(data);
+    }
+  } catch (error) {
+    onException(error);
+  }
+};

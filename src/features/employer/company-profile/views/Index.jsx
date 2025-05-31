@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GeneralInfo } from "@/components/my-components/common/employer-profile/GeneralInfo";
-import { getCompanyProfile } from "@/features/employer/company-profile/usecases/getCompanyProfile";
+import { getCompanyProfile } from "@/features/employer/company-profile/usecases/queries/getCompanyProfile";
 export default function Index() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

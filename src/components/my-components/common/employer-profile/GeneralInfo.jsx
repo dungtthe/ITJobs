@@ -5,6 +5,11 @@ import { IconDelete } from "@/components/my-components/common/icon/IconDelete";
 import { ButtonSuccess } from "@/components/my-components/common/button/ButtonSuccess";
 import { ButtonDestructive } from "@/components/my-components/common/button/ButtonDestructive";
 import { Input } from "@/components/ui/input";
+import {
+  showErrorToastHasTitle,
+  showSuccessToastHasTitle,
+} from "@/components/my-components/common/MyToast";
+import { updateGeneralInfos } from "@/features/employer/company-profile/usecases/commands/updateGeneralInfos";
 export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
   const defaultDataGeneralInfo = generalInfo.map((item) => ({
     ...item,
@@ -26,7 +31,57 @@ export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
     setIsEnableEdit(false);
     setGeneralInfoData(defaultDataGeneralInfo);
   };
-  const handleLuu = () => {};
+  const handleLuu = () => {
+    if (generalInfoData.length === 0) {
+      console.log("vao day");
+      showErrorToastHasTitle(
+        "Thất bại",
+        "Phải ít nhất một thông tin chung",
+        "top-center"
+      );
+      return;
+    }
+
+    generalInfoData.map((item) => {
+      console.log(item);
+      if (item.title === "" || item.description === "") {
+        showErrorToastHasTitle(
+          "Thất bại",
+          "Tiêu đề và mô tả không được để trống",
+          "top-center"
+        );
+        return;
+      }
+    });
+
+    const data = generalInfoData.map((item) => ({
+      title: item.title,
+      description: item.description,
+    }));
+    updateGeneralInfos(
+      data,
+      () => {
+        showSuccessToastHasTitle(
+          "Thành công",
+          "Cập nhật thông tin chung",
+          "top-center"
+        );
+        setIsEnableEdit(false);
+      },
+      (error) => {
+        console.error("Error:", error);
+        showErrorToastHasTitle("Thất bại", error.message, "top-center");
+      },
+      (exception) => {
+        console.error("Exception in handleLuu:", exception);
+        showErrorToastHasTitle(
+          "Lỗi",
+          "Đã xảy ra lỗi không mong muốn",
+          "top-center"
+        );
+      }
+    );
+  };
   const handleAdd = () => {
     const newItem = {
       id: crypto.randomUUID(),
@@ -45,6 +100,16 @@ export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
       }
     });
     setGeneralInfoData(dataNew);
+  };
+
+  const handleInputChange = (id, field, value) => {
+    const updatedData = generalInfoData.map((item) => {
+      if (item.id === id) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+    setGeneralInfoData(updatedData);
   };
 
   return (
@@ -77,9 +142,21 @@ export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
                     <>
                       <Input
                         className="text-sm text-foreground/50 mb-1"
-                        defaultValue={item.title}
+                        value={item.title}
+                        onChange={(e) =>
+                          handleInputChange(item.id, "title", e.target.value)
+                        }
                       ></Input>
-                      <Input defaultValue={item.description}></Input>
+                      <Input
+                        value={item.description}
+                        onChange={(e) =>
+                          handleInputChange(
+                            item.id,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                      ></Input>
                     </>
                   ) : (
                     <>

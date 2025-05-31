@@ -2,6 +2,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarEmployer } from "@/layouts/employer/SidebarEmployer";
 import { Outlet } from "react-router-dom";
 import Header from "./HeaderEmployer";
+import { Toaster } from "@/components/ui/sonner";
 export default function Index() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function Index() {
           </main>
         </SidebarInset>
       </SidebarProvider>
+      <Toaster></Toaster>
     </>
   );
 }
