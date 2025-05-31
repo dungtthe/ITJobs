@@ -2,6 +2,7 @@
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
+using ITJobs.UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -122,6 +123,41 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
          
 
             return employerDto;
+        }
+
+        public async Task<CompanyProfileDto> GetCompanyProfileAsync(Guid userId)
+        {
+            var fEmployer = await _dbContext.Employers
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (fEmployer == null)
+            {
+                return null;
+            }
+
+
+            //user
+            var companyProfileDto = new CompanyProfileDto
+            {
+                UserId = fEmployer.UserId,
+                Email = fEmployer.User.Email,
+                PhoneNumber = fEmployer.User.PhoneNumber,
+                Image = fEmployer.User.Image,
+                AccountBalance = fEmployer.User.AccountBalance.ToString(),
+                SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fEmployer.User.SocialMediaLinks),
+
+                //employer
+                CompanyName = fEmployer.CompanyName,
+                GeneralInfo = JsonConvert.DeserializeObject<List<Entities.GeneralInfoItem>>(fEmployer.GeneralInfo),
+                CompanyIntroduction = fEmployer.CompanyIntroduction,
+                Skills = JsonConvert.DeserializeObject<List<string>>(fEmployer.Skills),
+                AdditionalInfo = fEmployer.AdditionalInfo,
+                Locations = JsonConvert.DeserializeObject<List<Entities.Location>>(fEmployer.Locations),
+                WebsiteUrl = fEmployer.WebsiteUrl,
+                CompanyType = fEmployer.CompanyType
+            };
+            return companyProfileDto;
         }
     }
 }
