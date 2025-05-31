@@ -37,6 +37,7 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos
                 if (!result)
                 {
                     await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật thông tin chung thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
+                    throw new UserNotFoundException();
                 }
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật thông tin chung thành công: " + JsonConvert.SerializeObject(request));
                 await _unitOfWork.CommitAsync();
