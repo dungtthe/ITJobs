@@ -1,4 +1,5 @@
-﻿using ITJobs.Infrastructure.APIs.MyExtensions;
+﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.APIs.MyExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,5 +32,28 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
+
+        [HttpPatch("profile/update/general-info")]
+        public async Task<IActionResult> UpdateGeneralInfoAsync([FromBody] UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos.UpdateGeneralInfosCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+
+            try
+            {
+
+                var rs = await _mediator.Send(command);
+                return Ok(new { generalInfos = rs });
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+        }
+
     }
 }

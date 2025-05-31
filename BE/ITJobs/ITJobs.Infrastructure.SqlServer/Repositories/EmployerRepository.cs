@@ -2,6 +2,7 @@
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
+using ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos;
 using ITJobs.UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
@@ -158,6 +159,20 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 CompanyType = fEmployer.CompanyType
             };
             return companyProfileDto;
+        }
+
+        public async Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos)
+        {
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e => e.UserId == userId);
+            if (fEmployer == null)
+            {
+                return false;
+            }
+
+            fEmployer.GeneralInfo = JsonConvert.SerializeObject(generalInfos);
+             _dbContext.Employers.Update(fEmployer);
+
+            return true;
         }
     }
 }

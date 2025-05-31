@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
+using ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos;
 using ITJobs.UseCases.Helpers.Paginations;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 
         #region employer
         Task<UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile.CompanyProfileDto> GetCompanyProfileAsync(Guid userId);
+        Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos);
         #endregion
     }
 }
