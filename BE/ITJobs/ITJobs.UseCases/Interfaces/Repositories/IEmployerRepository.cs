@@ -14,6 +14,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     public interface IEmployerRepository
     {
 
+        Task<bool> EmployerExistsAsync(Guid userId);
+
         #region admin
         Task AddAsync(Guid userId, string companyname);
         Task<bool> LockAccountAsync(Guid userId);
@@ -23,10 +25,10 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 
         #region employer
         Task<UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile.CompanyProfileDto> GetCompanyProfileAsync(Guid userId);
-        Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos);
-        Task<bool> UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction);
-        Task<bool> UpdateSkillAsync(Guid userId, List<string> skills);
-        Task<bool> UpdateLocationsAsync(Guid userId, List<Location> locations);
+        Task UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos);
+        Task UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction);
+        Task UpdateSkillAsync(Guid userId, List<string> skills);
+        Task UpdateLocationsAsync(Guid userId, List<Location> locations);
         #endregion
     }
 }

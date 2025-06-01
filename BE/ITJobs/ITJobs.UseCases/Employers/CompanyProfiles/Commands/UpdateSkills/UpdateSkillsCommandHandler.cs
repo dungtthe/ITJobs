@@ -47,14 +47,17 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateSkills
                         throw new InvalidSkillException($"Kỹ năng '{skillRequest}' không tồn tại trong hệ thống.");
                     }
                 }
-                await _unitOfWork.BeginTransactionAsync();
-                var result = await _employerRepository.UpdateSkillAsync(request.UserId.Value, request.Skills);
-                
-                if(!result)
+
+                var checkExistEmployer = await _employerRepository.EmployerExistsAsync(request.UserId.Value);
+                if (!checkExistEmployer)
                 {
-                    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
+                    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateCompanyIntroductionCommandHandler", "Cập nhật giới thiệu công ty thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
                     throw new UserNotFoundException();
                 }
+
+                await _unitOfWork.BeginTransactionAsync();
+                await _employerRepository.UpdateSkillAsync(request.UserId.Value, request.Skills);
+               
                 await _unitOfWork.CommitAsync();
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thành công: " + JsonConvert.SerializeObject(request));

@@ -31,13 +31,16 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateLocations
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateLocationsCommandHandler", JsonConvert.SerializeObject(request));
 
-                await _unitOfWork.BeginTransactionAsync();
-                var result = await _employerRepository.UpdateLocationsAsync(request.UserId.Value, request.Locations);
-                if (!result)
+                var checkExistEmployer = await _employerRepository.EmployerExistsAsync(request.UserId.Value);
+                if (!checkExistEmployer)
                 {
-                    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateLocationsCommandHandler", "Cập nhật địa điểm thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
+                    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateCompanyIntroductionCommandHandler", "Cập nhật giới thiệu công ty thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
                     throw new UserNotFoundException();
                 }
+
+                await _unitOfWork.BeginTransactionAsync();
+                await _employerRepository.UpdateLocationsAsync(request.UserId.Value, request.Locations);
+              
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateLocationsCommandHandler", "Cập nhật địa điểm thành công: " + JsonConvert.SerializeObject(request));
                 await _unitOfWork.CommitAsync();

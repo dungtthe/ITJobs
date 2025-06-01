@@ -33,14 +33,19 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateCompanyIntrod
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", JsonConvert.SerializeObject(request));
 
-                await _unitOfWork.BeginTransactionAsync();
-                var content = Security.SanitizeHtmlContent(request.CompanyIntroduction);
-                var result = await _employerRepository.UpdateCompanyIntroductionAsync(request.UserId.Value, content);
-                if (!result)
+                var checkExistEmployer = await _employerRepository.EmployerExistsAsync(request.UserId.Value);
+                if (!checkExistEmployer)
                 {
                     await LoggerHelper.LogInfomationAsync(ipClient, "UpdateCompanyIntroductionCommandHandler", "Cập nhật giới thiệu công ty thất bại không tìm thấy user: " + JsonConvert.SerializeObject(request));
                     throw new UserNotFoundException();
                 }
+                var content = Security.SanitizeHtmlContent(request.CompanyIntroduction);
+
+               
+                await _unitOfWork.BeginTransactionAsync();
+
+                await _employerRepository.UpdateCompanyIntroductionAsync(request.UserId.Value, content);
+
                 await _unitOfWork.CommitAsync();
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateCompanyIntroductionCommandHandler", "Cập nhật giới thiệu công ty thành công: " + JsonConvert.SerializeObject(request));

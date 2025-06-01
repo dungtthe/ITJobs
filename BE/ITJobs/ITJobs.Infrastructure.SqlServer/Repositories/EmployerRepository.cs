@@ -161,56 +161,39 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return companyProfileDto;
         }
 
-        public async Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos)
+        public async Task UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos)
         {
             var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e => e.UserId == userId);
-            if (fEmployer == null)
-            {
-                return false;
-            }
-
             fEmployer.GeneralInfo = JsonConvert.SerializeObject(generalInfos);
             _dbContext.Employers.Update(fEmployer);
-
-            return true;
         }
 
-        public async Task<bool> UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction)
+        public async Task UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction)
         {
             var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e => e.UserId == userId);
-            if (fEmployer == null)
-            {
-                return false;
-            }
             fEmployer.CompanyIntroduction = companyIntroduction;
             _dbContext.Employers.Update(fEmployer);
-            return true;
         }
-        public async Task<bool> UpdateSkillAsync(Guid userId, List<string> skills)
+        public async Task UpdateSkillAsync(Guid userId, List<string> skills)
         {
             var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (fEmployer == null)
-            {
-                return false;
-            }
 
             var skillsNew = JsonConvert.SerializeObject(skills);
             fEmployer.Skills = skillsNew;
             _dbContext.Employers.Update(fEmployer);
-            return true;
         }
 
-        public async Task<bool> UpdateLocationsAsync(Guid userId, List<Location> locations)
+        public async Task UpdateLocationsAsync(Guid userId, List<Location> locations)
         {
             var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (fEmployer == null)
-            {
-                return false;
-            }
             var locationsNew = JsonConvert.SerializeObject(locations);
             fEmployer.Locations = locationsNew;
             _dbContext.Employers.Update(fEmployer);
-            return true;
+        }
+
+        public async Task<bool> EmployerExistsAsync(Guid userId)
+        {
+            return await _dbContext.Employers.AnyAsync(u => u.UserId == userId);
         }
     }
 }
