@@ -199,5 +199,18 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             _dbContext.Employers.Update(fEmployer);
             return true;
         }
+
+        public async Task<bool> UpdateLocationsAsync(Guid userId, List<Location> locations)
+        {
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (fEmployer == null)
+            {
+                return false;
+            }
+            var locationsNew = JsonConvert.SerializeObject(locations);
+            fEmployer.Locations = locationsNew;
+            _dbContext.Employers.Update(fEmployer);
+            return true;
+        }
     }
 }

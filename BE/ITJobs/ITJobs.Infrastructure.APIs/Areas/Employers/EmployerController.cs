@@ -85,8 +85,8 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             command.UserId = userId.Value;
             try
             {
-                 await _mediator.Send(command);
-                return Ok(new{ });
+                await _mediator.Send(command);
+                return Ok(new { });
             }
             catch (UserNotFoundException e)
             {
@@ -99,6 +99,27 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             catch (SystemDataNotImplementedException e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+            }
+        }
+
+
+        [HttpPatch("profile/update/locations")]
+        public async Task<IActionResult> UpdateLocationsAsync([FromBody] UseCases.Employers.CompanyProfiles.Commands.UpdateLocations.UpdateLocationsCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { });
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
             }
         }
     }

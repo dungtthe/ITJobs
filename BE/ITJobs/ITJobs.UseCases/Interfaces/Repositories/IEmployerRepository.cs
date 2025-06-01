@@ -26,6 +26,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos);
         Task<bool> UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction);
         Task<bool> UpdateSkillAsync(Guid userId, List<string> skills);
+        Task<bool> UpdateLocationsAsync(Guid userId, List<Location> locations);
         #endregion
     }
 }
