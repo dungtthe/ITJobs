@@ -25,6 +25,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile.CompanyProfileDto> GetCompanyProfileAsync(Guid userId);
         Task<bool> UpdateGeneralInfosAsync(Guid userId, List<Entities.GeneralInfoItem> generalInfos);
         Task<bool> UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction);
+        Task<bool> UpdateSkillAsync(Guid userId, List<string> skills);
         #endregion
     }
 }

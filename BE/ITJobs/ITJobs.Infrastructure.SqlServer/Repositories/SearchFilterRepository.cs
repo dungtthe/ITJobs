@@ -74,6 +74,16 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return JsonConvert.DeserializeObject<List<string>>(fSearchFilterSkill.Values);
         }
 
+        public async Task<List<string>> GetSkillsInSystem()
+        {
+            var fSearchFilterSkill = await _dbContext.SearchFilters.FindAsync(ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL);
+            if (fSearchFilterSkill == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<List<string>>(fSearchFilterSkill.Values);
+        }
+
 
 
         //Tạm thời làm kiểu random
@@ -94,5 +104,6 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return randomSkills;
         }
 
+       
     }
 }

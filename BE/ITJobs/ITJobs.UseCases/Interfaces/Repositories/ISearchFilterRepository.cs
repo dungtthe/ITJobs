@@ -17,5 +17,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<int> GetMaxOrderAsync();
         Task<List<string>> GetSuggestedSkillsForCommonAsync(GetSuggestedSkillsQuery request);
         Task<List<string>> GetSkillsForCommonAsync(GetSkillsQuery request);
+        Task<List<string>> GetSkillsInSystem();
     }
 }

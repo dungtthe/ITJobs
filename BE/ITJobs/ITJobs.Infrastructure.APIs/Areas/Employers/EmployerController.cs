@@ -73,5 +73,33 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
                 return NotFound(new { message = e.Message });
             }
         }
+
+        [HttpPatch("profile/update/skills")]
+        public async Task<IActionResult> UpdateSkillsAsync([FromBody] UseCases.Employers.CompanyProfiles.Commands.UpdateSkills.UpdateSkillsCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            try
+            {
+                 await _mediator.Send(command);
+                return Ok(new{ });
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+            catch (InvalidSkillException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (SystemDataNotImplementedException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+            }
+        }
     }
 }

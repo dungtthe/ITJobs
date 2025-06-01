@@ -80,7 +80,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         public async Task<bool> LockAccountAsync(Guid userId)
         {
             var fUser = await _dbContext.Users.FindAsync(userId);
-            if (fUser == null || fUser.RoleType!=RoleType.Employer)
+            if (fUser == null || fUser.RoleType != RoleType.Employer)
             {
                 return false;
             }
@@ -121,7 +121,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 PostedBlogCount = await _dbContext.Posts.CountAsync(p => p.UserId == userId && p.PostType == PostType.News),
                 PostedJobCount = await _dbContext.Posts.CountAsync(p => p.UserId == userId && p.PostType == PostType.JobPosting),
             };
-         
+
 
             return employerDto;
         }
@@ -170,7 +170,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             }
 
             fEmployer.GeneralInfo = JsonConvert.SerializeObject(generalInfos);
-             _dbContext.Employers.Update(fEmployer);
+            _dbContext.Employers.Update(fEmployer);
 
             return true;
         }
@@ -183,6 +183,19 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 return false;
             }
             fEmployer.CompanyIntroduction = companyIntroduction;
+            _dbContext.Employers.Update(fEmployer);
+            return true;
+        }
+        public async Task<bool> UpdateSkillAsync(Guid userId, List<string> skills)
+        {
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (fEmployer == null)
+            {
+                return false;
+            }
+
+            var skillsNew = JsonConvert.SerializeObject(skills);
+            fEmployer.Skills = skillsNew;
             _dbContext.Employers.Update(fEmployer);
             return true;
         }
