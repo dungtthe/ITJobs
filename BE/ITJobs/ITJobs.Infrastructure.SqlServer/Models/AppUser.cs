@@ -37,7 +37,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public string Gender { get; set; }
         public DateTime ?DateOfBirth { get; set; }
 
-        [MaxLength(1000)]
+        //[MaxLength(1000)]//chuyen sang dung base64
         public string Image { get; set; }
         public long AccountBalance { get; set; }
 

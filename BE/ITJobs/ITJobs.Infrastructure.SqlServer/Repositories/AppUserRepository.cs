@@ -67,6 +67,21 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             };
             await _dbContext.Users.AddAsync(userEntity);
         }
+
+        public async Task UpdateImageAsync(Guid userId, string image)
+        {
+            var user = await _dbContext.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.Image = image;
+                _dbContext.Users.Update(user);
+            }
+        }
+
+        public async Task<bool> UserExistsAsync(Guid userId)
+        {
+            return await _dbContext.Users.AnyAsync(user => user.Id == userId);
+        }
     }
 }
 
