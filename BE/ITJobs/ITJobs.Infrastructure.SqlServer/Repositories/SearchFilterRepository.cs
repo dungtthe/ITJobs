@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities;
+using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSkills;
 using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
@@ -61,6 +62,16 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         {
             var maxOrder = await _dbContext.SearchFilters.MaxAsync(sf => sf.ViewOrder);
             return maxOrder;
+        }
+
+        public async Task<List<string>> GetSkillsForCommonAsync(GetSkillsQuery request)
+        {
+            var fSearchFilterSkill = await _dbContext.SearchFilters.FindAsync(ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL);
+            if (fSearchFilterSkill == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<List<string>>(fSearchFilterSkill.Values);
         }
 
 

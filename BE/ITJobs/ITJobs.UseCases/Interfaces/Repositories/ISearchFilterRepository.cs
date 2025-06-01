@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities;
+using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSkills;
 using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills;
 using ITJobs.UseCases.Helpers.Paginations;
 using System;
@@ -15,5 +16,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task AddSearchFilterRangeAsync(Entities.SearchFilterRange searchFilterRange);
         Task<int> GetMaxOrderAsync();
         Task<List<string>> GetSuggestedSkillsForCommonAsync(GetSuggestedSkillsQuery request);
+        Task<List<string>> GetSkillsForCommonAsync(GetSkillsQuery request);
     }
 }
