@@ -3,6 +3,7 @@ import { GeneralInfo } from "@/components/my-components/common/employer-profile/
 import { getCompanyProfile } from "@/features/employer/company-profile/usecases/queries/getCompanyProfile";
 import { CompanyIntroductionTex } from "./CompanyIntroductionTex";
 import { OurSkills } from "@/components/my-components/common/employer-profile/OurSkills";
+import { Locations } from "@/components/my-components/common/employer-profile/Locations";
 export default function Index() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +49,10 @@ export default function Index() {
           <CompanyIntroductionTex
             companyIntroduction={profile.companyIntroduction}
           ></CompanyIntroductionTex>
+        </div>
+
+        <div className="mt-10">
+          <Locations locations={profile.locations} isCanEdit={true}></Locations>
         </div>
       </div>
     </>
