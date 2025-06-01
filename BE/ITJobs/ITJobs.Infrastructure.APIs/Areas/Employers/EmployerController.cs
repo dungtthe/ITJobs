@@ -122,5 +122,31 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
                 return NotFound(new { message = e.Message });
             }
         }
+
+
+
+        [HttpPatch("profile/update/overview")]
+        public async Task<IActionResult> UpdateOverviewAsync([FromBody] UseCases.Employers.CompanyProfiles.Commands.UpdateCompanyOverviews.UpdateCompanyOverviewsCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { });
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+            catch (PhoneNumberAlreadyExistsException e)
+            {
+                return Conflict(new { message = e.Message });
+            }
+        }
     }
 }

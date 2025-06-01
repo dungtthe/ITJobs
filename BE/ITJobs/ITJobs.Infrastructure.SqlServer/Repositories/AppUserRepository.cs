@@ -54,8 +54,8 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return await _dbContext.Users.AnyAsync(user => user.Id == userId && user.RoleType == RoleType.Admin);
         }
 
-       
-        public async Task RegisterAsync(Guid id,  string passWord, string email, string fullName, RoleType roleType)
+
+        public async Task RegisterAsync(Guid id, string passWord, string email, string fullName, RoleType roleType)
         {
             var userEntity = new Models.AppUser
             {
@@ -76,6 +76,11 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 user.Image = image;
                 _dbContext.Users.Update(user);
             }
+        }
+
+        public async Task<bool> UserExistByPhoneNumberAsync(string phoneNumber, Guid userId)
+        {
+            return await _dbContext.Users.AnyAsync(user => user.PhoneNumber == phoneNumber && user.Id != userId);
         }
 
         public async Task<bool> UserExistsAsync(Guid userId)

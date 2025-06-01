@@ -195,5 +195,19 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         {
             return await _dbContext.Employers.AnyAsync(u => u.UserId == userId);
         }
+
+        public async Task UpdateOverView(Guid userId, string phoneNumber, string companyName, string websiteUrl, string companyType)
+        {
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (fEmployer != null)
+            {
+                fEmployer.User.PhoneNumber = phoneNumber;
+                fEmployer.User.FullName = companyName;
+                fEmployer.CompanyName = companyName;
+                fEmployer.WebsiteUrl = websiteUrl;
+                fEmployer.CompanyType = companyType;
+                _dbContext.Employers.Update(fEmployer);
+            }
+        }
     }
 }

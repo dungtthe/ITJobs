@@ -16,5 +16,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<bool> IsUserAdminExistsAsync(Guid userId);
         Task UpdateImageAsync(Guid userId, string image);
         Task<bool> UserExistsAsync(Guid userId);
+        Task<bool> UserExistByPhoneNumberAsync(string phoneNumber, Guid userId);
     }
 }

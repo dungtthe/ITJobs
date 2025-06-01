@@ -29,6 +29,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task UpdateCompanyIntroductionAsync(Guid userId, string companyIntroduction);
         Task UpdateSkillAsync(Guid userId, List<string> skills);
         Task UpdateLocationsAsync(Guid userId, List<Location> locations);
+        Task UpdateOverView(Guid userId, string phoneNumber, string companyName, string websiteUrl, string companyType);
         #endregion
     }
 }
