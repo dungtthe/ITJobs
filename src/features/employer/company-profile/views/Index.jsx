@@ -4,6 +4,8 @@ import { getCompanyProfile } from "@/features/employer/company-profile/usecases/
 import { CompanyIntroductionTex } from "./CompanyIntroductionTex";
 import { OurSkills } from "@/components/my-components/common/employer-profile/OurSkills";
 import { Locations } from "@/components/my-components/common/employer-profile/Locations";
+
+import { OverviewInformation } from "@/components/my-components/common/employer-profile/OverviewInformation";
 export default function Index() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,12 +33,26 @@ export default function Index() {
   return (
     <>
       <div>
-        <GeneralInfo
-          isCanEdit={true}
-          generalInfo={profile.generalInfo}
-          classNameRow="w-[20%] mt-5"
-        ></GeneralInfo>
+        <div>
+          <OverviewInformation
+            image={profile.image}
+            email={profile.email}
+            phoneNumber={profile.phoneNumber}
+            accountBalance={profile.accountBalance}
+            companyName={profile.companyName}
+            websiteUrl={profile.websiteUrl}
+            companyType={profile.companyType}
+            isCanEdit={true}
+          ></OverviewInformation>
+        </div>
 
+        <div className="mt-10">
+          <GeneralInfo
+            isCanEdit={true}
+            generalInfo={profile.generalInfo}
+            classNameRow="w-[20%] mt-5"
+          ></GeneralInfo>
+        </div>
         <div className="mt-10">
           <OurSkills
             isCanEdit={true}
