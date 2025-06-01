@@ -32,9 +32,18 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
                         g => g.Select(x => x.ErrorMessage).ToArray()
                     );
 
+                //var response = new
+                //{
+                //    errors
+                //};
+
+                var messages = ex.Errors
+                            .Select(x => x.ErrorMessage)
+                            .ToList();
+
                 var response = new
                 {
-                    errors
+                    message = messages
                 };
 
                 await context.Response.WriteAsJsonAsync(response);
