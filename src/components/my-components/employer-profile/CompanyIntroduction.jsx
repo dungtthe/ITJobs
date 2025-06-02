@@ -1,5 +1,7 @@
 import { IconEdit } from "@/components/my-components/icon/IconEdit";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { sanitizeHtml } from "@/utils/sanitizeHtmlUtils";
+
 export const CompanyIntroduction = ({
   companyIntroduction,
   handleEdit,
@@ -7,6 +9,14 @@ export const CompanyIntroduction = ({
   isCanEdit,
   ...props
 }) => {
+  const [processedContent, setProcessedContent] = useState("");
+
+  useEffect(() => {
+    if (companyIntroduction) {
+      setProcessedContent(sanitizeHtml(companyIntroduction));
+    }
+  }, [companyIntroduction]);
+
   return (
     <>
       <div className="bg-background p-5 rounded-lg">
@@ -16,12 +26,12 @@ export const CompanyIntroduction = ({
             <IconEdit onClick={handleEdit}></IconEdit>
           )}
         </div>
-        {/* line */}
         <div className="border border-dashed w-full h-[1px]"></div>
-        {/* content */}
         <div
           className="mt-5 tinymce-content"
-          dangerouslySetInnerHTML={{ __html: companyIntroduction }}
+          dangerouslySetInnerHTML={{
+            __html: processedContent || companyIntroduction,
+          }}
         />
       </div>
     </>
