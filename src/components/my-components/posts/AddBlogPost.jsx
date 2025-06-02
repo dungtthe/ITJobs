@@ -7,6 +7,7 @@ import { showErrorToastHasTitle } from "@/components/my-components/MyToast";
 import { showSuccessToastHasTitle } from "@/components/my-components/MyToast";
 import { Button } from "@/components/ui/button";
 import { convertImageToBase64 } from "@/utils/imageUtils";
+import { addBlogPost } from "@/shared-services/posts/blog-post/addBlogPost.js";
 export default function AddBlogPost() {
   const [keyRenderImediately, setKeyRenderImediately] = useState(0);
   //tieu de,main image ,shortcontent de chen vao text editor
@@ -94,7 +95,30 @@ export default function AddBlogPost() {
       return;
     }
 
-    console.log("content:", content);
+    //console.log("content:", content);
+    const data = {
+      title: title,
+      mainImage: mainImage,
+      shortContent: shortContent,
+      content: content,
+    };
+    addBlogPost(
+      data,
+      (sus) => {
+        showSuccessToastHasTitle("Thành công", "Đã thêm bài đăng tin tức");
+        handleHuy();
+        console.log(sus.id);
+      },
+      (error) => {
+        showErrorToastHasTitle("Lỗi", error);
+      },
+      (exception) => {
+        showErrorToastHasTitle(
+          "Lỗi",
+          "Đã xảy ra lỗi khi thêm bài đăng tin tức"
+        );
+      }
+    );
   };
 
   return (
