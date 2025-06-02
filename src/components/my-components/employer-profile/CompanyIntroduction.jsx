@@ -1,4 +1,4 @@
-import { IconEdit } from "@/components/my-components/common/icon/IconEdit";
+import { IconEdit } from "@/components/my-components/icon/IconEdit";
 import { useState } from "react";
 export const CompanyIntroduction = ({
   companyIntroduction,

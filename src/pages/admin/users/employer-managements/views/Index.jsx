@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getEmployersSummary } from "../usecases/queries/getEmployersSummary";
+import { getEmployersSummary } from "../services/getEmployersSummary";
 import { CiSearch } from "react-icons/ci";
 import { FaLock, FaUnlock, FaEye } from "react-icons/fa";
 import no_img_user from "@/assets/images/no_img_user.png";

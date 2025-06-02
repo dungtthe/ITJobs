@@ -1,19 +1,19 @@
 import React, { useState, useRef } from "react";
-import { CompanyLogo } from "@/components/my-components/common/employer-profile/CompanyLogo";
-import { IconEdit } from "@/components/my-components/common/icon/IconEdit";
-import { ButtonSuccess } from "@/components/my-components/common/button/ButtonSuccess";
-import { ButtonDestructive } from "@/components/my-components/common/button/ButtonDestructive";
+import { CompanyLogo } from "@/components/my-components/employer-profile/CompanyLogo";
+import { IconEdit } from "@/components/my-components/icon/IconEdit";
+import { ButtonSuccess } from "@/components/my-components/button/ButtonSuccess";
+import { ButtonDestructive } from "@/components/my-components/button/ButtonDestructive";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
+} from "@/components/my-components/MyToast";
 import { formatVND } from "@/utils/formatUtils";
-import { IconLink } from "@/components/my-components/common/icon/IconLink";
+import { IconLink } from "@/components/my-components/icon/IconLink";
 import { convertImageToBase64 } from "@/utils/imageUtils";
-import { updateImage } from "@/services/accounts/updateImage";
+import { updateImage } from "@/shared-services/accounts/updateImage";
 import { useUserStore } from "@/stores/authStore";
 import { Input } from "@/components/ui/input";
-import { updateOverView } from "@/features/employer/company-profile/usecases/commands/updateOverView";
+import { updateOverView } from "@/pages/employer/company-profile/services/updateOverView";
 export const OverviewInformation = ({
   image,
   email,

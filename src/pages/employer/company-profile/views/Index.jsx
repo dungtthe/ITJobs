@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { GeneralInfo } from "@/components/my-components/common/employer-profile/GeneralInfo";
-import { getCompanyProfile } from "@/features/employer/company-profile/usecases/queries/getCompanyProfile";
+import { GeneralInfo } from "@/components/my-components/employer-profile/GeneralInfo";
+import { getCompanyProfile } from "@/pages/employer/company-profile/services/getCompanyProfile";
 import { CompanyIntroductionTex } from "./CompanyIntroductionTex";
-import { OurSkills } from "@/components/my-components/common/employer-profile/OurSkills";
-import { Locations } from "@/components/my-components/common/employer-profile/Locations";
+import { OurSkills } from "@/components/my-components/employer-profile/OurSkills";
+import { Locations } from "@/components/my-components/employer-profile/Locations";
 
-import { OverviewInformation } from "@/components/my-components/common/employer-profile/OverviewInformation";
+import { OverviewInformation } from "@/components/my-components/employer-profile/OverviewInformation";
 export default function Index() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -1,5 +1,5 @@
 import React from "react";
-import { MySidebar } from "@/components/my-components/common/admin-employer/MySideBar";
+import { MySidebar } from "@/components/my-components/MySideBar";
 import { MdDashboard, MdLibraryBooks, MdOutlineSettings } from "react-icons/md";
 import { FaUserCog } from "react-icons/fa";
 import { PiReadCvLogoFill } from "react-icons/pi";

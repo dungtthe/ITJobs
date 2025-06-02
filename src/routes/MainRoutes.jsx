@@ -3,20 +3,20 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 //admin
 import Admin_Layout from "@/layouts/admin/Index.jsx";
-import Admin_Home from "@/features/admin/dashboard/views/Index.jsx";
-import Admin_EmployerManagements from "@/features/admin/users/employer-managements/views/Index.jsx";
-import Admin_CandidateManagements from "@/features/admin/users/candidate-managements/views/Index.jsx";
+import Admin_Home from "@/pages/admin/dashboard/views/Index.jsx";
+import Admin_EmployerManagements from "@/pages/admin/users/employer-managements/views/Index.jsx";
+import Admin_CandidateManagements from "@/pages/admin/users/candidate-managements/views/Index.jsx";
 
 //employer
 import Employer_Layout from "@/layouts/employer/Index.jsx";
-import Employer_Home from "@/features/employer/dashboard/views/Index.jsx";
-import Employer_CompanyProfile from "@/features/employer/company-profile/views/Index.jsx";
+import Employer_Home from "@/pages/employer/dashboard/views/Index.jsx";
+import Employer_CompanyProfile from "@/pages/employer/company-profile/views/Index.jsx";
 
 //user
 import User_Layout from "@/layouts/user/Index.jsx";
-import User_Home from "@/features/user/views/Index.jsx";
-import Login from "@/features/auth/views/Login.jsx";
-import Test from "@/features/test.jsx";
+import User_Home from "@/pages/user/views/Index.jsx";
+import Login from "@/pages/auth/views/Login.jsx";
+import Test from "@/pages/test.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>

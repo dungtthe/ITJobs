@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import { TextEditor } from "@/components/my-components/common/text-editor/TextEditor";
-import { CompanyIntroduction } from "@/components/my-components/common/employer-profile/CompanyIntroduction";
-import { updateCompanyIntroduction } from "@/features/employer/company-profile/usecases/commands/updateCompanyIntroduction";
+import { TextEditor } from "@/components/my-components/text-editor/TextEditor";
+import { CompanyIntroduction } from "@/components/my-components/employer-profile/CompanyIntroduction";
+import { updateCompanyIntroduction } from "@/pages/employer/company-profile/services/updateCompanyIntroduction";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
+} from "@/components/my-components/MyToast";
 
 export const CompanyIntroductionTex = ({ companyIntroduction }) => {
   const defaultCompanyIntroduction = useRef(companyIntroduction);

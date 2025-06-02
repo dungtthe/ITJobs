@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { TiTick } from "react-icons/ti";
-import { login } from "../usecases/login";
+import { login } from "../services/login";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
+} from "@/components/my-components/MyToast";
 import { useNavigate } from "react-router-dom";
 import { useUserStore, setJwtToken } from "@/stores/authStore";
 export default function Login() {

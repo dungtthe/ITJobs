@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { IconEdit } from "@/components/my-components/common/icon/IconEdit";
-import { IconAdd } from "@/components/my-components/common/icon/IconAdd";
-import { IconDelete } from "@/components/my-components/common/icon/IconDelete";
-import { ButtonSuccess } from "@/components/my-components/common/button/ButtonSuccess";
-import { ButtonDestructive } from "@/components/my-components/common/button/ButtonDestructive";
-import { getSkills } from "@/services/search-filters/skills/getSkills";
+import { IconEdit } from "@/components/my-components/icon/IconEdit";
+import { IconAdd } from "@/components/my-components/icon/IconAdd";
+import { IconDelete } from "@/components/my-components/icon/IconDelete";
+import { ButtonSuccess } from "@/components/my-components/button/ButtonSuccess";
+import { ButtonDestructive } from "@/components/my-components/button/ButtonDestructive";
+import { getSkills } from "@/shared-services/search-filters/skills/getSkills";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
-import { updateSkills } from "@/features/employer/company-profile/usecases/commands/updateSkills";
+} from "@/components/my-components/MyToast";
+import { updateSkills } from "@/pages/employer/company-profile/services/updateSkills";
 import { Skill } from "./Skill";
 import {
   Dialog,

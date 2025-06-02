@@ -1,4 +1,4 @@
-import Header from "@/components/my-components/common/admin-employer/Header";
+import Header from "@/components/my-components/Header";
 import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
 export default function HeaderAdmin() {

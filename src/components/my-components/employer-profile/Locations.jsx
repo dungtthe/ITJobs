@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { IconEdit } from "@/components/my-components/common/icon/IconEdit";
-import { IconAdd } from "@/components/my-components/common/icon/IconAdd";
-import { IconDelete } from "@/components/my-components/common/icon/IconDelete";
-import { IconLocation } from "@/components/my-components/common/icon/IconLocation";
-import { ButtonSuccess } from "@/components/my-components/common/button/ButtonSuccess";
-import { ButtonDestructive } from "@/components/my-components/common/button/ButtonDestructive";
-import { updateLocations } from "@/features/employer/company-profile/usecases/commands/updateLocations";
+import { IconEdit } from "@/components/my-components/icon/IconEdit";
+import { IconAdd } from "@/components/my-components/icon/IconAdd";
+import { IconDelete } from "@/components/my-components/icon/IconDelete";
+import { IconLocation } from "@/components/my-components/icon/IconLocation";
+import { ButtonSuccess } from "@/components/my-components/button/ButtonSuccess";
+import { ButtonDestructive } from "@/components/my-components/button/ButtonDestructive";
+import { updateLocations } from "@/pages/employer/company-profile/services/updateLocations";
 import {
   MapContainer,
   TileLayer,
@@ -19,7 +19,7 @@ import L from "leaflet";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
+} from "@/components/my-components/MyToast";
 // Fix cho vấn đề biểu tượng của Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({

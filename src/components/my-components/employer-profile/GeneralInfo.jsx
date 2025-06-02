@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { IconEdit } from "@/components/my-components/common/icon/IconEdit";
-import { IconAdd } from "@/components/my-components/common/icon/IconAdd";
-import { IconDelete } from "@/components/my-components/common/icon/IconDelete";
-import { ButtonSuccess } from "@/components/my-components/common/button/ButtonSuccess";
-import { ButtonDestructive } from "@/components/my-components/common/button/ButtonDestructive";
+import { IconEdit } from "@/components/my-components/icon/IconEdit";
+import { IconAdd } from "@/components/my-components/icon/IconAdd";
+import { IconDelete } from "@/components/my-components/icon/IconDelete";
+import { ButtonSuccess } from "@/components/my-components/button/ButtonSuccess";
+import { ButtonDestructive } from "@/components/my-components/button/ButtonDestructive";
 import { Input } from "@/components/ui/input";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
-} from "@/components/my-components/common/MyToast";
-import { updateGeneralInfos } from "@/features/employer/company-profile/usecases/commands/updateGeneralInfos";
+} from "@/components/my-components/MyToast";
+import { updateGeneralInfos } from "@/pages/employer/company-profile/services/updateGeneralInfos";
 export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
   const defaultDataGeneralInfo = generalInfo.map((item) => ({
     ...item,
