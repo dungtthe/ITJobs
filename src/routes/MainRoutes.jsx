@@ -11,6 +11,8 @@ import Admin_CandidateManagements from "@/pages/admin/users/candidate-management
 import Employer_Layout from "@/layouts/employer/Index.jsx";
 import Employer_Home from "@/pages/employer/dashboard/views/Index.jsx";
 import Employer_CompanyProfile from "@/pages/employer/company-profile/views/Index.jsx";
+import Employer_BlogPost from "@/pages/employer/posts/blog-post/views/Index.jsx";
+import Employer_BlogPost_Add from "@/components/my-components/posts/AddBlogPost.jsx";
 
 //user
 import User_Layout from "@/layouts/user/Index.jsx";
@@ -31,6 +33,8 @@ export default function MainRoutes() {
         <Route path="/employer" element={<Employer_Layout />}>
           <Route index element={<Employer_Home />} />
           <Route path="profile" element={<Employer_CompanyProfile />} />
+          <Route path="blog-post" element={<Employer_BlogPost />} />
+          <Route path="blog-post/add" element={<Employer_BlogPost_Add />} />
         </Route>
         {/* USER*/}
         <Route path="/" element={<User_Layout />}>

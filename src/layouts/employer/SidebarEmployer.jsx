@@ -5,7 +5,32 @@ import { FaUserCog } from "react-icons/fa";
 import { PiReadCvLogoFill } from "react-icons/pi";
 import { RiFilterFill } from "react-icons/ri";
 
-const employerMenuConfig = [];
+const employerMenuConfig = [
+  {
+    path: "/employer",
+    label: "Dashboard",
+    icon: <MdDashboard />,
+    key: "dashboard",
+  },
+  {
+    path: "/employer",
+    label: "Quản lý bài đăng",
+    icon: <MdLibraryBooks />,
+    key: "posts",
+    children: [
+      {
+        path: "/blog-post",
+        label: "Blog",
+        key: "blog-post",
+      },
+      {
+        path: "/job-post",
+        label: "Bài đăng tuyển dụng",
+        key: "job-post",
+      },
+    ],
+  },
+];
 
 export function SidebarEmployer({ ...props }) {
   return (
