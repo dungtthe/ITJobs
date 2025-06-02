@@ -14,7 +14,7 @@ import { MdHistory } from "react-icons/md";
 import { TbFileCv } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import "./style.css";
-import Logo from "@/components/my-components/users/Logo";
+import Logo from "@/components/my-components/candidate/Logo";
 import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
 

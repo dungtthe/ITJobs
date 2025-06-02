@@ -2,7 +2,7 @@ import React from "react";
 import { FiFacebook } from "react-icons/fi";
 import { RiYoutubeLine } from "react-icons/ri";
 import { SiInstagram } from "react-icons/si";
-import Logo from "@/components/my-components/users/Logo";
+import Logo from "@/components/my-components/candidate/Logo";
 export default function Footer() {
   return (
     <>

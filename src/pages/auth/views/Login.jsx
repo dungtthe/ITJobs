@@ -1,4 +1,4 @@
-import Logo from "@/components/my-components/users/Logo";
+import Logo from "@/components/my-components/candidate/Logo";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
