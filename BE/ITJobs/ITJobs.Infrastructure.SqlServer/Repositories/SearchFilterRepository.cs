@@ -1,8 +1,8 @@
 ﻿using ITJobs.Entities;
-using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSkills;
-using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
+using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSkills;
+using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSuggestedSkills;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;

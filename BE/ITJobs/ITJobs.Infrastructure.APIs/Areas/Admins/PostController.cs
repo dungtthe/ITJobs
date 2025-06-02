@@ -1,6 +1,6 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
-using ITJobs.UseCases.Admins.Posts.Commands.CreateBlogPost;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
+using ITJobs.UseCases.Shared.Posts.Commands.CreateBlogPost;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,20 +18,6 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
         public PostController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        [HttpPost("blog/add")]
-        public async Task<IActionResult> AddBlogPostAsync([FromBody] CreateBlogPostCommand command)
-        {
-            var userId = HttpContext.GetUserId();
-            if (userId == null)
-            {
-                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
-            }
-            command.UserId = userId.Value;
-
-            var rs = await _mediator.Send(command);
-            return Ok(new { id = rs });
         }
 
         [HttpGet("blog")]

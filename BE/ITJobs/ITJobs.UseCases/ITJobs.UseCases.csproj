@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Shared\Posts\Commands\CreateJobPost\**" />
+    <EmbeddedResource Remove="Shared\Posts\Commands\CreateJobPost\**" />
+    <None Remove="Shared\Posts\Commands\CreateJobPost\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
@@ -17,10 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ITJobs.Entities\ITJobs.Entities.csproj" />
     <ProjectReference Include="..\ITJobs.Infrastructure.Commons\ITJobs.Infrastructure.Commons.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Admins\Posts\Commands\CreateJobPost\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using ITJobs.Entities;
-using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSkills;
-using ITJobs.UseCases.Commons.SearchFilters.Queries.GetSuggestedSkills;
 using ITJobs.UseCases.Helpers.Paginations;
+using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSkills;
+using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSuggestedSkills;
 using System;
 using System.Collections.Generic;
 using System.Linq;

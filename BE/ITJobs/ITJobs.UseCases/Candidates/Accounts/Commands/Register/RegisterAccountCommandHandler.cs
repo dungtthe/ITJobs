@@ -4,7 +4,6 @@ using ITJobs.Entities.Enums;
 using ITJobs.Entities.Exceptions;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.Infrastructure.Commons.Helpers;
-using ITJobs.UseCases.Commons;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
 using ITJobs.UseCases.Interfaces.UnitOfWork;
