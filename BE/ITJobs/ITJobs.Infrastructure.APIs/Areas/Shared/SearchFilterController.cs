@@ -5,6 +5,7 @@ using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSuggestedSkills;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ITJobs.Infrastructure.APIs.Areas.Shared
 {
@@ -59,6 +60,15 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
             {
                 return StatusCode(500, new { message = e.Message });
             }
+        }
+
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetSearchFilters()
+        {
+
+            var result = await _mediator.Send(new ITJobs.UseCases.Shared.SearchFilters.Queries.GetSearchFilters.GetSearchFiltersQuery());
+            return Ok(result);
         }
     }
 }

@@ -74,6 +74,55 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return maxOrder;
         }
 
+        public async Task<List<SearchFilterCheckBox>> GetSearchFilterCheckBoxesAsync()
+        {
+            var searchFilters = await _dbContext.SearchFilters
+                .Where(sf => sf.SearchFilterType == Entities.Enums.SearchFilterType.Checkbox)
+                .ToListAsync();
+            return searchFilters.Select(sf => new SearchFilterCheckBox
+            {
+                Id = sf.Id,
+                Name = sf.Name,
+                SearchFilterType = sf.SearchFilterType,
+                Values = JsonConvert.DeserializeObject<List<string>>(sf.Values),
+                ViewOrder = sf.ViewOrder,
+                IsCreatedBySystem = sf.IsCreatedBySystem
+            }).ToList();
+        }
+
+        public async Task<List<SearchFilterCombobox>> GetSearchFilterComboboxesAsync()
+        {
+            var searchFilters = await _dbContext.SearchFilters
+                .Where(sf => sf.SearchFilterType == Entities.Enums.SearchFilterType.Combobox)
+                .ToListAsync();
+            return searchFilters.Select(sf => new SearchFilterCombobox
+            {
+                Id = sf.Id,
+                Name = sf.Name,
+                SearchFilterType = sf.SearchFilterType,
+                Values = JsonConvert.DeserializeObject<List<string>>(sf.Values),
+                ViewOrder = sf.ViewOrder,
+                IsCreatedBySystem = sf.IsCreatedBySystem
+            }).ToList();
+        }
+
+        public async Task<List<SearchFilterRange>> GetSearchFilterRangesAsync()
+        {
+            var searchFilters = await _dbContext.SearchFilters
+                .Where(sf => sf.SearchFilterType == Entities.Enums.SearchFilterType.Range)
+                .ToListAsync();
+            return searchFilters.Select(sf => new SearchFilterRange
+            {
+                Id = sf.Id,
+                Name = sf.Name,
+                SearchFilterType = sf.SearchFilterType,
+                Min = long.Parse(sf.Values.Split('_')[0]),
+                Max = long.Parse(sf.Values.Split('_')[1]),
+                ViewOrder = sf.ViewOrder,
+                IsCreatedBySystem = sf.IsCreatedBySystem
+            }).ToList();
+        }
+
         public async Task<List<string>> GetSkillsForCommonAsync(GetSkillsQuery request)
         {
             var fSearchFilterSkill = await _dbContext.SearchFilters.FindAsync(ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL);
