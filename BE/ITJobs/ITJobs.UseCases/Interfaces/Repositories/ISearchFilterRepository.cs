@@ -18,5 +18,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<List<string>> GetSuggestedSkillsForCommonAsync(GetSuggestedSkillsQuery request);
         Task<List<string>> GetSkillsForCommonAsync(GetSkillsQuery request);
         Task<List<string>> GetSkillsInSystem();
+        Task<List<string>> GetCitiesAsync();
     }
 }

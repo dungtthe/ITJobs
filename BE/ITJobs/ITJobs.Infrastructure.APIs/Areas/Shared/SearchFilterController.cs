@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities.Exceptions;
+using ITJobs.UseCases.Shared.SearchFilters.Queries.GetCities;
 using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSkills;
 using ITJobs.UseCases.Shared.SearchFilters.Queries.GetSuggestedSkills;
 using MediatR;
@@ -44,6 +45,20 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
                 return StatusCode(500, new { message = e.Message });
             }
 
+        }
+
+        [HttpGet("cities")]
+        public async Task<IActionResult> GetCitiesAsync([FromQuery] GetCitiesQuery query)
+        {
+            try
+            {
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (SystemDataNotImplementedException e)
+            {
+                return StatusCode(500, new { message = e.Message });
+            }
         }
     }
 }
