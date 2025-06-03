@@ -4,7 +4,7 @@ import { IconAdd } from "@/components/my-components/icon/IconAdd";
 import { IconDelete } from "@/components/my-components/icon/IconDelete";
 import { ButtonSuccess } from "@/components/my-components/button/ButtonSuccess";
 import { ButtonDestructive } from "@/components/my-components/button/ButtonDestructive";
-import { getSkills } from "@/shared-services/search-filters/skills/getSkills";
+import { getSkills } from "@/shared-services/search-filters/getSkills";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,

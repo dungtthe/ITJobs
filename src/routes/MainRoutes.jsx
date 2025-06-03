@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 //admin
-import Admin_Layout from "@/layouts/admin/Index.jsx";
+import Admin_Layout from "@/layouts/admin/index.jsx";
 import Admin_Home from "@/pages/admin/dashboard/views/Index.jsx";
 import Admin_EmployerManagements from "@/pages/admin/users/employer-managements/views/Index.jsx";
 import Admin_CandidateManagements from "@/pages/admin/users/candidate-managements/views/Index.jsx";
@@ -15,8 +15,8 @@ import Employer_BlogPost from "@/pages/employer/posts/blog-post/views/Index.jsx"
 import Employer_BlogPost_Add from "@/components/my-components/posts/AddBlogPost.jsx";
 
 //user
-import User_Layout from "@/layouts/user/Index.jsx";
-import User_Home from "@/pages/user/views/Index.jsx";
+import User_Layout from "@/layouts/candidate/Index.jsx";
+import User_Home from "@/pages/candidate/home/views/Index.jsx";
 import Login from "@/pages/auth/views/Login.jsx";
 import Test from "@/pages/test.jsx";
 export default function MainRoutes() {
