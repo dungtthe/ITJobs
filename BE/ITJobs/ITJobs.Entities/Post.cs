@@ -10,6 +10,7 @@ namespace ITJobs.Entities
 {
     public class Post : BaseEntity
     {
+        public Guid UserId { get; set; }
         public string Title { get; set; }
         public string ShortContent { get; set; }
         public string MainImage { get; set; }

@@ -130,5 +130,30 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 TotalRecords = totalRecords
             };
         }
+
+        public async Task<Guid> AddJobPostAsync(Guid userId, Post postEntity)
+        {
+
+            var post = new Models.Post()
+            {
+                Id = postEntity.Id,
+                UserId = userId,
+                Title = postEntity.Title,
+                Content = postEntity.Content,
+                ShortContent = postEntity.ShortContent,
+                MainImage = postEntity.MainImage,
+                Keywords = JsonConvert.SerializeObject(postEntity.KeyWords),
+                CreatedAt = postEntity.CreateAt,
+                UpdatedAt = postEntity.UpdateAt,
+                PostType = postEntity.PostType,
+                IsDeleted = postEntity.IsDeleted,
+                ViewCount = postEntity.ViewCount,
+                EndDate= postEntity.EndDate,
+                PostingFee= postEntity.PostingFee
+            };
+
+            await _dbContext.Posts.AddAsync(post);
+            return post.Id;
+        }
     }
 }

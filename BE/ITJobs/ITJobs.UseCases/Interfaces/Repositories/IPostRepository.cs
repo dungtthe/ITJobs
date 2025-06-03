@@ -21,5 +21,9 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         #region candidate
         Task<PagedResult<ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto>> GetTopBlogPostsByViewCountAsync(int pageNumber, int pageSize);
         #endregion
+
+        #region employer
+        Task<Guid> AddJobPostAsync(Guid userId, Entities.Post postEntity);
+        #endregion
     }
 }
