@@ -31,5 +31,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task UpdateLocationsAsync(Guid userId, List<Location> locations);
         Task UpdateOverView(Guid userId, string phoneNumber, string companyName, string websiteUrl, string companyType);
         #endregion
+
+        Task<List<Guid>> GetEmployerIdsExcludingAsync(List<Guid> excludedIds, int count);
+        Task<ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId);
     }
 }

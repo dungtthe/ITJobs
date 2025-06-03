@@ -209,5 +209,42 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 _dbContext.Employers.Update(fEmployer);
             }
         }
+
+        public async Task<List<Guid>> GetEmployerIdsExcludingAsync(List<Guid> excludedIds, int count)
+        {
+            var employerIds = await _dbContext.Employers
+                .Where(e => !excludedIds.Contains(e.UserId) && !e.User.IsLocked)
+                .Select(e => e.UserId)
+                .Take(count)
+                .ToListAsync();
+
+            return employerIds;
+        }
+
+        public async Task<ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId)
+        {
+            var employer = await _dbContext.Employers
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.UserId == employerId && !e.User.IsLocked);
+
+            if (employer == null)
+            {
+                return null;
+            }
+
+            var locations = JsonConvert.DeserializeObject<List<Entities.Location>>(employer.Locations ?? "[]");
+
+            var employerSummary = new ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto
+            {
+                UserId = employer.UserId,
+                Image = employer.User.Image,
+                CompanyName = employer.CompanyName,
+                LocationNames = locations.Select(l => l.PlaceName).ToList(),
+                TotalOpenJobs = 0//handler điền sau
+            };
+
+            return employerSummary;
+        }
+
     }
 }

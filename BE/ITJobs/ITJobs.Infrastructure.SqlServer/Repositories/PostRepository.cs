@@ -1,4 +1,5 @@
 ﻿using ITJobs.Entities;
+using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,45 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                                             .ToListAsync();
 
             return posts;
+        }
+
+        public async Task<List<Guid>> GetEmployerIdsByPostIdsAsync(List<Guid> postIds)
+        {
+            var employerIds = await _dbContext.Posts
+                .Where(p => postIds.Contains(p.Id) && !p.IsDeleted)
+                .Select(p => p.UserId)
+                .Distinct() 
+                .ToListAsync();
+
+            return employerIds;
+        }
+
+        public async Task<List<Guid>> GetTopEmployersByPostTypeAsync(PostType postType, int count)
+        {
+            var topEmployers = await _dbContext.Posts
+                .Where(p => p.PostType == postType && !p.IsDeleted)
+                .GroupBy(p => p.UserId)
+                .Select(g => new
+                {
+                    EmployerId = g.Key,
+                    PostCount = g.Count()
+                })
+                .OrderByDescending(g => g.PostCount) 
+                .Take(count)
+                .Select(g => g.EmployerId)
+                .ToListAsync();
+
+            return topEmployers;
+        }
+
+        public async Task<int> CountActiveJobPostsByEmployerIdAsync(Guid employerId)
+        {
+            var now = DateTime.Now;
+            return await _dbContext.Posts
+                .CountAsync(p => p.UserId == employerId
+                             && p.PostType == PostType.JobPosting
+                             && !p.IsDeleted
+                             && (p.EndDate == null || p.EndDate > now)); 
         }
     }
 }

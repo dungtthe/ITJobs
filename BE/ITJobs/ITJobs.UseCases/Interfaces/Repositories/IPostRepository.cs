@@ -1,4 +1,5 @@
-﻿using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
+﻿using ITJobs.Entities.Enums;
+using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,9 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     {
         Task AddBlogPostAsync(Guid userId,Entities.Post postEntity);
         Task<List<BlogPostSummaryDto>> GetBlogPostsSummarAsync();
+
+        Task<List<Guid>> GetEmployerIdsByPostIdsAsync(List<Guid> postIds);
+        Task<List<Guid>> GetTopEmployersByPostTypeAsync(PostType postType, int count);
+        Task<int> CountActiveJobPostsByEmployerIdAsync(Guid employerId);
     }
 }
