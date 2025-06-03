@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
+using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -95,6 +96,39 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                              && p.PostType == PostType.JobPosting
                              && !p.IsDeleted
                              && (p.EndDate == null || p.EndDate > now)); 
+        }
+
+
+        public async Task<PagedResult<ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto>> GetTopBlogPostsByViewCountAsync(int pageNumber, int pageSize)
+        {
+            var totalRecords = await _dbContext.Posts
+                .Where(p => p.PostType == PostType.News && !p.IsDeleted)
+                .CountAsync();
+
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            var items = await _dbContext.Posts
+                .Where(p => p.PostType == PostType.News && !p.IsDeleted)
+                .OrderByDescending(p => p.ViewCount)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto
+                {
+                    Id = p.Id,
+                    MainImage = p.MainImage,
+                    Title = p.Title,
+                    ShortContent = p.ShortContent
+                })
+                .ToListAsync();
+
+            return new PagedResult<ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
         }
     }
 }

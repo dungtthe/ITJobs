@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
+using ITJobs.UseCases.Helpers.Paginations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,9 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<List<Guid>> GetEmployerIdsByPostIdsAsync(List<Guid> postIds);
         Task<List<Guid>> GetTopEmployersByPostTypeAsync(PostType postType, int count);
         Task<int> CountActiveJobPostsByEmployerIdAsync(Guid employerId);
+
+        #region candidate
+        Task<PagedResult<ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto>> GetTopBlogPostsByViewCountAsync(int pageNumber, int pageSize);
+        #endregion
     }
 }
