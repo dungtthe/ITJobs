@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
+using ITJobs.UseCases.Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary;
 using ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos;
 using ITJobs.UseCases.Helpers.Paginations;
 using System;
@@ -19,7 +20,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         #region admin
         Task AddAsync(Guid userId, string companyname);
         Task<bool> LockAccountAsync(Guid userId);
-        Task<PagedResult<EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters);
+        Task<PagedResult<UseCases.Admins.Users.Employers.Queries.GetEmployersSummary.EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters);
         Task<UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId.EmployerDto> GetEmployerByUserIdForAdminAsync(Guid userId);
         #endregion
 
@@ -33,6 +34,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         #endregion
 
         Task<List<Guid>> GetEmployerIdsExcludingAsync(List<Guid> excludedIds, int count);
-        Task<ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId);
+        Task<Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId);
     }
 }

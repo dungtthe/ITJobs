@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary
+namespace ITJobs.UseCases.Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary
 {
     public class GetTopEmployersByApplicationsSummaryQuery : BasePaginationParameters, IRequest<PagedResult<EmployerSummaryDto>>
     {

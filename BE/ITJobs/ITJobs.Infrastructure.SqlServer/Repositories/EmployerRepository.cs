@@ -2,6 +2,7 @@
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
+using ITJobs.UseCases.Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary;
 using ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateGeneralInfos;
 using ITJobs.UseCases.Employers.CompanyProfiles.Queries.GetCompanyProfile;
 using ITJobs.UseCases.Helpers.Paginations;
@@ -33,7 +34,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             });
         }
 
-        public async Task<PagedResult<EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters)
+        public async Task<PagedResult<UseCases.Admins.Users.Employers.Queries.GetEmployersSummary.EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters)
         {
             var query = _dbContext.Employers.AsQueryable();
 
@@ -52,7 +53,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 .Include(e => e.User)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
-                .Select(fEmployer => new EmployerSummaryDto()
+                .Select(fEmployer => new UseCases.Admins.Users.Employers.Queries.GetEmployersSummary.EmployerSummaryDto()
                 {
                     UserId = fEmployer.UserId,
                     CompanyName = fEmployer.CompanyName,
@@ -63,7 +64,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 })
                 .ToListAsync();
 
-            var result = new PagedResult<EmployerSummaryDto>
+            var result = new PagedResult<UseCases.Admins.Users.Employers.Queries.GetEmployersSummary.EmployerSummaryDto>
             {
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize,
@@ -221,7 +222,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return employerIds;
         }
 
-        public async Task<ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId)
+        public async Task<UseCases.Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId)
         {
             var employer = await _dbContext.Employers
                 .Include(e => e.User)
@@ -234,7 +235,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
             var locations = JsonConvert.DeserializeObject<List<Entities.Location>>(employer.Locations ?? "[]");
 
-            var employerSummary = new ITJobs.UseCases.Shared.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto
+            var employerSummary = new ITJobs.UseCases.Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto
             {
                 UserId = employer.UserId,
                 Image = employer.User.Image,
