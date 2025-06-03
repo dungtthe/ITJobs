@@ -102,7 +102,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="pt-9 pb-24 flex justify-between">
+      <div className="pt-9 pb-24 flex justify-between container mx-auto px-30">
         {/* welcome, form */}
         <div className="w-[37%] ">
           {/* welcome */}

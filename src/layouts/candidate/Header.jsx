@@ -34,7 +34,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="main-gradient py-3.5">
+      <header className="main-gradient py-3.5 border-b border-border/15 sticky top-0 z-50">
         <div className="flex justify-between items-center px-25">
           {/* logo */}
           <Logo as="h1" size="medium" />

@@ -8,7 +8,8 @@ export default function Index() {
     <>
       <div className="user-theme">
         <Header />
-        <div className="container mx-auto px-15">
+        {/* <div className="container mx-auto px-15"> */}
+        <div>
           <Outlet />
         </div>
         <Footer />
