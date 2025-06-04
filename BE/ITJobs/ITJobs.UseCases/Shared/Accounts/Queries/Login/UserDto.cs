@@ -13,5 +13,6 @@ namespace ITJobs.UseCases.Shared.Accounts.Queries.Login
         public string Image { get; set; }
         public string Token { get; set; }
         public RoleType RoleType { get; set; }
+        public string AccountBalance { get; set; }
     }
 }

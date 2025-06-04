@@ -28,7 +28,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             }
             command.UserId = userId.Value;
             var rs = await _mediator.Send(command);
-            return Ok(new { data = rs });
+            return Ok(rs);
         }
     }
 }

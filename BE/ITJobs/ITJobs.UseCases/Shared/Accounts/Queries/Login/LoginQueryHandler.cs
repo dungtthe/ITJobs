@@ -53,7 +53,8 @@ namespace ITJobs.UseCases.Shared.Accounts.Queries.Login
                 Name = user.FullName,
                 Image = user.Image,
                 Token = _tokenService.GenerateJwtToken(user),
-                RoleType = user.RoleType
+                RoleType = user.RoleType,
+                AccountBalance = user.AccountBalance.ToString(),
             };
         }
     }
