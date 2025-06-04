@@ -34,7 +34,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
                 Id = ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SYSTEMVALUE_JOB_POSTING_FEE_PER_DAY,
                 Name = "Phí đăng tin",
                 Description = "Phí đăng tin/ ngày cho bài đăng tuyển dụng",
-                Values = JsonConvert.SerializeObject("50000"),
+                Values = "50000",
                 CanEdit = true
             };
             await _context.SystemValues.AddAsync(sysPostFee);
