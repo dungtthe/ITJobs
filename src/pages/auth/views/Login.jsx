@@ -11,7 +11,11 @@ import {
   showSuccessToastHasTitle,
 } from "@/components/my-components/MyToast";
 import { useNavigate } from "react-router-dom";
-import { useUserStore, setJwtToken } from "@/stores/authStore";
+import {
+  useUserStore,
+  setJwtToken,
+  useAccountBalanceStore,
+} from "@/stores/authStore";
 export default function Login() {
   const setUser = useUserStore((state) => state.setUser);
   const clearUser = useUserStore((state) => state.clearUser);
@@ -19,6 +23,10 @@ export default function Login() {
     clearUser();
   }, []);
   const navigate = useNavigate();
+
+  const setAccountBalance = useAccountBalanceStore(
+    (state) => state.setAccountBalance
+  );
 
   // state check required
   const [notiRequiredEmail, setNotiRequiredEmail] = useState("");
@@ -73,7 +81,7 @@ export default function Login() {
         }, 1000);
         setJwtToken(sus.token);
         setUser({ name: sus.name, image: sus.image });
-
+        setAccountBalance(sus.accountBalance);
         if (sus.roleType === 0) {
           navigate("/admin");
         } else if (sus.roleType === 1) {

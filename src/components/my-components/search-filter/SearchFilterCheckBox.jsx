@@ -18,12 +18,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useState, useMemo } from "react";
 
 export const SearchFilterCheckBox = ({
-  data,
+  values,
+  name,
+  id,
   placeholder = "Lựa chọn...",
   onChange,
   maxDisplayItems = 2,
 }) => {
-  const items = data.map((item) => ({
+  const items = values.map((item) => ({
     value: item,
     label: item,
   }));
@@ -65,19 +67,20 @@ export const SearchFilterCheckBox = ({
         .map((item) => item.label)
         .join(", ");
 
-      return `(${selectedItems.length})${visibleItems}...`;
+      return `(${selectedItems.length}) ${visibleItems}...`;
     }
   }, [selectedItems, maxDisplayItems, placeholder]);
 
   return (
-    <div>
+    <div className="filter-checkbox-container">
+      <label className="block text-sm font-medium mb-2">{name}</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between "
+            className="w-full justify-between"
             title={
               selectedItems.length > 0
                 ? selectedItems.map((item) => item.label).join(", ")
@@ -88,9 +91,9 @@ export const SearchFilterCheckBox = ({
             <IoIosArrowDown className="opacity-50 flex-shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-[250px] p-0">
           <Command>
-            <CommandInput placeholder="Tìm kiếm..." className="h-9 " />
+            <CommandInput placeholder="Tìm kiếm..." className="h-9" />
             <CommandList>
               <CommandEmpty>Không tìm thấy.</CommandEmpty>
               <CommandGroup>
@@ -107,13 +110,13 @@ export const SearchFilterCheckBox = ({
                     >
                       <input
                         type="checkbox"
-                        id={`checkbox-${item.value}`}
+                        id={`checkbox-${id}-${item.value}`}
                         checked={isSelected}
-                        onCheckedChange={() => handleSelect(item)}
+                        onChange={() => {}}
                         className="mr-2 !accent-primary"
                       />
                       <label
-                        htmlFor={`checkbox-${item.value}`}
+                        htmlFor={`checkbox-${id}-${item.value}`}
                         className="flex-grow cursor-pointer text-base"
                       >
                         {item.label}

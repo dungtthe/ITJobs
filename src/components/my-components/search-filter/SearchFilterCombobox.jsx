@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,56 +18,60 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 
-export const SearchFilterCombobox = ({ data }) => {
-  const items = [];
-  data.map((item) => {
-    items.push({
-      value: item,
-      label: item,
-    });
-  });
+export const SearchFilterCombobox = ({ values, name, id, onChange }) => {
+  const items = values.map((item) => ({
+    value: item,
+    label: item,
+  }));
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+
+  const handleSelect = (currentValue) => {
+    const newValue = currentValue === value ? "" : currentValue;
+    setValue(newValue);
+    setOpen(false);
+
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
+
   return (
-    <div>
+    <div className="filter-combobox-container">
+      <label className="block text-sm font-medium mb-2">{name}</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between text-base"
+            className="w-full justify-between text-base"
           >
             {value
-              ? items.find((framework) => framework.value === value)?.label
+              ? items.find((item) => item.value === value)?.label
               : "Lựa chọn..."}
             <IoIosArrowDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-[250px] p-0">
           <Command>
             <CommandInput placeholder="Tìm kiếm..." className="h-9" />
             <CommandList>
               <CommandEmpty>Không tìm thấy.</CommandEmpty>
               <CommandGroup>
-                {items.map((framework) => (
+                {items.map((item) => (
                   <CommandItem
                     className="text-base"
-                    key={framework.value}
-                    value={framework.value}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
+                    key={item.value}
+                    value={item.value}
+                    onSelect={handleSelect}
                   >
-                    {framework.label}
+                    {item.label}
                     <Check
                       className={cn(
                         "ml-auto",
-                        value === framework.value
-                          ? "opacity-100"
-                          : "opacity-0 text-base"
+                        value === item.value ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>

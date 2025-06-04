@@ -12,9 +12,14 @@ export const removeJwtToken = () => {
   sessionStorage.removeItem("jwtToken");
 };
 
-// Zustand store luu ten voi img thoi
 export const useUserStore = create((set) => ({
   user: null,
   setUser: (userData) => set({ user: userData }),
   clearUser: () => set({ user: null }),
+}));
+
+export const useAccountBalanceStore = create((set) => ({
+  accountBalance: 0,
+  setAccountBalance: (balance) => set({ accountBalance: balance }),
+  clearAccountBalance: () => set({ accountBalance: 0 }),
 }));

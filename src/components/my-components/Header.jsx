@@ -12,7 +12,14 @@ import { CiLogout } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUserStore, removeJwtToken } from "@/stores/authStore";
-export default function Header({ name, avatartLink, profileLink }) {
+import { formatVND } from "@/utils/formatUtils";
+export default function Header({
+  name,
+  avatartLink,
+  profileLink,
+  accountBalance = 0,
+  isShowAccountBalance = false,
+}) {
   const clearUser = useUserStore((state) => state.clearUser);
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -30,6 +37,11 @@ export default function Header({ name, avatartLink, profileLink }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="flex items-center gap-2 cursor-pointer">
+                {isShowAccountBalance && (
+                  <span className="mr-5">
+                    Số dư: {formatVND(accountBalance)}
+                  </span>
+                )}
                 <Avatar className="size-11">
                   <AvatarImage src={avatartLink} />
                 </Avatar>
