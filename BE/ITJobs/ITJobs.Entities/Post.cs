@@ -52,7 +52,7 @@ namespace ITJobs.Entities
             {
                 if (PostType == PostType.JobPosting && value == null || value < DateTime.Now)
                 {
-                    throw new InvalidPostException.InvalidJobPostingException();
+                    throw new InvalidPostException.InvalidJobPostingException("");
                 }
                 endDate = value;
             }

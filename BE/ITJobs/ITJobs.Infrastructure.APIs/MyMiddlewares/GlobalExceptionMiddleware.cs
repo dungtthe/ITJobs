@@ -48,12 +48,81 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
 
                 await context.Response.WriteAsJsonAsync(response);
             }
+            catch (ITJobs.Entities.Exceptions.UserNotFoundException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+            }
+            catch (ITJobs.Entities.Exceptions.ForbiddenAccessException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (ITJobs.Entities.Exceptions.InvalidPostException.InvalidJobPostingException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (ITJobs.Entities.Exceptions.InvalidBalanceException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (ITJobs.Entities.Exceptions.EmailAlreadyExistsException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (ITJobs.Entities.Exceptions.PhoneNumberAlreadyExistsException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
+            catch (ITJobs.Entities.Exceptions.SystemDataNotImplementedException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
             catch (Exception ex)
             {
                 // Lấy IHttpContextInfoAccessor từ DI container
                 var infoAccessor = context.RequestServices.GetService<IHttpContextInfoAccessor>();
                 var clientIp = infoAccessor?.GetClientIpV4() ?? "";
-                await LoggerHelper.LogExceptionAsync(clientIp, "GlobalExceptionMiddleware","",ex);
+                await LoggerHelper.LogExceptionAsync(clientIp, "GlobalExceptionMiddleware", "", ex);
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsJsonAsync(HttpStatusCode.HeThongGapSuCo);

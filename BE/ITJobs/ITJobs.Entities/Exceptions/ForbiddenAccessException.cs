@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ITJobs.Entities.Exceptions
 {
-    public class InvalidBalanceException : Exception
+    public class ForbiddenAccessException:Exception
     {
-        public InvalidBalanceException(string message = "Số dư tài khoản không hợp lệ.")
-            : base(message)
+        public ForbiddenAccessException(string message = "Bạn không được phép thực hiện chức năng này") : base(message)
         {
         }
     }

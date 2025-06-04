@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace ITJobs.UseCases.Employers.Posts.Commands.AddJobPost
 {
-    public class AddJobPostCommand : IRequest<Guid>
+    public class AddJobPostCommand : IRequest<ResponeAddPostDto>
     {
         //phan post
         public Guid ?UserId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-
-        // public DateTime EndDate { get; set; } chua lam
+        public DateTime EndDate { get; set; } 
 
 
         public List<SearchFilterRangeDto> SearchFilterRanges { get; set; } = new List<SearchFilterRangeDto>();

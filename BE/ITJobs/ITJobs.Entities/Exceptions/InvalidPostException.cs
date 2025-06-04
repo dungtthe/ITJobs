@@ -13,6 +13,9 @@ namespace ITJobs.Entities.Exceptions
         }
         public class InvalidJobPostingException : Exception
         {
+            public InvalidJobPostingException(string message) : base(message)
+            {
+            }
         }
         public class InvalidViewCountException : Exception
         {

@@ -13,9 +13,11 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task RegisterAsync(Guid id,string passWord,string email,string fullName, RoleType roleType);
         Task <bool> IsEmailExistsAsync(string email);
         Task<Entities.AppUser> GetUserByEmailAsync(string email);
+        Task<Entities.AppUser> GetUserByIdAsync(Guid userId);
         Task<bool> IsUserAdminExistsAsync(Guid userId);
         Task UpdateImageAsync(Guid userId, string image);
         Task<bool> UserExistsAsync(Guid userId);
         Task<bool> UserExistByPhoneNumberAsync(string phoneNumber, Guid userId);
+        Task UpdateAccountBalanceAsync(Guid userId, long accountBalanceNew);
     }
 }

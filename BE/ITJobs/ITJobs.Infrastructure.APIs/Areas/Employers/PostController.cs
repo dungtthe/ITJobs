@@ -27,9 +27,8 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
                 return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
             }
             command.UserId = userId.Value;
-
             var rs = await _mediator.Send(command);
-            return Ok(new { id = rs });
+            return Ok(new { data = rs });
         }
     }
 }
