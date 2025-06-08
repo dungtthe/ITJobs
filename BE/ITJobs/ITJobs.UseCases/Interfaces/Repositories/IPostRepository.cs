@@ -12,7 +12,11 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     public interface IPostRepository
     {
         Task AddBlogPostAsync(Guid userId,Entities.Post postEntity);
-        Task<List<BlogPostSummaryDto>> GetBlogPostsSummarAsync();
+
+        #region admin
+        Task<PagedResult<Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummarForAdminAsync(GetBlogPostsSummaryQuery request);
+        #endregion
+
 
         Task<List<Guid>> GetEmployerIdsByPostIdsAsync(List<Guid> postIds);
         Task<List<Guid>> GetTopEmployersByPostTypeAsync(PostType postType, int count);

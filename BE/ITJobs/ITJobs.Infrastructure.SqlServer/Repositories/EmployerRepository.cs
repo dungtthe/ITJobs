@@ -247,5 +247,18 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return employerSummary;
         }
 
+        public async Task<List<UseCases.Admins.Users.Employers.Queries.GetCompayNames.EmployerDto>> GetCompayNamesForAdminAsync()
+        {
+            var employers = await _dbContext.Employers
+                .Include(e => e.User)
+                .Select(e => new UseCases.Admins.Users.Employers.Queries.GetCompayNames.EmployerDto
+                {
+                    UserId = e.UserId,
+                    CompanyName = e.CompanyName,
+                    Image = e.User.Image
+                })
+                .ToListAsync();
+            return employers;
+        }
     }
 }

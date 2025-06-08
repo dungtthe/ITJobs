@@ -1,4 +1,5 @@
 ﻿using ITJobs.Infrastructure.Commons.Helpers;
+using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary
 {
-    public class GetBlogPostsSummaryQueryHandler : IRequestHandler<GetBlogPostsSummaryQuery, List<BlogPostSummaryDto>>
+    public class GetBlogPostsSummaryQueryHandler : IRequestHandler<GetBlogPostsSummaryQuery, PagedResult<BlogPostSummaryDto>>
     {
         private readonly IPostRepository _postRepository;
         private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
@@ -22,14 +23,14 @@ namespace ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary
             _httpContextInfoAccessor = httpContextInfoAccessor;
         }
 
-        public async Task<List<BlogPostSummaryDto>> Handle(GetBlogPostsSummaryQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<BlogPostSummaryDto>> Handle(GetBlogPostsSummaryQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
                 await LoggerHelper.LogInfomationAsync(ipClient, "GetBlogPostsSummaryQueryHandler", JsonConvert.SerializeObject(request));
 
-                var posts = await _postRepository.GetBlogPostsSummarAsync();
+                var posts = await _postRepository.GetBlogPostsSummarForAdminAsync(request);
 
                 await LoggerHelper.LogInfomationAsync(ipClient, "GetBlogPostsSummaryQueryHandler", "thành công: " + JsonConvert.SerializeObject(request));
 

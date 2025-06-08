@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities.Exceptions;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.CreateEmployer;
 using ITJobs.UseCases.Admins.Users.Employers.Commands.LockAccountEmployer;
+using ITJobs.UseCases.Admins.Users.Employers.Queries.GetCompayNames;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId;
 using ITJobs.UseCases.Admins.Users.Employers.Queries.GetEmployersSummary;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
@@ -73,5 +74,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             }
 
         }
+
+        [HttpGet("company-names")]
+        public async Task<IActionResult> GetCompanyNamesAsync([FromQuery] GetCompayNamesQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
+
     }
 }

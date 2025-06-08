@@ -40,23 +40,56 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             });
         }
 
-        public async Task<List<BlogPostSummaryDto>> GetBlogPostsSummarAsync()
+        public async Task<PagedResult<UseCases.Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummarForAdminAsync(GetBlogPostsSummaryQuery request)
         {
-            var posts = await _dbContext.Posts
-                                            .Select(p => new BlogPostSummaryDto
-                                            {
-                                                Id = p.Id,
-                                                MainImage = p.MainImage,
-                                                Title = p.Title,
-                                                AuthorName = p.User.FullName,
-                                                CreateAt = p.CreatedAt,
-                                                ViewCount = p.ViewCount,
-                                                ShortContent = p.ShortContent,
-                                                IsDeleted=p.IsDeleted
-                                            })
-                                            .ToListAsync();
+            var query = _dbContext.Posts
+                                        .Include(p=>p.User)
+                                        .Where(p => p.PostType == PostType.News);
+            if (request.UserId != null)
+            {
+                query = query.Where(p => p.UserId == request.UserId);
+            }
 
-            return posts;
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                query = query.Where(p =>
+                    p.User.FullName.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                    p.Title.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                    p.ShortContent.ToLower().Contains(request.SearchTerm.ToLower()));
+            }
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
+
+            var items = await query
+                .OrderByDescending(p => p.CreatedAt) 
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => new UseCases.Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto
+                {
+                    Id = p.Id,
+                    MainImage = p.MainImage,
+                    Title = p.Title,
+                    CreateAt = p.CreatedAt,
+                    UpdateAt = p.UpdatedAt,
+                    ViewCount = p.ViewCount,
+                    ShortContent = p.ShortContent,
+                    IsDeleted = p.IsDeleted,
+
+                    UserId = p.UserId,
+                    AuthorName = p.User.FullName,
+                    AuthorAvatar = p.User.Image
+                })
+                .ToListAsync();
+
+            return new PagedResult<UseCases.Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>
+            {
+                Items = items,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
         }
 
         public async Task<List<Guid>> GetEmployerIdsByPostIdsAsync(List<Guid> postIds)

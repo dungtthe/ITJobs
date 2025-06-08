@@ -22,6 +22,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<bool> LockAccountAsync(Guid userId);
         Task<PagedResult<UseCases.Admins.Users.Employers.Queries.GetEmployersSummary.EmployerSummaryDto>> GetEmployersSummarAsync(BasePaginationParameters parameters);
         Task<UseCases.Admins.Users.Employers.Queries.GetEmployerByUserId.EmployerDto> GetEmployerByUserIdForAdminAsync(Guid userId);
+        Task<List<UseCases.Admins.Users.Employers.Queries.GetCompayNames.EmployerDto>> GetCompayNamesForAdminAsync();
         #endregion
 
         #region employer
