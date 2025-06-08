@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
+using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -187,6 +188,57 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
             await _dbContext.Posts.AddAsync(post);
             return post.Id;
+        }
+
+        public async Task<PagedResult<UseCases.Admins.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>> GetJobPostsSummarForAdminAsync(UseCases.Admins.Posts.Queries.GetJobPostsSummary.GetJobPostsSummaryQuery request)
+        {
+            var query = _dbContext.Posts
+                            .Include(p => p.User)
+                            .Where(p => p.PostType == PostType.JobPosting);
+            if (request.UserId != null)
+            {
+                query = query.Where(p => p.UserId == request.UserId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                query = query.Where(p =>
+                    p.User.FullName.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                    p.Title.ToLower().Contains(request.SearchTerm.ToLower()));
+            }
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
+
+            var items = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => new UseCases.Admins.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    CreateAt = p.CreatedAt,
+                    UpdateAt = p.UpdatedAt,
+                    EndDate = p.EndDate.Value,
+                    ViewCount = p.ViewCount,
+                    IsDeleted = p.IsDeleted,
+                    PostingFee = p.PostingFee.ToString(),
+
+                    UserId = p.UserId,
+                    AuthorName = p.User.FullName,
+                    AuthorAvatar = p.User.Image
+                })
+                .ToListAsync();
+
+            return new PagedResult<UseCases.Admins.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>
+            {
+                Items = items,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
         }
     }
 }
