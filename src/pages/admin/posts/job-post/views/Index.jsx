@@ -224,17 +224,20 @@ export default function Index() {
                   <th className="w-[5%] py-3.5 pl-6 pr-2 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
                     STT
                   </th>
-                  <th className="w-[29%] py-3.5 px-4 text-left font-medium text-xs uppercase tracking-wider text-foreground/70">
+                  <th className="w-[20%] py-3.5 px-4 text-left font-medium text-xs uppercase tracking-wider text-foreground/70">
                     Tiêu đề
                   </th>
                   <th className="w-[10%] py-3.5 px-4 text-left font-medium text-xs uppercase tracking-wider text-foreground/70">
                     Tác giả
                   </th>
-                  <th className="w-[15%] py-3.5 px-4 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
+                  <th className="w-[13%] py-3.5 px-4 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
                     Phí đăng tin
                   </th>
                   <th className="w-[10%] py-3.5 px-4 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
                     Lượt xem
+                  </th>
+                  <th className="w-[11%] py-3.5 px-4 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
+                    Lượt ứng tuyển
                   </th>
                   <th className="w-[10%] py-3.5 px-4 text-center font-medium text-xs uppercase tracking-wider text-foreground/70">
                     Trạng thái
@@ -293,6 +296,9 @@ export default function Index() {
                       </td>
                       <td className="py-4 px-4 text-sm text-center">
                         {post.viewCount}
+                      </td>
+                      <td className="py-4 px-4 text-sm text-center">
+                        {post.jobApplicationCount}
                       </td>
                       <td className="py-4 px-4 text-sm text-center">
                         {getJobStatus(post.endDate)}
