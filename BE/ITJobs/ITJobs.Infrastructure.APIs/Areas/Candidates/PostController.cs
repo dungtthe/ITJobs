@@ -30,6 +30,21 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
+
+
+        [HttpGet("random-blog")]
+        public async Task<IActionResult> GetRandomBlogPostsSummaryAsync([FromQuery] UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary.GetRandomBlogPostsSummaryQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
+
+        [HttpGet("blog/{id}")]
+        public async Task<IActionResult> GetBlogPostByIdAsync([FromRoute] UseCases.Candidates.Posts.Queries.GetBlogPostById.GetBlogPostByIdQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 
 }

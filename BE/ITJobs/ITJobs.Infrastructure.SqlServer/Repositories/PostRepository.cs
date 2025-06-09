@@ -2,6 +2,8 @@
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -278,6 +280,60 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 PageSize = request.PageSize,
                 TotalPages = totalPages,
                 TotalRecords = totalRecords
+            };
+        }
+
+        public async Task<List<UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto>> GetRandomBlogPostsSummaryForCandidateAsync(GetRandomBlogPostsSummaryQuery request)
+        {
+            var query = _dbContext.Posts
+                .Where(p => p.PostType == PostType.News && !p.IsDeleted);
+
+            if (request.ExcludeId.HasValue)
+            {
+                query = query.Where(p => p.Id != request.ExcludeId.Value);
+            }
+
+            var totalPosts = await query.CountAsync();
+
+            if (totalPosts == 0)
+            {
+                return new List<UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto>();
+            }
+
+            var randomPosts = await query
+                .OrderBy(p => Guid.NewGuid()) 
+                .Take(request.Count)
+                .Select(p => new UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto
+                {
+                    Id = p.Id,
+                    MainImage = p.MainImage,
+                    Title = p.Title,
+                    ShortContent = p.ShortContent
+                })
+                .ToListAsync();
+
+            return randomPosts;
+        }
+
+        public async Task<ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.BlogPostDto> GetBlogPostByIdForCandidate(ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.GetBlogPostByIdQuery request)
+        {
+            var post = await _dbContext.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == request.Id && p.PostType == PostType.News && !p.IsDeleted);
+            if(post == null)
+            {
+                return null;
+            }
+
+            return new ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.BlogPostDto
+            {
+                Id = post.Id,
+                Content = post.Content,
+                CreateAt = post.CreatedAt,
+                UpdateAt = post.UpdatedAt,
+                ViewCount = post.ViewCount,
+
+                UserId = post.UserId,
+                AuthorName = post.User.FullName,
+                AuthorAvatar = post.User.Image
             };
         }
     }
