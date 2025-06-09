@@ -16,7 +16,7 @@ namespace ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary
         public long ViewCount { get; set; }
         public bool IsDeleted { get; set; }
         public string PostingFee { get; set; }
-
+        public int JobApplicationCount { get; set; }
 
         //author
         public Guid UserId { get; set; }

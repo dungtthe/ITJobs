@@ -212,6 +212,23 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var totalRecords = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
 
+            var postIds = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var applicationCounts = await _dbContext.JobApplications
+                .Where(ja => postIds.Contains(ja.PostId))
+                .GroupBy(ja => ja.PostId)
+                .Select(g => new
+                {
+                    PostId = g.Key,
+                    Count = g.Count()
+                })
+                .ToDictionaryAsync(x => x.PostId, x => x.Count);
+
             var items = await query
                 .OrderByDescending(p => p.CreatedAt)
                 .Skip((request.PageNumber - 1) * request.PageSize)
@@ -226,12 +243,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     ViewCount = p.ViewCount,
                     IsDeleted = p.IsDeleted,
                     PostingFee = p.PostingFee.ToString(),
-
+                    JobApplicationCount = 0,
                     UserId = p.UserId,
                     AuthorName = p.User.FullName,
                     AuthorAvatar = p.User.Image
                 })
                 .ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.JobApplicationCount = applicationCounts.GetValueOrDefault(item.Id, 0);
+            }
 
             return new PagedResult<UseCases.Admins.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>
             {
