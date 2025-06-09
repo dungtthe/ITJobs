@@ -1,4 +1,5 @@
 ﻿using ITJobs.Infrastructure.Commons.Helpers;
+using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.ExternalServices;
 using ITJobs.UseCases.Interfaces.Repositories;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary
 {
-    public class GetCandidateSummaryQueryHandler : IRequestHandler<GetCandidateSummaryQuery, List<CandidateSummaryDto>>
+    public class GetCandidateSummaryQueryHandler :IRequestHandler<GetCandidateSummaryQuery, PagedResult<CandidateSummaryDto>>
     {
         private readonly ICandidateRepository _candidateRepository;
         private readonly IHttpContextInfoAccessor _httpContextInfoAccessor;
@@ -21,23 +22,9 @@ namespace ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary
             _httpContextInfoAccessor = httpContextInfoAccessor;
         }
 
-        public async Task<List<CandidateSummaryDto>> Handle(GetCandidateSummaryQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<CandidateSummaryDto>> Handle(GetCandidateSummaryQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                string ipClient = _httpContextInfoAccessor.GetClientIpV4();
-                await LoggerHelper.LogInfomationAsync(ipClient, "GetCandidateSummaryQueryHandler", JsonConvert.SerializeObject(request));
-
-                var candidates = await _candidateRepository.GetCandidatesSummarAsync();
-
-                await LoggerHelper.LogInfomationAsync(ipClient, "GetCandidateSummaryQueryHandler", "thành công: " + JsonConvert.SerializeObject(request));
-
-                return candidates;
-            }
-            catch
-            {
-                throw;
-            }
+            return await _candidateRepository.GetCandidatesSummaryForAdminAsync(request);
         }
     }
 }

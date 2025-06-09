@@ -1,4 +1,6 @@
 ﻿using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary;
+using ITJobs.UseCases.Helpers.Paginations;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
     public interface ICandidateRepository
     {
         Task AddAsync(Guid userId);
-        Task<List<CandidateSummaryDto>> GetCandidatesSummarAsync();
+        Task<PagedResult<ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary.CandidateSummaryDto>> GetCandidatesSummaryForAdminAsync(ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary.GetCandidateSummaryQuery request);
         Task<bool> LockAccountAsync(Guid userId);
     }
 }
