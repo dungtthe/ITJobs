@@ -11,7 +11,7 @@ import { getSuggestedSkills } from "../services/getSuggestedSkills";
 import { getTopEmployersByApplicationsSummary } from "../services/getTopEmployersByApplicationsSummary";
 import { EmployerSummary } from "./EmployerSummary.jsx";
 import { getTopBlogPostsByViewCountSummary } from "../services/getTopBlogPostsByViewCountSummary";
-import { BlogPostSummary } from "./BlogPostSummary.jsx";
+import { BlogPostSummary } from "../../shared-card/BlogCard.jsx";
 export default function Index() {
   const [skillsSuggested, SetSkillsSuggested] = useState([]);
   const [employersTop, SetEmployersTop] = useState([]);

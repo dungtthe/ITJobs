@@ -36,8 +36,17 @@ export default function Header() {
     <>
       <header className="main-gradient py-3.5 border-b border-border/15 sticky top-0 z-50">
         <div className="flex justify-between items-center px-25">
-          {/* logo */}
-          <Logo as="h1" size="medium" />
+          <div className="flex items-center">
+            {/* logo */}
+            <Logo as="h1" size="medium" />
+            <div className="ml-8">
+              <Link className="text-secondary-foreground/80">Việc làm IT</Link>
+              <Link to="/blog" className="ml-5 text-secondary-foreground/80">
+                Blog
+              </Link>
+            </div>
+          </div>
+
           {/* login and avatar */}
           <div className="flex justify-end ">
             {user === null ? (

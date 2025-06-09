@@ -1,6 +1,11 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { FaArrowRight } from "react-icons/fa";
-export const BlogPostSummary = ({ blog, ratio, lineClampShortContent }) => {
+export const BlogPostSummary = ({
+  blog,
+  ratio,
+  lineClampTitle = "line-clamp-2",
+  lineClampShortContent,
+}) => {
   const handleClick = (postId) => {
     alert(postId);
   };
@@ -21,7 +26,7 @@ export const BlogPostSummary = ({ blog, ratio, lineClampShortContent }) => {
       </div>
 
       <div className="p-4">
-        <h4 className="text-lg font-bold">{blog.title}</h4>
+        <h4 className={`text-lg font-bold ${lineClampTitle}`}>{blog.title}</h4>
         <p className={`mt-5 text-card-foreground/80 ${lineClampShortContent}`}>
           {blog.shortContent}
         </p>

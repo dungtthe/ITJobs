@@ -24,6 +24,7 @@ import User_Layout from "@/layouts/candidate/Index.jsx";
 import User_Home from "@/pages/candidate/home/views/Index.jsx";
 import Login from "@/pages/auth/views/Login.jsx";
 import Test from "@/pages/test.jsx";
+import Blog from "@/pages/candidate/posts/blog/views/Index.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -51,6 +52,7 @@ export default function MainRoutes() {
           <Route index element={<User_Home />} />
           <Route path="login" element={<Login />} />
           <Route path="test" element={<Test />} />
+          <Route path="blog" element={<Blog />} />
         </Route>
       </Routes>
     </BrowserRouter>
