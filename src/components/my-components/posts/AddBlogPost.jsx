@@ -102,6 +102,8 @@ export default function AddBlogPost() {
       shortContent: shortContent,
       content: content,
     };
+
+    console.log(content.length);
     addBlogPost(
       data,
       (sus) => {

@@ -1,13 +1,16 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 export const BlogPostSummary = ({
   blog,
   ratio,
   lineClampTitle = "line-clamp-2",
   lineClampShortContent,
 }) => {
+  const navigate = useNavigate();
   const handleClick = (postId) => {
-    alert(postId);
+    navigate(`/blog/${postId}`);
   };
 
   return (
