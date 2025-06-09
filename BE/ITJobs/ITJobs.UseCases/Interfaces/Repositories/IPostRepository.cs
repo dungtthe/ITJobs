@@ -26,6 +26,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 
         #region candidate
         Task<PagedResult<ITJobs.UseCases.Candidates.Posts.Queries.GetTopBlogPostsByViewCountSummary.BlogPostSummaryDto>> GetTopBlogPostsByViewCountAsync(int pageNumber, int pageSize);
+        Task<PagedResult<Candidates.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummaryForCandidateAsync(Candidates.Posts.Queries.GetBlogPostsSummary.GetBlogPostsSummaryQuery request);
         #endregion
 
         #region employer

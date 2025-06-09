@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostsSummary;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITJobs.Infrastructure.APIs.Areas.Candidates
@@ -21,6 +22,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var result = await _mediator.Send(query);
             return Ok(result);
 
+        }
+
+        [HttpGet("blog")]
+        public async Task<IActionResult> GetBlogPostsSummaryAsync([FromQuery] GetBlogPostsSummaryQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
         }
     }
 

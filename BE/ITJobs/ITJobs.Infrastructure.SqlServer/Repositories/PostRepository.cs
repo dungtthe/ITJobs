@@ -240,5 +240,45 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 TotalRecords = totalRecords
             };
         }
+
+        public async Task<PagedResult<UseCases.Candidates.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummaryForCandidateAsync(UseCases.Candidates.Posts.Queries.GetBlogPostsSummary.GetBlogPostsSummaryQuery request)
+        {
+            var query = _dbContext.Posts
+                                       .Include(p => p.User)
+                                       .Where(p => p.PostType == PostType.News);
+
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                query = query.Where(p =>
+                    p.User.FullName.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                    p.Title.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                    p.ShortContent.ToLower().Contains(request.SearchTerm.ToLower()));
+            }
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
+
+            var items = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => new UseCases.Candidates.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto
+                {
+                    Id = p.Id,
+                    MainImage = p.MainImage,
+                    Title = p.Title,
+                    ShortContent = p.ShortContent,
+                })
+                .ToListAsync();
+
+            return new PagedResult<UseCases.Candidates.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>
+            {
+                Items = items,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
+        }
     }
 }
