@@ -91,37 +91,39 @@ export default function Detail() {
           )}
         </div>
         {/* co the ban thich */}
-        <div className="w-[28%] border">
-          {blogPostsRandom === null ? (
-            <>
-              <Skeleton className="h-screen bg-accent/5"></Skeleton>
-            </>
-          ) : (
-            <>
-              <div>
-                <h4 className="text-2xl font-medium text-foreground px-5 pt-5">
-                  Có thể bạn sẽ thích
-                </h4>
-                <div className="mt-5">
-                  {blogPostsRandom && blogPostsRandom.length > 0 ? (
-                    blogPostsRandom.map((item) => (
-                      <div key={item.id} className="px-4 mb-10">
-                        <BlogPostSummary
-                          ratio={3 / 2}
-                          blog={item}
-                          lineClampShortContent="line-clamp-3"
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-muted-foreground px-5 py-3">
-                      Không có bài viết gợi ý nào
-                    </p>
-                  )}
+        <div className="w-[28%]">
+          <div className="border rounded-lg sticky top-18">
+            {blogPostsRandom === null ? (
+              <>
+                <Skeleton className="h-96 bg-accent/5"></Skeleton>
+              </>
+            ) : (
+              <>
+                <div>
+                  <h4 className="text-2xl font-medium text-foreground px-5 pt-5">
+                    Có thể bạn sẽ thích
+                  </h4>
+                  <div className="mt-5 overflow-y-auto max-h-[80vh] scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent">
+                    {blogPostsRandom && blogPostsRandom.length > 0 ? (
+                      blogPostsRandom.map((item) => (
+                        <div key={item.id} className="px-4 mb-6">
+                          <BlogPostSummary
+                            ratio={3 / 2}
+                            blog={item}
+                            lineClampShortContent="line-clamp-3"
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-muted-foreground px-5 py-3">
+                        Không có bài viết gợi ý nào
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
