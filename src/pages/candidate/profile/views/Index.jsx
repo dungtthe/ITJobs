@@ -2,6 +2,7 @@ import { Overview } from "@/components/my-components/candidate/profile/Overview"
 import { useEffect, useState } from "react";
 import { getCandidateProfile } from "../services/getCandidateProfile";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CandidateIntroductionTex } from "./CandidateIntroductionTex";
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState(null);
@@ -31,8 +32,14 @@ export default function Index() {
 
   return (
     <>
-      <div className="container mx-auto px-20 py-8">
+      <div className="container mx-auto px-30 py-8">
         <Overview isCanEdit={true} profile={profile}></Overview>
+        <div className="mt-8 ">
+          <CandidateIntroductionTex
+            candidateIntroduction={profile.aboutMe}
+            isCanEdit={true}
+          ></CandidateIntroductionTex>
+        </div>
       </div>
     </>
   );
