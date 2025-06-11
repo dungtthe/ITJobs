@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getCandidateProfile } from "../services/getCandidateProfile";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CandidateIntroductionTex } from "./CandidateIntroductionTex";
+import { CVs } from "@/components/my-components/candidate/profile/CVs";
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState(null);
@@ -12,6 +13,7 @@ export default function Index() {
       (data) => {
         setProfile(data);
         setIsLoading(false);
+        console.log("Profile data:", data);
       },
       () => {
         setIsLoading(true);
@@ -39,6 +41,9 @@ export default function Index() {
             candidateIntroduction={profile.aboutMe}
             isCanEdit={true}
           ></CandidateIntroductionTex>
+        </div>
+        <div className="mt-8">
+          <CVs isCanEdit={true} cvLinks={profile.cVs} />
         </div>
       </div>
     </>
