@@ -1,7 +1,9 @@
 ﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.Infrastructure.Commons.Consts;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,5 +35,35 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
                 return Conflict(new { message = e.Message });
             }
         }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> GetMyProfileAsync([FromQuery] UseCases.Shared.Candidates.Queries.GetCandidateProfile.GetCandidateProfileQuery query)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            query.UserId = userId.Value;
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
+
+        [HttpPatch("profile/update/overview")]
+        [Authorize]
+        public async Task<IActionResult> UpdateOverviewAsync([FromBody] UseCases.Candidates.Accounts.Commands.UpdateOverviews.UpdateOverviewsCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { overview = rs });
+        }
+
+
     }
 }

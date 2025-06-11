@@ -111,6 +111,10 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         public async Task<bool> UserExistByPhoneNumberAsync(string phoneNumber, Guid userId)
         {
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                return false;
+            }
             return await _dbContext.Users.AnyAsync(user => user.PhoneNumber == phoneNumber && user.Id != userId);
         }
 

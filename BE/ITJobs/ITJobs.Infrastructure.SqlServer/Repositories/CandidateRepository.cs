@@ -4,6 +4,7 @@ using ITJobs.Infrastructure.SqlServer.Models;
 using ITJobs.UseCases.Admins.Users.Candidates.Queries.GetCandidateSummary;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
+using ITJobs.UseCases.Shared.Candidates.Queries.GetCandidateProfile;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -27,6 +28,23 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             {
                 UserId = userId
             });
+        }
+
+        public async Task<CandidateProfileDto> GetCandidateProfileAsync(Guid userId)
+        {
+            var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId && u.RoleType == Entities.Enums.RoleType.Candidate);
+            return new CandidateProfileDto()
+            {
+                UserId= userId,
+                FullName = fUser.FullName,
+                Email = fUser.Email,
+                PhoneNumber = fUser.PhoneNumber,
+                Address = fUser.Address,
+                Gender = fUser.Gender,
+                DateOfBirth = fUser.DateOfBirth,
+                Image = fUser.Image,
+                SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fUser.SocialMediaLinks)
+            };
         }
 
         public async Task<List<CandidateSummaryDto>> GetCandidatesSummaryForAdminAsync()
@@ -99,6 +117,21 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             }
             fUser.IsLocked = true;
             return true;
+        }
+
+        public async Task UpdateOverviewAsync(Guid userId, string fullName, string phoneNumber, string address, string gender, DateTime ?dateOfBirth, List<SocialMedia> socialMediaLinks)
+        {
+            var fUser = await _dbContext.Users.FindAsync(userId);
+            if (fUser == null || fUser.RoleType != RoleType.Candidate)
+            {
+                return;
+            }
+            fUser.FullName = fullName;
+            fUser.PhoneNumber = phoneNumber;
+            fUser.Address = address;
+            fUser.Gender = gender;
+            fUser.DateOfBirth = dateOfBirth;
+            fUser.SocialMediaLinks = JsonConvert.SerializeObject(socialMediaLinks);
         }
     }
 }
