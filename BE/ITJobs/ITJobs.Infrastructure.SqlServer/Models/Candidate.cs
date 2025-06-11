@@ -16,7 +16,6 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         [ForeignKey(nameof(UserId))]
         public virtual AppUser User { get; set; }
 
-        [MaxLength(2000)]
         public string AboutMe { get; set; }
         public string Skills { get; set; }
         public string FollowedEmployerIds { get; set; }

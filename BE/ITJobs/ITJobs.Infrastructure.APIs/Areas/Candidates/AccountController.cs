@@ -64,6 +64,18 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             return Ok(new { overview = rs });
         }
 
-
+        [HttpPatch("profile/update/about-me")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAboutMeAsync([FromBody] UseCases.Candidates.Accounts.Commands.UpdateAboutme.UpdateAboutmeCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { aboutMe = rs });
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         public async Task<CandidateProfileDto> GetCandidateProfileAsync(Guid userId)
         {
             var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId && u.RoleType == Entities.Enums.RoleType.Candidate);
+            var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
             return new CandidateProfileDto()
             {
                 UserId= userId,
@@ -43,7 +44,9 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 Gender = fUser.Gender,
                 DateOfBirth = fUser.DateOfBirth,
                 Image = fUser.Image,
-                SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fUser.SocialMediaLinks)
+                SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fUser.SocialMediaLinks),
+
+                AboutMe = fCandidate.AboutMe,
             };
         }
 
@@ -117,6 +120,16 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             }
             fUser.IsLocked = true;
             return true;
+        }
+
+        public async Task UpdateAboutmeAsync(Guid userId, string content)
+        {
+            var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (fCandidate == null)
+            {
+                return;
+            }
+            fCandidate.AboutMe = content;
         }
 
         public async Task UpdateOverviewAsync(Guid userId, string fullName, string phoneNumber, string address, string gender, DateTime ?dateOfBirth, List<SocialMedia> socialMediaLinks)

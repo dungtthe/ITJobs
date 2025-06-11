@@ -18,5 +18,8 @@ namespace ITJobs.UseCases.Shared.Candidates.Queries.GetCandidateProfile
         public DateTime ?DateOfBirth { get; set; }
         public string Image { get; set; }
         public List<Entities.SocialMedia> SocialMediaLinks { get; set; }    
+
+        //introduction
+        public string AboutMe { get; set; }
     }
 }
