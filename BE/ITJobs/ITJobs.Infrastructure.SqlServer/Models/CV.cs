@@ -16,7 +16,13 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public virtual Candidate Candidate { get; set; }
 
         [Required]
-        public string Content { get; set; }
-        public int SortOrder { get; set; }
+        public string OriginalFileName { get; set; }
+        [Required]
+        public string FileName { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public CV()
+        {
+            CreatedAt = DateTime.UtcNow;
+        }
     }
 }

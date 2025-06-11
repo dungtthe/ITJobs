@@ -30,10 +30,21 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             });
         }
 
+        public async Task<Guid> GetCandidateIdByUserIdAsync(Guid userId)
+        {
+            var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (fCandidate == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+            return fCandidate.Id;
+        }
+
         public async Task<CandidateProfileDto> GetCandidateProfileAsync(Guid userId)
         {
             var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId && u.RoleType == Entities.Enums.RoleType.Candidate);
             var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            var cvs = await _dbContext.CVs.Where(c => c.CandidateId == fCandidate.Id).ToListAsync();
             return new CandidateProfileDto()
             {
                 UserId= userId,
@@ -47,6 +58,14 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(fUser.SocialMediaLinks),
 
                 AboutMe = fCandidate.AboutMe,
+                CVs = cvs.Select(c => new Entities.CV()
+                {
+                    Id = c.Id,
+                    CandidateId = c.CandidateId,
+                    FileName = c.FileName,
+                    OriginalFileName = c.OriginalFileName,
+                    CreatedAt = c.CreatedAt
+                }).ToList()
             };
         }
 

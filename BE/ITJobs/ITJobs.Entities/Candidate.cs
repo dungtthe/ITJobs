@@ -13,7 +13,6 @@ namespace ITJobs.Entities
         public string AboutMe { get; set; }
         public List<string> Skills { get; set; }
         public List<Employer> FollowedEmployers { get; set; }
-        public List<CV> CVs { get; set; }  
         public List<Certification> Certifications { get; set; } 
         public List<Education> Educations { get; set; }  
         public List<WorkExperience> WorkExperiences { get; set; }

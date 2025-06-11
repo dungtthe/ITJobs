@@ -1,6 +1,8 @@
-﻿using ITJobs.Entities.Exceptions;
+﻿using ITJobs.Entities.Enums;
+using ITJobs.Entities.Exceptions;
 using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.Infrastructure.Commons.Consts;
+using ITJobs.Infrastructure.Commons.Helpers;
 using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -76,6 +78,28 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             command.UserId = userId.Value;
             var rs = await _mediator.Send(command);
             return Ok(new { aboutMe = rs });
+        }
+
+
+        [HttpDelete("delete-cv/{cvId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCVAsync([FromRoute] Guid cvId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteCV.DeleteCVCommand { UserId = userId.Value, CVId = cvId };
+            var fileName = await _mediator.Send(command);
+            try
+            {
+                System.IO.File.Delete(Path.Combine(Utils.GetPathUploadCV(), fileName));
+            }
+            catch (Exception ex)
+            {
+            }
+            return Ok(new {});
         }
     }
 }

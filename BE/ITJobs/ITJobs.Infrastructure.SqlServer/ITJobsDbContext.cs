@@ -18,7 +18,6 @@ namespace ITJobs.Infrastructure.SqlServer
         public DbSet<CommentHistory> CommentHistories { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<CV> CVs { get; set; }
-        public DbSet<CVTemplate> CVTemplates { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<Employer> Employers { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
