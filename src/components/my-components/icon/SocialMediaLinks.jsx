@@ -8,24 +8,19 @@ import { FaTwitter } from "react-icons/fa";
 
 export const SocialMediaLink = ({ item, className }) => {
   const { name, url } = item;
-
+  console.log(item);
   const iconMap = {
-    github: <FaGithub />,
-    youtube: <FaYoutube />,
-    facebook: <FaFacebook />,
-    instagram: <FaInstagram />,
-    linkedin: <FaLinkedin />,
-    twitter: <FaTwitter />,
+    github: <FaGithub className={className} />,
+    youtube: <FaYoutube className={className} />,
+    facebook: <FaFacebook className={className} />,
+    instagram: <FaInstagram className={className} />,
+    linkedin: <FaLinkedin className={className} />,
+    twitter: <FaTwitter className={className} />,
   };
 
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={className}
-    >
-      {iconMap[name.toLowerCase()] || <FaLink />}
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      {iconMap[name.toLowerCase()] || <FaLink className={className} />}
     </a>
   );
 };

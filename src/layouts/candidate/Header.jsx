@@ -69,12 +69,12 @@ export default function Header() {
                 <DropdownMenuContent>
                   <DropdownMenuItem className="hover:cursor-pointer">
                     <CgProfile className="size-5"></CgProfile>
-                    <Link className="text-foreground/70 text-sm">
-                      Thông tin cơ bản
+                    <Link to="/profile" className="text-foreground/70 text-sm">
+                      Thông tin cá nhân
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="hover:cursor-pointer">
+                  {/* <DropdownMenuItem className="hover:cursor-pointer">
                     <TbFileCv className="size-5"></TbFileCv>
                     <Link className="text-foreground/70 text-sm">
                       Quản lý CV
@@ -100,7 +100,7 @@ export default function Header() {
                     <Link className="text-foreground/70 text-sm">
                       Bài đăng đã thích
                     </Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
 
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="hover:cursor-pointer ">

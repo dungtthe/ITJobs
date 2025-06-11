@@ -5,16 +5,112 @@ import { DayPicker } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
+function MyCalendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  ...props
+}) {
+  const [currentMonth, setCurrentMonth] = React.useState(
+    props.defaultMonth || new Date()
+  );
+
+  function CustomCaption({ displayMonth, goToMonth }) {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const currentYear = displayMonth.getFullYear();
+    const years = [];
+    for (let i = currentYear - 100; i <= currentYear + 20; i++) {
+      years.push(i);
+    }
+
+    const handleMonthChange = (event) => {
+      const newMonth = parseInt(event.target.value, 10);
+      const newDate = new Date(displayMonth.getFullYear(), newMonth, 1);
+
+      setCurrentMonth(newDate);
+      goToMonth(newDate);
+
+      if (props.onMonthChange) {
+        props.onMonthChange(newDate);
+      }
+    };
+
+    const handleYearChange = (event) => {
+      const newYear = parseInt(event.target.value, 10);
+      const newDate = new Date(newYear, displayMonth.getMonth(), 1);
+
+      setCurrentMonth(newDate);
+      goToMonth(newDate);
+
+      if (props.onMonthChange) {
+        props.onMonthChange(newDate);
+      }
+    };
+
+    return (
+      <div className="flex justify-center items-center gap-2 w-full">
+        <select
+          value={displayMonth.getMonth()}
+          onChange={handleMonthChange}
+          className="text-sm font-medium p-1.5 rounded border border-gray-300 bg-background flex-1 max-w-24"
+          aria-label="Chọn tháng"
+        >
+          {months.map((month, index) => (
+            <option key={index} value={index}>
+              {month}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={displayMonth.getFullYear()}
+          onChange={handleYearChange}
+          className="text-sm font-medium p-1.5 rounded border border-gray-300 bg-background flex-1 max-w-20"
+          aria-label="Chọn năm"
+        >
+          {years.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  const handleMonthChange = (month) => {
+    setCurrentMonth(month);
+
+    if (props.onMonthChange) {
+      props.onMonthChange(month);
+    }
+  };
+
   return (
     <DayPicker
+      month={currentMonth}
+      onMonthChange={handleMonthChange}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row gap-2",
         month: "flex flex-col gap-4",
         caption: "flex justify-center pt-1 relative items-center w-full",
-        caption_label: "text-sm font-medium",
+        caption_label: "hidden",
         nav: "flex items-center gap-1",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
@@ -59,10 +155,11 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         IconRight: ({ className, ...props }) => (
           <ChevronRight className={cn("size-4", className)} {...props} />
         ),
+        Caption: CustomCaption,
       }}
       {...props}
     />
   );
 }
 
-export { Calendar };
+export { MyCalendar };

@@ -14,7 +14,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
 export default function Index() {
   const [paginatedData, setPaginatedData] = useState({
     items: [],
