@@ -45,6 +45,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var fUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId && u.RoleType == Entities.Enums.RoleType.Candidate);
             var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
             var cvs = await _dbContext.CVs.Where(c => c.CandidateId == fCandidate.Id).ToListAsync();
+            var educations = await _dbContext.Educations.Where(e => e.CandidateId == fCandidate.Id).ToListAsync();
             return new CandidateProfileDto()
             {
                 UserId= userId,
@@ -66,7 +67,18 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     OriginalFileName = c.OriginalFileName,
                     CreatedAt = c.CreatedAt
                 }).ToList(),
-                Skills = JsonConvert.DeserializeObject<List<string>>(fCandidate.Skills) ?? new List<string>()
+                Skills = JsonConvert.DeserializeObject<List<string>>(fCandidate.Skills) ?? new List<string>(),
+                Educations = educations.Select(e => new Entities.Education()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    WebsiteUrl = e.WebsiteUrl,
+                    Degree = e.Degree,
+                    FieldOfStudy = e.FieldOfStudy,
+                    StartDate = e.StartDate,
+                    IsCompleted = e.IsCompleted,
+                    GPA = e.GPA,
+                }).ToList()
             };
         }
 

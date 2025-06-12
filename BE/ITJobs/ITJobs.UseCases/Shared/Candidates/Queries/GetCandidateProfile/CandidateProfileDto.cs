@@ -24,5 +24,7 @@ namespace ITJobs.UseCases.Shared.Candidates.Queries.GetCandidateProfile
         //cv
         public List<Entities.CV> CVs { get; set; }
         public List<string> Skills { get; set; }
+
+        public List<Entities.Education> Educations { get; set; }
     }
 }

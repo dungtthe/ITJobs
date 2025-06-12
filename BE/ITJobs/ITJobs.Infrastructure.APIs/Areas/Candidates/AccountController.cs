@@ -118,5 +118,35 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpPost("profile/education/add-or-update")]
+        [Authorize]
+        public async Task<IActionResult> AddOrUpdateEducationAsync([FromBody] UseCases.Candidates.Accounts.Commands.AddOrUpdateEducation.AddOrUpdateEducationCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { id = rs });
+        }
+
+
+        [HttpDelete("profile/education/delete/{educationId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteEducationAsync([FromRoute] Guid educationId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteEducation.DeleteEducationCommand { UserId = userId.Value, EducationId = educationId };
+            await _mediator.Send(command);
+            return Ok(new { });
+        }
     }
 }
