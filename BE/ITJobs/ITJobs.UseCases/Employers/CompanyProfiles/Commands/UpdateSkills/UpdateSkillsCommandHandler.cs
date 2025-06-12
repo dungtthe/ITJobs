@@ -32,21 +32,21 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateSkills
             {
                 string ipClient = _httpContextInfoAccessor.GetClientIpV4();
                 await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", JsonConvert.SerializeObject(request));
-                var skillsInSystem = await _searchFilterRepository.GetSkillsInSystem();
-                if (skillsInSystem == null)
-                {
-                    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thất bại không tìm thấy skills trong hệ thống: " + JsonConvert.SerializeObject(request));
-                    throw new SystemDataNotImplementedException("Chưa seed dữ liệu cho skills ở searchfilter");
-                }
+                //var skillsInSystem = await _searchFilterRepository.GetSkillsInSystem();
+                //if (skillsInSystem == null)
+                //{
+                //    await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thất bại không tìm thấy skills trong hệ thống: " + JsonConvert.SerializeObject(request));
+                //    throw new SystemDataNotImplementedException("Chưa seed dữ liệu cho skills ở searchfilter");
+                //}
 
-                foreach(var skillRequest in request.Skills)
-                {
-                    if (!skillsInSystem.Contains(skillRequest))
-                    {
-                        await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thất bại không tìm thấy kỹ năng trong hệ thống: " + JsonConvert.SerializeObject(skillRequest));
-                        throw new InvalidSkillException($"Kỹ năng '{skillRequest}' không tồn tại trong hệ thống.");
-                    }
-                }
+                //foreach(var skillRequest in request.Skills)
+                //{
+                //    if (!skillsInSystem.Contains(skillRequest))
+                //    {
+                //        await LoggerHelper.LogInfomationAsync(ipClient, "UpdateGeneralInfosCommandHandler", "Cập nhật kỹ năng thất bại không tìm thấy kỹ năng trong hệ thống: " + JsonConvert.SerializeObject(skillRequest));
+                //        throw new InvalidSkillException($"Kỹ năng '{skillRequest}' không tồn tại trong hệ thống.");
+                //    }
+                //}
 
                 var checkExistEmployer = await _employerRepository.EmployerExistsAsync(request.UserId.Value);
                 if (!checkExistEmployer)

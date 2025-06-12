@@ -20,5 +20,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<bool> LockAccountAsync(Guid userId);
         Task UpdateAboutmeAsync(Guid userId, string content);
         Task UpdateOverviewAsync(Guid userId, string fullName, string phoneNumber, string address, string gender, DateTime ?dateOfBirth, List<SocialMedia> socialMediaLinks);
+        Task UpdateSkillAsync(Guid userId, List<string> skills);
     }
 }

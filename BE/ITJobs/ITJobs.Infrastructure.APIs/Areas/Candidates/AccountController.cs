@@ -99,7 +99,24 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             catch (Exception ex)
             {
             }
-            return Ok(new {});
+            return Ok(new { });
+        }
+
+
+        [HttpPatch("profile/update/skills")]
+        [Authorize]
+
+        public async Task<IActionResult> UpdateSkillsAsync([FromBody] UseCases.Candidates.Accounts.Commands.UpdateSkills.UpdateCandidateSkillsCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+
+            await _mediator.Send(command);
+            return Ok(new { });
         }
     }
 }

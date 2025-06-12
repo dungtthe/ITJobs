@@ -65,7 +65,8 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     FileName = c.FileName,
                     OriginalFileName = c.OriginalFileName,
                     CreatedAt = c.CreatedAt
-                }).ToList()
+                }).ToList(),
+                Skills = JsonConvert.DeserializeObject<List<string>>(fCandidate.Skills) ?? new List<string>()
             };
         }
 
@@ -164,6 +165,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             fUser.Gender = gender;
             fUser.DateOfBirth = dateOfBirth;
             fUser.SocialMediaLinks = JsonConvert.SerializeObject(socialMediaLinks);
+        }
+
+        public async Task UpdateSkillAsync(Guid userId, List<string> skills)
+        {
+            var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (fCandidate == null)
+            {
+                return;
+            }
+            fCandidate.Skills = JsonConvert.SerializeObject(skills);
+            _dbContext.Candidates.Update(fCandidate);
         }
     }
 }
