@@ -26,10 +26,10 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public string Description { get; set; }
 
         [MaxLength(4000)]
-        public string WebsiteUrls { get; set; }
+        public string SocialMediaLinks { get; set; }
         public Project()
         {
-            WebsiteUrls = "[]";
+            SocialMediaLinks = "[]";
         }
     }
 }

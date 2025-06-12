@@ -27,5 +27,6 @@ namespace ITJobs.UseCases.Shared.Candidates.Queries.GetCandidateProfile
 
         public List<Entities.Education> Educations { get; set; }
         public List<Entities.WorkExperience> WorkExperiences { get; set; }
+        public List<Entities.Project> Projects { get; set; }
     }
 }

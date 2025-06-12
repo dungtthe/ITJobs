@@ -13,6 +13,6 @@ namespace ITJobs.Entities
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Description { get; set; }
-        public List<SocialMedia> SocialMedias { get; set; }//link du an
+        public List<SocialMedia> SocialMediaLinks { get; set; }
     }
 }

@@ -177,5 +177,34 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpPost("profile/project/add-or-update")]
+        [Authorize]
+        public async Task<IActionResult> AddOrUpdateProjectAsync([FromBody] UseCases.Candidates.Accounts.Commands.AddOrUpdateProject.AddOrUpdateProjectCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { id = rs });
+        }
+
+        [HttpDelete("profile/project/delete/{projectId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProjectAsync([FromRoute] Guid projectId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteProject.DeleteProjectCommand { UserId = userId.Value, ProjectId = projectId };
+            await _mediator.Send(command);
+            return Ok(new { });
+        }
     }
 }
