@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CandidateIntroductionTex } from "./CandidateIntroductionTex";
 import { CVs } from "@/components/my-components/candidate/profile/CVs";
 import { MySkills } from "@/components/my-components/candidate/profile/MySkills";
+import { Educations } from "@/components/my-components/candidate/profile/Educations";
+
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState(null);
@@ -52,6 +54,9 @@ export default function Index() {
             skills={profile.skills}
             title="Kỹ năng chính của bản thân"
           ></MySkills>
+        </div>
+        <div className="mt-8">
+          <Educations educations={profile.educations || []} isCanEdit={true} />
         </div>
       </div>
     </>

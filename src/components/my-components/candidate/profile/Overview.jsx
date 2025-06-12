@@ -318,6 +318,7 @@ export const Overview = ({ isCanEdit = false, profile }) => {
                 </label>
                 {isEnableEdit ? (
                   <Input
+                    placeholder="Số điện thoại"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
@@ -330,6 +331,7 @@ export const Overview = ({ isCanEdit = false, profile }) => {
                 <label className="text-sm text-foreground/70">Địa chỉ</label>
                 {isEnableEdit ? (
                   <Input
+                    placeholder="Địa chỉ"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
