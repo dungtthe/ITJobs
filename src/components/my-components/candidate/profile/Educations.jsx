@@ -409,58 +409,81 @@ export const Educations = ({ educations = [], isCanEdit = false }) => {
                   </div>
                 ) : (
                   <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-lg">{education.name}</h4>
+                    <div className="flex justify-between items-start">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+                        {education.degree && (
+                          <div className="flex gap-2 items-center">
+                            <label className="text-foreground/70 text-sm">
+                              Bằng cấp:
+                            </label>
+                            <p className="text-foreground">
+                              {education.degree}
+                            </p>
+                          </div>
+                        )}
+                        {education.fieldOfStudy && (
+                          <div className="flex gap-2 items-center">
+                            <label className="text-foreground/70 text-sm">
+                              Ngành học:
+                            </label>
+                            <p className="text-foreground">
+                              {education.fieldOfStudy}
+                            </p>
+                          </div>
+                        )}
+                        {education.startDate && (
+                          <div className="flex gap-2 items-center">
+                            <label className="text-foreground/70 text-sm">
+                              Ngày bắt đầu:
+                            </label>
+                            <p className="text-foreground">
+                              {format(education.startDate, "dd/MM/yyyy")}
+                            </p>
+                          </div>
+                        )}
+                        {education.gpa > 0 && (
+                          <div className="flex gap-2 items-center">
+                            <label className="text-foreground/70 text-sm">
+                              GPA:
+                            </label>
+                            <p className="text-foreground">
+                              {education.gpa.toFixed(1)}
+                            </p>
+                          </div>
+                        )}
+                        <div className="flex gap-2 items-center">
+                          <label className="text-foreground/70 text-sm">
+                            Trạng thái:
+                          </label>
+                          <p className="text-foreground">
+                            {education.isCompleted
+                              ? "Đã hoàn thành"
+                              : "Đang học"}
+                          </p>
+                        </div>
+                        {education.websiteUrl && (
+                          <div className="flex items-center gap-2">
+                            <label className="text-foreground/70 text-sm">
+                              Website:{" "}
+                            </label>
+                            <a
+                              href={education.websiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline"
+                            >
+                              <FaLink className="text-mlink"></FaLink>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+
                       {isEnableEdit && (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 ml-4">
                           <IconEdit onClick={() => handleEdit(education)} />
                           <IconDelete
                             onClick={() => handleDeleteEducation(education.id)}
                           />
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-foreground/70">
-                      {education.degree && (
-                        <div>
-                          <span className="font-medium">Bằng cấp: </span>
-                          {education.degree}
-                        </div>
-                      )}
-                      {education.fieldOfStudy && (
-                        <div>
-                          <span className="font-medium">Ngành học: </span>
-                          {education.fieldOfStudy}
-                        </div>
-                      )}
-                      {education.startDate && (
-                        <div>
-                          <span className="font-medium">Ngày bắt đầu: </span>
-                          {format(education.startDate, "dd/MM/yyyy")}
-                        </div>
-                      )}
-                      {education.gpa > 0 && (
-                        <div>
-                          <span className="font-medium">GPA: </span>
-                          {education.gpa.toFixed(1)}
-                        </div>
-                      )}
-                      <div>
-                        <span className="font-medium">Trạng thái: </span>
-                        {education.isCompleted ? "Đã hoàn thành" : "Đang học"}
-                      </div>
-                      {education.websiteUrl && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">Website: </span>
-                          <a
-                            href={education.websiteUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:underline"
-                          >
-                            <FaLink className="text-mlink"></FaLink>
-                          </a>
                         </div>
                       )}
                     </div>

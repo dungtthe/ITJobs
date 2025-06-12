@@ -6,6 +6,7 @@ import { CandidateIntroductionTex } from "./CandidateIntroductionTex";
 import { CVs } from "@/components/my-components/candidate/profile/CVs";
 import { MySkills } from "@/components/my-components/candidate/profile/MySkills";
 import { Educations } from "@/components/my-components/candidate/profile/Educations";
+import { WorkExperiences } from "@/components/my-components/candidate/profile/WorkExperiences";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,12 @@ export default function Index() {
         </div>
         <div className="mt-8">
           <Educations educations={profile.educations || []} isCanEdit={true} />
+        </div>
+        <div className="mt-8">
+          <WorkExperiences
+            workExperiences={profile.workExperiences || []}
+            isCanEdit={true}
+          />
         </div>
       </div>
     </>
