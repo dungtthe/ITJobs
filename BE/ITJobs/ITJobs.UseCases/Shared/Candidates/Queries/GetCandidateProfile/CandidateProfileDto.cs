@@ -29,5 +29,6 @@ namespace ITJobs.UseCases.Shared.Candidates.Queries.GetCandidateProfile
         public List<Entities.WorkExperience> WorkExperiences { get; set; }
         public List<Entities.Project> Projects { get; set; }
         public List<Entities.Certification> Certifications { get; set; }
+        public List<Entities.Award> Awards { get; set; }
     }
 }

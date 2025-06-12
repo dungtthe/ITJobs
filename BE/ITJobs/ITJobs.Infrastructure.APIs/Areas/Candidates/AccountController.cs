@@ -235,5 +235,34 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpPost("profile/award/add-or-update")]
+        [Authorize]
+        public async Task<IActionResult> AddOrUpdateAwardAsync([FromBody] UseCases.Candidates.Accounts.Commands.AddOrUpdateAward.AddOrUpdateAwardCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { id = rs });
+        }
+
+        [HttpDelete("profile/award/delete/{awardId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteAwardAsync([FromRoute] Guid awardId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteAward.DeleteAwardCommand { UserId = userId.Value, AwardId = awardId };
+            await _mediator.Send(command);
+            return Ok(new { });
+        }
     }
 }
