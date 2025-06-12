@@ -1,5 +1,6 @@
 import no_img_user from "@/assets/images/no_img_user.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 export const CompanyLogo = ({
   image,
   maxWidth = "300px",
@@ -10,12 +11,15 @@ export const CompanyLogo = ({
     src = no_img_user;
   }
 
+  const imageStyle = {
+    objectFit: "cover",
+    maxWidth: maxWidth,
+    maxHeight: maxHeight,
+  };
+
   return (
     <div className="border w-max h-max rounded-lg overflow-hidden">
-      <img
-        src={src}
-        className={`object-cover max-w-[${maxWidth}] max-h-[${maxHeight}]`}
-      ></img>
+      <img src={src} style={imageStyle} alt="Company logo" />
     </div>
   );
 };
