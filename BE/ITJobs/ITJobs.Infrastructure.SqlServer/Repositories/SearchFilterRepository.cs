@@ -68,6 +68,16 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return JsonConvert.DeserializeObject<List<string>>(fSearchFilterCity.Values);
         }
 
+        public async Task<List<string>> GetCompanyTypesAsync()
+        {
+            var fSearchFilterCompanyType = await _dbContext.SearchFilters.FindAsync(ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_COMPANY_TYPE);
+            if (fSearchFilterCompanyType == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<List<string>>(fSearchFilterCompanyType.Values);
+        }
+
         public async Task<int> GetMaxOrderAsync()
         {
             var maxOrder = await _dbContext.SearchFilters.MaxAsync(sf => sf.ViewOrder);

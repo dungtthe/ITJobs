@@ -16,9 +16,7 @@ namespace ITJobs.UseCases.Employers.CompanyProfiles.Commands.UpdateCompanyOvervi
                 .WithMessage("Tên công ty không được để trống.");
             RuleFor(x => x.PhoneNumber)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .WithMessage("Số điện thoại không được để trống.")
-            .Matches(@"^(0|\+84)(\d{9})$")
+            .Matches(@"^(0|\+84)(\d{9})$").When(x => !string.IsNullOrEmpty(x.PhoneNumber))
             .WithMessage("Số điện thoại không hợp lệ.");
         }
     }

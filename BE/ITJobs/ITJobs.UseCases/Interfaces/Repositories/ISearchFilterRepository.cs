@@ -22,5 +22,6 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<List<Entities.SearchFilterCheckBox>> GetSearchFilterCheckBoxesAsync();
         Task<List<Entities.SearchFilterCombobox>> GetSearchFilterComboboxesAsync();
         Task<List<Entities.SearchFilterRange>> GetSearchFilterRangesAsync();
+        Task<List<string>> GetCompanyTypesAsync();
     }
 }

@@ -70,5 +70,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
             var result = await _mediator.Send(new ITJobs.UseCases.Shared.SearchFilters.Queries.GetSearchFilters.GetSearchFiltersQuery());
             return Ok(result);
         }
+
+
+        [HttpGet("company-types")]
+        public async Task<IActionResult> GetCompanyTypesAsync()
+        {
+            var result = await _mediator.Send(new ITJobs.UseCases.Shared.SearchFilters.Queries.GetCompanyTypes.GetCompanyTypesQuery());
+            return Ok(result);
+        }
     }
 }
