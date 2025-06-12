@@ -48,6 +48,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var educations = await _dbContext.Educations.Where(e => e.CandidateId == fCandidate.Id).ToListAsync();
             var workExperiences = await _dbContext.WorkExperiences.Where(w => w.CandidateId == fCandidate.Id).ToListAsync();
             var projects = await _dbContext.Projects.Where(p => p.CandidateId == fCandidate.Id).ToListAsync();
+            var certifications = await _dbContext.Certifications.Where(c => c.CandidateId == fCandidate.Id).ToListAsync();
             return new CandidateProfileDto()
             {
                 UserId = userId,
@@ -102,6 +103,15 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     Description = p.Description,
                     SocialMediaLinks = JsonConvert.DeserializeObject<List<Entities.SocialMedia>>(p.SocialMediaLinks)
 
+                }).ToList(),
+                Certifications = certifications.Select(c => new Entities.Certification()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ReceivedDate = c.ReceivedDate,
+                    Images = JsonConvert.DeserializeObject<List<string>>(c.Images),
+                    WebsiteUrl = c.WebsiteUrl,
+                    Description = c.Description
                 }).ToList()
             };
         }

@@ -19,8 +19,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         [MaxLength(500)]
         public string Name { get; set; }
         public DateTime ReceivedDate { get; set; }
-        [MaxLength(1000)]
-        public string Image { get; set; }
+        public string Images { get; set; }
         [MaxLength(1000)]
         public string WebsiteUrl { get; set; }//noi cap chung chi
         [MaxLength(5000)]

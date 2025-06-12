@@ -206,5 +206,34 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpPost("profile/certification/add-or-update")]
+        [Authorize]
+        public async Task<IActionResult> AddOrUpdateCertificationAsync([FromBody] UseCases.Candidates.Accounts.Commands.AddOrUpdateCertification.AddOrUpdateCertificationCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { id = rs });
+        }
+
+        [HttpDelete("profile/certification/delete/{certificationId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCertificationAsync([FromRoute] Guid certificationId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteCertification.DeleteCertificationCommand { UserId = userId.Value, CertificationId = certificationId };
+            await _mediator.Send(command);
+            return Ok(new { });
+        }
     }
 }

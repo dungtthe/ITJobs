@@ -10,7 +10,7 @@ namespace ITJobs.Entities
     {
         public string Name { get; set; }
         public DateTime ReceivedDate { get; set; }
-        public string Image { get; set; }
+        public List<string> Images { get; set; }
         public string WebsiteUrl { get; set; }//noi cap chung chi
         public string Description { get; set; }
     }
