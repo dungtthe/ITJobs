@@ -9,6 +9,7 @@ import { Educations } from "@/components/my-components/candidate/profile/Educati
 import { WorkExperiences } from "@/components/my-components/candidate/profile/WorkExperiences";
 import { Projects } from "@/components/my-components/candidate/profile/Projects";
 import { Certifications } from "@/components/my-components/candidate/profile/Certifications";
+import { Awards } from "@/components/my-components/candidate/profile/Awards";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -75,6 +76,9 @@ export default function Index() {
             certifications={profile.certifications || []}
             isCanEdit={true}
           />
+        </div>
+        <div className="mt-8">
+          <Awards awards={profile.awards || []} isCanEdit={true} />
         </div>
       </div>
     </>
