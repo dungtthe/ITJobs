@@ -7,6 +7,7 @@ import { CVs } from "@/components/my-components/candidate/profile/CVs";
 import { MySkills } from "@/components/my-components/candidate/profile/MySkills";
 import { Educations } from "@/components/my-components/candidate/profile/Educations";
 import { WorkExperiences } from "@/components/my-components/candidate/profile/WorkExperiences";
+import { Projects } from "@/components/my-components/candidate/profile/Projects";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -64,6 +65,9 @@ export default function Index() {
             workExperiences={profile.workExperiences || []}
             isCanEdit={true}
           />
+        </div>
+        <div className="mt-8">
+          <Projects projects={profile.projects || []} isCanEdit={true} />
         </div>
       </div>
     </>
