@@ -46,6 +46,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
             var cvs = await _dbContext.CVs.Where(c => c.CandidateId == fCandidate.Id).ToListAsync();
             var educations = await _dbContext.Educations.Where(e => e.CandidateId == fCandidate.Id).ToListAsync();
+            var workExperiences = await _dbContext.WorkExperiences.Where(w => w.CandidateId == fCandidate.Id).ToListAsync();
             return new CandidateProfileDto()
             {
                 UserId= userId,
@@ -78,6 +79,17 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     StartDate = e.StartDate,
                     IsCompleted = e.IsCompleted,
                     GPA = e.GPA,
+                }).ToList(),
+                WorkExperiences = workExperiences.Select(w => new Entities.WorkExperience()
+                {
+                    Id = w.Id,
+                    CompanyName = w.CompanyName,
+                    JobTitle = w.JobTitle,
+                    WebsiteUrl = w.WebsiteUrl,
+                    IsCurrent = w.IsCurrent,
+                    StartDate = w.StartDate,
+                    EndDate = w.EndDate,
+                    Description = w.Description
                 }).ToList()
             };
         }

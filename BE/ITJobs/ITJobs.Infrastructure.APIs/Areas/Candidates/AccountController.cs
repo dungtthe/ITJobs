@@ -148,5 +148,34 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpPost("profile/work-experience/add-or-update")]
+        [Authorize]
+        public async Task<IActionResult> AddOrUpdateWorkExperienceAsync([FromBody] UseCases.Candidates.Accounts.Commands.AddOrUpdateWorkExperience.AddOrUpdateWorkExperienceCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            var rs = await _mediator.Send(command);
+            return Ok(new { id = rs });
+        }
+
+        [HttpDelete("profile/work-experience/delete/{workExperienceId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteWorkExperienceAsync([FromRoute] Guid workExperienceId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var command = new UseCases.Candidates.Accounts.Commands.DeleteWorkExperience.DeleteWorkExperienceCommand { UserId = userId.Value, WorkExperienceId = workExperienceId };
+            await _mediator.Send(command);
+            return Ok(new { });
+        }
     }
 }
