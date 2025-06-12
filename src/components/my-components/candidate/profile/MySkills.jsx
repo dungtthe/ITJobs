@@ -9,8 +9,8 @@ import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
 } from "@/components/my-components/MyToast";
-import { updateSkills } from "@/pages/employer/company-profile/services/updateSkills";
-import { Skill } from "./Skill";
+import { updateSkills } from "@/pages/candidate/profile/services/updateSkills";
+import { Skill } from "../../employer-profile/Skill";
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
+export const MySkills = ({ title, skills, classNameRow, isCanEdit }) => {
   const defaultSkillsData = skills.map((item) => ({
     skillName: item,
     id: crypto.randomUUID(),
@@ -100,7 +100,6 @@ export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
           value: item,
           label: item,
         }));
-        console.log(skillSystemDataRef.current);
       },
       () => {
         skillSystemDataRef.current = [];
@@ -126,17 +125,13 @@ export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
 
   const handleDeleteItem = (id) => () => {
     const dataCur = [...skillsData];
-    const dataNew = [];
-    dataCur.map((item) => {
-      if (item.id !== id) {
-        dataNew.push(item);
-      }
-    });
+    const dataNew = dataCur.filter((item) => item.id !== id);
     setSkillsData(dataNew);
   };
 
   const handleLuu = () => {
     const skillsToUpdate = skillsData.map((item) => item.skillName);
+
     updateSkills(
       skillsToUpdate,
       () => {
@@ -161,7 +156,7 @@ export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
   };
 
   return (
-    <div className="bg-background p-5 rounded-lg">
+    <div className="bg-card p-5 rounded-lg">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
           <h3 className="text-xl font-medium">{title}</h3>
@@ -263,6 +258,7 @@ export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
       </div>
       <div className="border border-dashed w-full h-[1px] mt-3"></div>
       {skillsData.length === 0 && <p className="pt-5">Chưa có thông tin</p>}
+
       <div className="px-4 mt-5 flex flex-wrap">
         {skillsData.map((item) => (
           <div key={item.id} className={classNameRow}>

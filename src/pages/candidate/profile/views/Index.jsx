@@ -4,6 +4,7 @@ import { getCandidateProfile } from "../services/getCandidateProfile";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CandidateIntroductionTex } from "./CandidateIntroductionTex";
 import { CVs } from "@/components/my-components/candidate/profile/CVs";
+import { MySkills } from "@/components/my-components/candidate/profile/MySkills";
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState(null);
@@ -44,6 +45,13 @@ export default function Index() {
         </div>
         <div className="mt-8">
           <CVs isCanEdit={true} cvLinks={profile.cVs} />
+        </div>
+        <div className="mt-8">
+          <MySkills
+            isCanEdit={true}
+            skills={profile.skills}
+            title="Kỹ năng chính của bản thân"
+          ></MySkills>
         </div>
       </div>
     </>
