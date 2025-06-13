@@ -1,4 +1,5 @@
-﻿using ITJobs.UseCases.Interfaces.Repositories;
+﻿using ITJobs.UseCases.Candidates.JobApplications.Commands.AddJobApplication;
+using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,38 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         public JobApplicationRepository(ITJobsDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task AddJobApplicationAsync(AddJobApplicationCommand request, Guid idAdd)
+        {
+            var userId = request.UserId.Value;
+            var candidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (candidate == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+
+            var fJobAppli = await _dbContext.JobApplications.FirstOrDefaultAsync(ja => ja.CandidateId == candidate.Id);
+            if (fJobAppli != null)
+            {
+                throw new Entities.Exceptions.JobAlreadyAppliedException();
+            }
+
+            var fJobPost = await _dbContext.Posts.FirstOrDefaultAsync(p=>p.Id==request.PostId && !p.IsDeleted && p.PostType == Entities.Enums.PostType.JobPosting && p.EndDate>DateTime.Now);
+            if (fJobPost == null)
+            {
+                throw new Entities.Exceptions.PostNotFoundException();
+            }
+
+            await _dbContext.JobApplications.AddAsync(new Models.JobApplication()
+            {
+                Id = idAdd,
+                PostId = request.PostId,
+                CandidateId = candidate.Id,
+                CVLink = request.CVLink,
+                CoverLetter = request.CoverLetter,
+                StatusJobApplication = Entities.Enums.StatusJobApplication.Submitted
+            });
         }
 
         public async Task<List<(Guid PostId, int ApplicationCount)>> GetTopPostsByApplicationsCountAsync()

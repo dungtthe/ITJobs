@@ -9,9 +9,7 @@ namespace ITJobs.Entities.Enums
     public enum StatusJobApplication:byte
     {
         Submitted = 1,     
-        UnderReview = 2,   
-        InterviewScheduled = 3, 
-        Hired = 4,         
-        Rejected = 5       
+        Hired = 2,         
+        Rejected = 3       
     }
 }

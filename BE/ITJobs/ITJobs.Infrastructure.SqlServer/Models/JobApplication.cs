@@ -27,7 +27,7 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         public StatusJobApplication StatusJobApplication { get; set; }
         public JobApplication()
         {
-            StatusJobApplication = StatusJobApplication.Submitted;
+            StatusJobApplication = StatusJobApplication.Submitted; 
         }
     }
 }

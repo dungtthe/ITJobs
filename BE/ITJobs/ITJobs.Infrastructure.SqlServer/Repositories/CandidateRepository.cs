@@ -187,6 +187,27 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             return result;
         }
 
+        public async Task<List<Entities.CV>> GetCVsAsync(Guid userId)
+        {
+            var fCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (fCandidate == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+
+            var cvs = await _dbContext.CVs.Where(c => c.CandidateId == fCandidate.Id).ToListAsync();
+
+            var result = cvs.Select(c => new Entities.CV()
+            {
+                Id = c.Id,
+                CandidateId = c.CandidateId,
+                FileName = c.FileName,
+                OriginalFileName = c.OriginalFileName,
+                CreatedAt = c.CreatedAt
+            }).ToList();
+            return result;
+        }
+
         public async Task<bool> LockAccountAsync(Guid userId)
         {
             var fUser = await _dbContext.Users.FindAsync(userId);

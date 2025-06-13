@@ -264,5 +264,20 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             await _mediator.Send(command);
             return Ok(new { });
         }
+
+
+        [HttpGet("cvs")]
+        [Authorize]
+        public async Task<IActionResult> GetCVsAsync()
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var query = new UseCases.Candidates.Accounts.Queries.GetCVs.GetCVsQuery { UserId = userId.Value };
+            var rs = await _mediator.Send(query);
+            return Ok(new { items = rs });
+        }
     }
 }

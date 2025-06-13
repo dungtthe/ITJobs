@@ -177,6 +177,16 @@ namespace ITJobs.Infrastructure.APIs.MyMiddlewares
                 };
                 await context.Response.WriteAsJsonAsync(response);
             }
+            catch (ITJobs.Entities.Exceptions.JobAlreadyAppliedException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
+                var response = new
+                {
+                    message = e.Message
+                };
+                await context.Response.WriteAsJsonAsync(response);
+            }
 
             catch (Exception ex)
             {
