@@ -14,7 +14,7 @@ import { Skill } from "@/components/my-components/employer-profile/Skill";
 import { formatVND } from "@/utils/formatUtils";
 import { getRandomJobPostsSummary } from "../services/getRandomJobPostsSummary";
 import { JobPostSummaryCard } from "@/pages/candidate/shared-card/JobPostSummaryCard";
-
+import { ApplyJobDialog } from "@/pages/candidate/posts/job/views/ApplyJobDialog";
 export default function Detail() {
   const { id } = useParams();
 
@@ -42,10 +42,11 @@ export default function Detail() {
           <div className="w-[68%]">
             <div className="bg-card p-5 rounded-lg shadow-md">
               <h2 className="text-2xl font-bold">{jobPost.title}</h2>
-              <Button className="w-full p-5 mt-5 text-lg hover:cursor-pointer">
-                Ứng tuyển ngay
-              </Button>
-
+              <ApplyJobDialog postId={id}>
+                <Button className="w-full p-5 mt-5 text-lg hover:cursor-pointer">
+                  Ứng tuyển ngay
+                </Button>
+              </ApplyJobDialog>
               <div className="flex mt-5 items-center gap-2 text-foreground/80">
                 <CiLocationOn className="size-5"></CiLocationOn>
                 <p className="font-semibold">
