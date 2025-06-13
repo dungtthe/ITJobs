@@ -18,6 +18,7 @@ import Employer_BlogPost from "@/pages/employer/posts/blog-post/views/Index.jsx"
 import Employer_BlogPost_Add from "@/components/my-components/posts/AddBlogPost.jsx";
 import Employer_JobPost from "@/pages/employer/posts/job-post/views/Index.jsx";
 import Employer_JobPost_Add from "@/pages/employer/posts/job-post/views/AddJobPost.jsx";
+import Employer_DetailJobPost from "@/pages/employer/posts/job-post/views/DetailJobPost.jsx";
 
 //user
 import User_Layout from "@/layouts/candidate/Index.jsx";
@@ -51,6 +52,7 @@ export default function MainRoutes() {
           <Route path="blog-post/add" element={<Employer_BlogPost_Add />} />
           <Route path="job-post" element={<Employer_JobPost />} />
           <Route path="job-post/add" element={<Employer_JobPost_Add />} />
+          <Route path="job-post/:id" element={<Employer_DetailJobPost />} />
         </Route>
         {/* USER*/}
         <Route path="/" element={<User_Layout />}>

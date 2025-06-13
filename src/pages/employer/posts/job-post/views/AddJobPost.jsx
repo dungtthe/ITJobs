@@ -6,6 +6,8 @@ import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
 } from "@/components/my-components/MyToast";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import { addJobPost } from "@/pages/employer/posts/job-post/services/addJobPost.js";
 import { SearchFilter } from "@/components/my-components/search-filter/SearchFilter";
@@ -23,6 +25,8 @@ import { differenceInCalendarDays, addDays } from "date-fns";
 import { getJobPostFeePerDay } from "@/shared-services/system-value/getJobPostFeePerDay.js";
 import { formatVND } from "@/utils/formatUtils.js";
 export default function AddJobPost() {
+  const navigate = useNavigate();
+
   const setAccountBalance = useAccountBalanceStore(
     (state) => state.setAccountBalance
   );
@@ -63,6 +67,8 @@ export default function AddJobPost() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleHuy = () => {
+    setDate(undefined);
+    handleDateSelect(undefined);
     insertContentRef.current = "";
     setTitle("");
     setContent("");
@@ -74,6 +80,7 @@ export default function AddJobPost() {
 
   const handleSaveContent = (editorContent) => {
     setContent(editorContent);
+    handleSubmit(editorContent);
   };
 
   const handleRangeFilterChange = (id, range) => {
@@ -89,7 +96,7 @@ export default function AddJobPost() {
     selectedComboboxFiltersRef.current[id] = value;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (content) => {
     if (!date) {
       showErrorToastHasTitle("Lỗi", "Vui lòng chọn ngày dừng tuyển dụng");
       return;
@@ -144,6 +151,7 @@ export default function AddJobPost() {
           handleHuy();
           setIsSubmitting(false);
           setKeyRenderImediately((prev) => prev + 1);
+          navigate(`/employer/job-post/${sus.postId}`);
         },
         (fail) => {
           console.error("fail:", fail);
@@ -164,15 +172,6 @@ export default function AddJobPost() {
       <div className="pt-4 bg-background rounded-xl border pb-10">
         <div className="border-b pl-4 pb-4 flex gap-2 justify-between">
           <h1 className="text-2xl">Thêm bài đăng tuyển dụng</h1>
-          <div className="mr-4">
-            <Button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="bg-primary text-primary-foreground"
-            >
-              {isSubmitting ? "Đang xử lý..." : "Lưu bài đăng"}
-            </Button>
-          </div>
         </div>
 
         {/* input  */}
@@ -246,6 +245,7 @@ export default function AddJobPost() {
             <div className="w-1/3">
               <label className="text-lg font-semibold">Thêm bộ lọc</label>
               <SearchFilter
+                key={keyRenderImediately}
                 className="w-full"
                 onRangeChange={handleRangeFilterChange}
                 onCheckboxChange={handleCheckboxFilterChange}
@@ -261,6 +261,7 @@ export default function AddJobPost() {
                 height={800}
                 onSave={handleSaveContent}
                 initialValue={insertContentRef.current}
+                contentBtnSave={isSubmitting ? "Đang xử lý..." : "Lưu bài đăng"}
               />
             </div>
           </div>

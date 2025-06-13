@@ -1,5 +1,5 @@
 import { Slider } from "@/components/ui/slider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toNumber } from "@/utils/convertUtils.js";
 import { formatVND } from "@/utils/formatUtils.js";
 
@@ -10,12 +10,44 @@ export const SearchFilterRange = ({
   id,
   className,
   onChange,
+  initialValue,
   ...props
 }) => {
   const minValue = toNumber(min) || 0;
   const maxValue = toNumber(max) || 1000000000;
 
-  const [values, setValues] = useState([minValue, maxValue]);
+  const getInitialValues = () => {
+    if (initialValue && typeof initialValue === "object") {
+      return [
+        typeof initialValue.min === "number"
+          ? initialValue.min
+          : toNumber(initialValue.min) || minValue,
+        typeof initialValue.max === "number"
+          ? initialValue.max
+          : toNumber(initialValue.max) || maxValue,
+      ];
+    }
+    return [minValue, maxValue];
+  };
+
+  const [values, setValues] = useState(getInitialValues);
+
+  useEffect(() => {
+    if (initialValue && typeof initialValue === "object") {
+      const newValues = [
+        typeof initialValue.min === "number"
+          ? initialValue.min
+          : toNumber(initialValue.min) || minValue,
+        typeof initialValue.max === "number"
+          ? initialValue.max
+          : toNumber(initialValue.max) || maxValue,
+      ];
+      setValues(newValues);
+      if (onChange) {
+        onChange(id, { min: newValues[0], max: newValues[1] });
+      }
+    }
+  }, [initialValue, id, onChange, minValue, maxValue]);
 
   const handleValueChange = (newValues) => {
     const sortedValues = [...newValues].sort((a, b) => a - b);
@@ -31,7 +63,7 @@ export const SearchFilterRange = ({
       <label className="block text-sm font-medium mb-2">{name}</label>
       <Slider
         className={className}
-        defaultValue={[minValue, maxValue]}
+        defaultValue={getInitialValues()}
         value={values}
         onValueChange={handleValueChange}
         min={minValue}

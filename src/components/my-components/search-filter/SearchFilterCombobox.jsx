@@ -16,16 +16,34 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IoIosArrowDown } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export const SearchFilterCombobox = ({ values, name, id, onChange }) => {
+export const SearchFilterCombobox = ({
+  values,
+  name,
+  id,
+  onChange,
+  initialValue = "",
+}) => {
   const items = values.map((item) => ({
     value: item,
     label: item,
   }));
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
+  const [hasTriggeredInitial, setHasTriggeredInitial] = useState(false);
+
+  useEffect(() => {
+    if (initialValue !== undefined && !hasTriggeredInitial) {
+      setValue(initialValue);
+      if (onChange && initialValue) {
+        // Chỉ trigger khi có initialValue và chưa trigger lần nào
+        onChange(initialValue);
+        setHasTriggeredInitial(true);
+      }
+    }
+  }, [initialValue, onChange, hasTriggeredInitial]);
 
   const handleSelect = (currentValue) => {
     const newValue = currentValue === value ? "" : currentValue;

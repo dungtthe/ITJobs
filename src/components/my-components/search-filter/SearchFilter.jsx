@@ -3,13 +3,15 @@ import { SearchFilterCheckBox } from "@/components/my-components/search-filter/S
 import { SearchFilterRange } from "@/components/my-components/search-filter/SearchFilterRange";
 import { useEffect, useState, useRef } from "react";
 import { getSearchFilters } from "@/shared-services/search-filters/getSearchFilters.js";
-import { toNumber } from "@/utils/convertUtils.js";
 
 export const SearchFilter = ({
   className,
   onRangeChange,
   onCheckboxChange,
   onComboboxChange,
+  initialRangeFilters = {},
+  initialCheckboxFilters = {},
+  initialComboboxFilters = {},
   ...props
 }) => {
   const searchFilterComboboxsRef = useRef([]);
@@ -83,6 +85,9 @@ export const SearchFilter = ({
           (item) => item.id === id
         );
         if (!rangeFilter) return null;
+
+        const initialValue = initialRangeFilters[id];
+
         return (
           <div key={id} className="filter-item my-3">
             <SearchFilterRange
@@ -90,6 +95,7 @@ export const SearchFilter = ({
               max={rangeFilter.max}
               name={rangeFilter.name}
               id={rangeFilter.id}
+              initialValue={initialValue}
               onChange={(id, range) => handleRangeChange(id, range)}
             />
           </div>
@@ -100,12 +106,16 @@ export const SearchFilter = ({
           (item) => item.id === id
         );
         if (!checkboxFilter) return null;
+
+        const initialSelectedItems = initialCheckboxFilters[id] || [];
+
         return (
           <div key={id} className="filter-item my-3">
             <SearchFilterCheckBox
               values={checkboxFilter.values}
               name={checkboxFilter.name}
               id={checkboxFilter.id}
+              initialSelectedItems={initialSelectedItems}
               onChange={(selectedItems) =>
                 handleCheckboxChange(checkboxFilter.id, selectedItems)
               }
@@ -118,12 +128,16 @@ export const SearchFilter = ({
           (item) => item.id === id
         );
         if (!comboboxFilter) return null;
+
+        const initialValue = initialComboboxFilters[id] || "";
+
         return (
           <div key={id} className="filter-item my-3">
             <SearchFilterCombobox
               values={comboboxFilter.values}
               name={comboboxFilter.name}
               id={comboboxFilter.id}
+              initialValue={initialValue}
               onChange={(value) =>
                 handleComboboxChange(comboboxFilter.id, value)
               }

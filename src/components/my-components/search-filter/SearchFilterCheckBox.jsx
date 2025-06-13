@@ -1,5 +1,4 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -15,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IoIosArrowDown } from "react-icons/io";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export const SearchFilterCheckBox = ({
   values,
@@ -24,14 +23,44 @@ export const SearchFilterCheckBox = ({
   placeholder = "Lựa chọn...",
   onChange,
   maxDisplayItems = 2,
+  initialSelectedItems = [],
 }) => {
   const items = values.map((item) => ({
     value: item,
     label: item,
   }));
 
+  const getInitialSelectedItems = () => {
+    if (initialSelectedItems && initialSelectedItems.length > 0) {
+      return initialSelectedItems.map((value) => ({
+        value: value,
+        label: value,
+      }));
+    }
+    return [];
+  };
+
   const [open, setOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(getInitialSelectedItems);
+  const [hasTriggeredInitial, setHasTriggeredInitial] = useState(false);
+
+  useEffect(() => {
+    if (
+      initialSelectedItems &&
+      initialSelectedItems.length > 0 &&
+      !hasTriggeredInitial
+    ) {
+      const newSelectedItems = initialSelectedItems.map((value) => ({
+        value: value,
+        label: value,
+      }));
+      setSelectedItems(newSelectedItems);
+      if (onChange) {
+        onChange(newSelectedItems);
+        setHasTriggeredInitial(true);
+      }
+    }
+  }, [initialSelectedItems, onChange, hasTriggeredInitial]);
 
   const handleSelect = (item) => {
     const isSelected = selectedItems.some(

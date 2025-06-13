@@ -9,6 +9,9 @@ export const TextEditor = ({
   onChange,
   uploadHandler,
   handleHuy,
+  isShowSaveButton = true,
+  isShowHuyButton = true,
+  contentBtnSave = "Lưu nội dung",
 }) => {
   const [content, setContent] = useState(initialValue);
   const editorRef = useRef(null);
@@ -202,15 +205,20 @@ export const TextEditor = ({
       />
       {onSave && (
         <div className="mt-3 flex justify-end">
-          <ButtonDestructive
-            content="Hủy"
-            onClick={handleHuy}
-          ></ButtonDestructive>
-          <ButtonSuccess
-            className="ml-5"
-            onClick={handleSave}
-            content="Lưu nội dung"
-          ></ButtonSuccess>
+          {isShowHuyButton && (
+            <ButtonDestructive
+              content="Hủy"
+              onClick={handleHuy}
+            ></ButtonDestructive>
+          )}
+
+          {isShowSaveButton && (
+            <ButtonSuccess
+              className="ml-5"
+              onClick={handleSave}
+              content={contentBtnSave}
+            ></ButtonSuccess>
+          )}
         </div>
       )}
     </div>
