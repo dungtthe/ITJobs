@@ -31,6 +31,7 @@ import Infomation from "@/pages/candidate/profile/views/Index.jsx";
 import CompanyDetail from "@/pages/candidate/employer/views/Index.jsx";
 import CompanyProfiles from "@/pages/candidate/employer/views/CompanyProfiles/Index.jsx";
 import CompanyReviews from "@/pages/candidate/employer/views/CompanyReviews/Index.jsx";
+import DetailJob from "@/pages/candidate/posts/job/views/Detail.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -66,6 +67,7 @@ export default function MainRoutes() {
             <Route index element={<CompanyProfiles />} />
             <Route path="reviews" element={<CompanyReviews />} />
           </Route>
+          <Route path="job/:id" element={<DetailJob />} />
         </Route>
       </Routes>
     </BrowserRouter>

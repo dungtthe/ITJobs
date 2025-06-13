@@ -1,3 +1,7 @@
 .main-gradient {
     background: linear-gradient(to right, var(--secondary) 35%, oklch(0.3041 0.0927 18.4));
 }
+
+.curved-bottom {
+    clip-path: ellipse(70% 100% at 50% 0%);
+}

@@ -3,12 +3,13 @@ import { CompanyLogo } from "@/components/my-components/employer-profile/Company
 import { MdOutlineHomeWork } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
 import { Skill } from "@/components/my-components/employer-profile/Skill";
-export const JobPostSummaryCard = ({ jobPost }) => {
+import { useNavigate } from "react-router-dom";
+export const JobPostSummaryCard = ({ jobPost, MAX_VISIBLE_SKILLS = 4 }) => {
+  const navigate = useNavigate();
   const handleClick = (postId) => {
-    alert(`${postId}`);
+    navigate(`/job/${postId}`);
   };
 
-  const MAX_VISIBLE_SKILLS = 4;
   return (
     <div
       className="bg-card rounded-lg p-4 pb-7 hover:cursor-pointer"

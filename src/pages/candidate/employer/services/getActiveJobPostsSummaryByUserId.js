@@ -9,5 +9,11 @@ export const getActiveJobPostsSummaryByUserId = async (
   onFail,
   onException
 ) => {
-  await ApiGetRequest(uri + "/" + id, isUseJwt, onSuccess, onFail, onException);
+  await ApiGetRequest(
+    uri + "?userId=" + id,
+    isUseJwt,
+    onSuccess,
+    onFail,
+    onException
+  );
 };
