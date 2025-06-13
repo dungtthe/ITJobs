@@ -260,5 +260,53 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 .ToListAsync();
             return employers;
         }
+
+        public async Task<UseCases.Candidates.Employers.Queries.GetEmployerSummary.EmployerSummaryDto> GetEmployerSummaryForCanddiateAsync(Guid userId)
+        {
+            var employer = await _dbContext.Employers.FirstOrDefaultAsync(e=>e.UserId == userId);
+            if (employer == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+            var locations = JsonConvert.DeserializeObject<List<Entities.Location>>(employer.Locations);
+
+            var reviews = await _dbContext.Reviews
+                .Where(r => r.EmployerId == employer.Id)
+                .Select(r => new { r.RatingType, r.IsRecommend })
+                .ToListAsync();
+
+            return new UseCases.Candidates.Employers.Queries.GetEmployerSummary.EmployerSummaryDto
+            {
+                UserId = employer.UserId,
+                CompanyName = employer.CompanyName,
+                Image = employer.User.Image,
+                LocationNames = locations.Select(l => l.PlaceName).ToList(),
+
+
+                TotalReviews = reviews.Count,
+                TotalRecommended = reviews.Count(r => r.IsRecommend),
+                AverageRating = reviews.Count > 0 ? (float)reviews.Average(r => (int)r.RatingType) : 0,
+            };
+        }
+
+        public async Task<UseCases.Candidates.Employers.Queries.GetCompanyProfile.CompanyProfileDto> GetCompanyProfileForCandidateAsync(Guid userId)
+        {
+            var fEmployer = await _dbContext.Employers
+               .Include(e => e.User)
+               .FirstOrDefaultAsync(e => e.UserId == userId);
+            if (fEmployer == null)
+            {
+                return null;
+            }
+            //user
+            var companyProfileDto = new UseCases.Candidates.Employers.Queries.GetCompanyProfile.CompanyProfileDto
+            {
+                GeneralInfo = JsonConvert.DeserializeObject<List<Entities.GeneralInfoItem>>(fEmployer.GeneralInfo),
+                CompanyIntroduction = fEmployer.CompanyIntroduction,
+                Skills = JsonConvert.DeserializeObject<List<string>>(fEmployer.Skills),
+                Locations = JsonConvert.DeserializeObject<List<Entities.Location>>(fEmployer.Locations),
+            };
+            return companyProfileDto;
+        }
     }
 }

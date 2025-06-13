@@ -1,5 +1,8 @@
-﻿using ITJobs.Infrastructure.SqlServer;
+﻿using ITJobs.Entities.Exceptions;
+using ITJobs.Infrastructure.SqlServer;
 using ITJobs.Infrastructure.SqlServer.Models;
+using ITJobs.UseCases.Candidates.Accounts.Commands.Register;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +16,11 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
     public class HomeController : ControllerBase
     {
         private readonly ITJobsDbContext _context;
-        public HomeController(ITJobsDbContext context)
+        private IMediator _mediator;
+        public HomeController(ITJobsDbContext context,IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
 
@@ -302,5 +307,55 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             await Task.CompletedTask;
             return Ok("test admin");
         }
+
+
+        [HttpGet("/seednew")]
+        public async Task<IActionResult> SeedNew()
+        {
+
+            //50 candidate
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    var command = new RegisterAccountCommand
+            //    {
+            //        Email = $"c{i}@gmail.com",
+            //        Password = "123456",
+            //        FullName = $"Candidate{i}"
+            //    };
+
+            //    try
+            //    {
+            //        await _mediator.Send(command);
+            //    }
+            //    catch (EmailAlreadyExistsException)
+            //    {
+            //        continue;
+            //    }
+            //}
+
+            //reviewer to mbbank
+            //var employerIdMbBank = new Guid("23A950FB-2454-40E3-A23B-4E84ED0898A0");
+            //var candidates = await _context.Candidates.ToListAsync();
+            //var random = new Random();
+            //foreach (var candidate in candidates)
+            //{
+            //    var review = new Review
+            //    {
+            //       EmployerId = employerIdMbBank,
+            //       CandidateId = candidate.Id,
+            //       Title = $"Đánh giá của {candidate.User.FullName} về MB Bank",
+            //       RatingType = (Entities.Enums.RatingType)random.Next(1, 6),
+            //       IsRecommend = random.Next(0, 2) == 1, 
+            //       Description = $"Đây là một đánh giá mẫu của {candidate.User.FullName} về MB Bank. Tôi đã làm việc tại đây trong một thời gian và cảm thấy rất hài lòng với môi trường làm việc cũng như cơ hội phát triển nghề nghiệp. Tôi khuyên bạn nên ứng tuyển vào MB Bank nếu có cơ hội.",
+            //       CreateAt = DateTime.UtcNow,
+            //       IsDelete = false
+            //    };
+            //    await _context.Reviews.AddAsync(review);
+            //}
+
+            await _context.SaveChangesAsync();
+            return Ok("OK");
+        }
+
     }
 }

@@ -20,5 +20,24 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+
+        [HttpGet("summary/{userId}")]
+        public async Task<IActionResult> GetEmployerSummaryAsync([FromRoute] Guid userId)
+        {
+
+            var query = new UseCases.Candidates.Employers.Queries.GetEmployerSummary.GetEmployerSummaryQuery { UserId = userId };
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("company-profile/{userId}")]
+        public async Task<IActionResult> GetCompanyProfileAsync([FromRoute] Guid userId)
+        {
+            var query = new UseCases.Candidates.Employers.Queries.GetCompanyProfile.GetCompanyProfileQuery { UserId = userId };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

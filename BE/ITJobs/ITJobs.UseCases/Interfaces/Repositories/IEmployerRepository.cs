@@ -36,5 +36,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 
         Task<List<Guid>> GetEmployerIdsExcludingAsync(List<Guid> excludedIds, int count);
         Task<Candidates.Employers.Queries.GetTopEmployersByApplicationsSummary.EmployerSummaryDto> GetEmployerSummaryByIdAsync(Guid employerId);
+        Task<Candidates.Employers.Queries.GetEmployerSummary.EmployerSummaryDto> GetEmployerSummaryForCanddiateAsync(Guid userId);
+
+        Task<UseCases.Candidates.Employers.Queries.GetCompanyProfile.CompanyProfileDto> GetCompanyProfileForCandidateAsync(Guid userId);
     }
 }
