@@ -219,7 +219,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
                                             };
             var searchFilterWorkingArrangement = new SearchFilter()
             {
-                Id = new Guid(),
+                Id = ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE,
                 Name = "Hình thức làm việc",
                 SearchFilterType = Entities.Enums.SearchFilterType.Checkbox,
                 Values = JsonConvert.SerializeObject(workingArrangements),
@@ -312,6 +312,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
         [HttpGet("/seednew")]
         public async Task<IActionResult> SeedNew()
         {
+            var random = new Random();
 
             //50 candidate
             //for (int i = 0; i < 50; i++)
@@ -336,7 +337,6 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //reviewer to mbbank
             //var employerIdMbBank = new Guid("23A950FB-2454-40E3-A23B-4E84ED0898A0");
             //var candidates = await _context.Candidates.ToListAsync();
-            //var random = new Random();
             //foreach (var candidate in candidates)
             //{
             //    var review = new Review
@@ -352,6 +352,48 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //    };
             //    await _context.Reviews.AddAsync(review);
             //}
+
+
+            //job post
+            var jopPostMbBank = await _context.Posts.FirstOrDefaultAsync(p => p.Id == new Guid("55FCE878-34DF-406B-9D2F-08DDAA536BAD"));
+            if (jopPostMbBank != null)
+            {
+                var searchFilterPosts = await _context.SearchFilter_Posts.Where(s => s.PostId == jopPostMbBank.Id).ToListAsync();
+                //for(int i = 0; i < 15; i++)
+                //{
+                //    var postIdNew = Guid.NewGuid();
+                //    var now = DateTime.Now;
+                //    await _context.Posts.AddAsync(new Post()
+                //    {
+                //        Id = postIdNew,
+                //        UserId = jopPostMbBank.UserId,
+                //        Title = "Lập trình viên .NET " +i,
+                //        ShortContent="a",
+                //        MainImage=null,
+                //        Content = jopPostMbBank.Content,
+                //        CreatedAt = now,
+                //        UpdatedAt = now,
+                //        PostType = Entities.Enums.PostType.JobPosting,
+                //        EndDate = now.AddDays(random.Next(10, 20)),
+                //        PostingFee = 50000 * random.Next(1,20)
+                //    });
+                //}
+
+                var posts = await _context.Posts.Where(p => p.Title.Contains("Lập trình viên .NET")).ToListAsync();
+                foreach(var item in  posts)
+                {
+                    foreach(var searchFilterPost in searchFilterPosts)
+                    {
+                        await _context.SearchFilter_Posts.AddAsync(new SearchFilter_Post()
+                        {
+                            SearchFilterId = searchFilterPost.SearchFilterId,
+                            PostId = item.Id,
+                            Values = searchFilterPost.Values
+                        });
+                    }
+                }
+
+            }
 
             await _context.SaveChangesAsync();
             return Ok("OK");

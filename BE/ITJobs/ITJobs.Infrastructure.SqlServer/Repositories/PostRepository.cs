@@ -2,6 +2,7 @@
 using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
 using ITJobs.UseCases.Employers.Posts.Queries.GetJobPostById;
@@ -29,25 +30,25 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         {
             await _dbContext.Posts.AddAsync(new Models.Post()
             {
-                Id= postEntity.Id,
+                Id = postEntity.Id,
                 Title = postEntity.Title,
                 Content = postEntity.Content,
                 ShortContent = postEntity.ShortContent,
                 MainImage = postEntity.MainImage,
-                Keywords= JsonConvert.SerializeObject(postEntity.KeyWords),
+                Keywords = JsonConvert.SerializeObject(postEntity.KeyWords),
                 CreatedAt = postEntity.CreateAt,
                 UpdatedAt = postEntity.UpdateAt,
                 UserId = userId,
                 PostType = postEntity.PostType,
-                IsDeleted= postEntity.IsDeleted,
-                ViewCount= postEntity.ViewCount
+                IsDeleted = postEntity.IsDeleted,
+                ViewCount = postEntity.ViewCount
             });
         }
 
         public async Task<PagedResult<UseCases.Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummarForAdminAsync(GetBlogPostsSummaryQuery request)
         {
             var query = _dbContext.Posts
-                                        .Include(p=>p.User)
+                                        .Include(p => p.User)
                                         .Where(p => p.PostType == PostType.News);
             if (request.UserId != null)
             {
@@ -66,7 +67,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
 
             var items = await query
-                .OrderByDescending(p => p.CreatedAt) 
+                .OrderByDescending(p => p.CreatedAt)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(p => new UseCases.Admins.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto
@@ -101,7 +102,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var employerIds = await _dbContext.Posts
                 .Where(p => postIds.Contains(p.Id) && !p.IsDeleted)
                 .Select(p => p.UserId)
-                .Distinct() 
+                .Distinct()
                 .ToListAsync();
 
             return employerIds;
@@ -117,7 +118,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                     EmployerId = g.Key,
                     PostCount = g.Count()
                 })
-                .OrderByDescending(g => g.PostCount) 
+                .OrderByDescending(g => g.PostCount)
                 .Take(count)
                 .Select(g => g.EmployerId)
                 .ToListAsync();
@@ -132,7 +133,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 .CountAsync(p => p.UserId == employerId
                              && p.PostType == PostType.JobPosting
                              && !p.IsDeleted
-                             && (p.EndDate == null || p.EndDate > now)); 
+                             && (p.EndDate == null || p.EndDate > now));
         }
 
 
@@ -185,8 +186,8 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 PostType = postEntity.PostType,
                 IsDeleted = postEntity.IsDeleted,
                 ViewCount = postEntity.ViewCount,
-                EndDate= postEntity.EndDate,
-                PostingFee= postEntity.PostingFee
+                EndDate = postEntity.EndDate,
+                PostingFee = postEntity.PostingFee
             };
 
             await _dbContext.Posts.AddAsync(post);
@@ -324,7 +325,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             }
 
             var randomPosts = await query
-                .OrderBy(p => Guid.NewGuid()) 
+                .OrderBy(p => Guid.NewGuid())
                 .Take(request.Count)
                 .Select(p => new UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto
                 {
@@ -341,7 +342,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
         public async Task<ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.BlogPostDto> GetBlogPostByIdForCandidate(ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.GetBlogPostByIdQuery request)
         {
             var post = await _dbContext.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == request.Id && p.PostType == PostType.News && !p.IsDeleted);
-            if(post == null)
+            if (post == null)
             {
                 return null;
             }
@@ -365,7 +366,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var query = _dbContext.Posts
                             .Include(p => p.User)
                             .Where(p => p.PostType == PostType.JobPosting && p.UserId == request.UserId.Value && !p.IsDeleted);
-          
+
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
                 query = query.Where(p =>
@@ -425,7 +426,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         public async Task<bool> IsPostOwnedByEmployerAsync(Guid postId, Guid userId)
         {
-            return await _dbContext.Posts.AnyAsync(p=>p.Id==postId && p.UserId==userId && !p.IsDeleted);
+            return await _dbContext.Posts.AnyAsync(p => p.Id == postId && p.UserId == userId && !p.IsDeleted);
         }
 
         public async Task UpdateJobPostAsync(Guid postId, string title, string content)
@@ -451,15 +452,57 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
             return new JobPostDto()
             {
-                Id= post.Id,
-                Title= post.Title,
-                Content= post.Content,
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
                 CreateAt = post.CreatedAt,
-                UpdateAt= post.UpdatedAt,
+                UpdateAt = post.UpdatedAt,
                 EndDate = post.EndDate.Value,
                 ViewCount = post.ViewCount,
                 PostingFee = post.PostingFee.ToString()
             };
+        }
+
+        public async Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryByUserIdForCandidateAsync(Guid userId)
+        {
+            var result = new List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>();
+            var now = DateTime.Now;
+
+            var activeJosPosts = await _dbContext.Posts.Include(p => p.User).Where(p => p.UserId == userId
+                                                            && !p.IsDeleted
+                                                            && p.PostType == Entities.Enums.PostType.JobPosting && p.EndDate > now).ToListAsync();
+            foreach(var item in activeJosPosts)
+            {
+                var searchFilterPostWorkType = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == item.Id && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE).FirstOrDefaultAsync();
+                var searchFilterPostLocation = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == item.Id && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY).FirstOrDefaultAsync();
+                var searchFilterPostSkill = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == item.Id && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL).FirstOrDefaultAsync();
+
+
+                var jobSummary = new UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto()
+                {
+                    UserId = item.UserId,
+                    CompanyName = item.User.FullName,
+                    Image = item.User.Image,
+
+                    PostId = item.Id,
+                    Title = item.Title,
+                    CreateAt = item.CreatedAt,
+                };
+                if (searchFilterPostWorkType != null)
+                {
+                    jobSummary.WorkTypes = JsonConvert.DeserializeObject<List<string>>(searchFilterPostWorkType.Values);
+                }
+                if (searchFilterPostLocation != null)
+                {
+                    jobSummary.LocationNames = JsonConvert.DeserializeObject<List<string>>(searchFilterPostLocation.Values);
+                }
+                if (searchFilterPostSkill != null)
+                {
+                    jobSummary.Skills = JsonConvert.DeserializeObject<List<string>>(searchFilterPostSkill.Values);
+                }
+                result.Add(jobSummary);
+            }
+            return result;
         }
     }
 }

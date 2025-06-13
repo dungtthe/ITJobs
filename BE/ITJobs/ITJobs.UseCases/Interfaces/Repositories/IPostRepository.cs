@@ -1,6 +1,7 @@
 ﻿using ITJobs.Entities.Enums;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
 using ITJobs.UseCases.Helpers.Paginations;
@@ -31,6 +32,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<PagedResult<Candidates.Posts.Queries.GetBlogPostsSummary.BlogPostSummaryDto>> GetBlogPostsSummaryForCandidateAsync(Candidates.Posts.Queries.GetBlogPostsSummary.GetBlogPostsSummaryQuery request);
         Task<List<Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto>> GetRandomBlogPostsSummaryForCandidateAsync(GetRandomBlogPostsSummaryQuery request);
         Task<ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.BlogPostDto> GetBlogPostByIdForCandidate(ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.GetBlogPostByIdQuery request);
+        Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryByUserIdForCandidateAsync(Guid userId);
         #endregion
 
         #region employer

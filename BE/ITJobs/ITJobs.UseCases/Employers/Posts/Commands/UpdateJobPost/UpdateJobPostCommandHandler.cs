@@ -1,4 +1,6 @@
-﻿using ITJobs.UseCases.Interfaces.Repositories;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using ITJobs.UseCases.Interfaces.Repositories;
 using ITJobs.UseCases.Interfaces.UnitOfWork;
 using MediatR;
 using Newtonsoft.Json;
@@ -30,6 +32,27 @@ namespace ITJobs.UseCases.Employers.Posts.Commands.UpdateJobPost
                 {
                     throw new Entities.Exceptions.PostNotFoundException();
                 }
+
+                //bat buoc co hinh thuc lam viec, dia diem, skills
+                var failures = new List<ValidationFailure>();
+
+                if (!request.SearchFilterCheckBoxs.Any(f => f.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY))
+                {
+                    failures.Add(new ValidationFailure("", "Phải có ít nhất một địa điểm trong bộ lọc"));
+                }
+                if (!request.SearchFilterCheckBoxs.Any(f => f.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE))
+                {
+                    failures.Add(new ValidationFailure("", "Phải có ít nhất một hình thức làm việc trong bộ lọc"));
+                }
+                if (!request.SearchFilterCheckBoxs.Any(f => f.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL))
+                {
+                    failures.Add(new ValidationFailure("", "Phải có ít nhất một kỹ năng trong bộ lọc"));
+                }
+                if (failures.Any())
+                {
+                    throw new ValidationException(failures);
+                }
+
                 await _unitOfWork.BeginTransactionAsync();
                 await _searchFilter_PostRepository.DeleteAllSearchFilterPostByPostId(request.PostId);
                 await _postRepository.UpdateJobPostAsync(request.PostId, request.Title,request.Content);

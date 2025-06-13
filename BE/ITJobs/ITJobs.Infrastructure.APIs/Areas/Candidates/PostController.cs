@@ -45,6 +45,15 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
+
+        [HttpGet("job/{userId}")]
+        public async Task<IActionResult> GetJobPostsSummaryAsync([FromRoute] Guid userId)
+        {
+            var query = new UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.GetActiveJobPostsSummaryByUserId.GetActiveJobPostsSummaryByUserIdQuery();
+            query.UserId = userId;
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 
 }
