@@ -36,6 +36,9 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         #region employer
         Task<Guid> AddJobPostAsync(Guid userId, Entities.Post postEntity);
         Task<PagedResult<Employers.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>> GetJobPostsSummaryForEmployerAsync(Employers.Posts.Queries.GetJobPostsSummary.GetJobPostsSummaryQuery request);
+        Task<bool> IsPostOwnedByEmployerAsync(Guid postId, Guid userId);
+        Task UpdateJobPostAsync(Guid postId, string title, string content);
+        Task<UseCases.Employers.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdAsync(Guid postId);
         #endregion
     }
 }

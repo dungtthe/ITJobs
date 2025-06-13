@@ -4,6 +4,7 @@ using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
+using ITJobs.UseCases.Employers.Posts.Queries.GetJobPostById;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -419,6 +420,45 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 PageSize = request.PageSize,
                 TotalPages = totalPages,
                 TotalRecords = totalRecords
+            };
+        }
+
+        public async Task<bool> IsPostOwnedByEmployerAsync(Guid postId, Guid userId)
+        {
+            return await _dbContext.Posts.AnyAsync(p=>p.Id==postId && p.UserId==userId && !p.IsDeleted);
+        }
+
+        public async Task UpdateJobPostAsync(Guid postId, string title, string content)
+        {
+            var post = await _dbContext.Posts.FindAsync(postId);
+            if (post == null)
+            {
+                throw new Entities.Exceptions.PostNotFoundException();
+            }
+
+            post.Title = title;
+            post.Content = content;
+            post.UpdatedAt = DateTime.Now;
+        }
+
+        public async Task<UseCases.Employers.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdAsync(Guid postId)
+        {
+            var post = await _dbContext.Posts.Where(p => p.Id == postId && !p.IsDeleted).FirstOrDefaultAsync();
+            if (post == null)
+            {
+                throw new Entities.Exceptions.PostNotFoundException();
+            }
+
+            return new JobPostDto()
+            {
+                Id= post.Id,
+                Title= post.Title,
+                Content= post.Content,
+                CreateAt = post.CreatedAt,
+                UpdateAt= post.UpdatedAt,
+                EndDate = post.EndDate.Value,
+                ViewCount = post.ViewCount,
+                PostingFee = post.PostingFee.ToString()
             };
         }
     }

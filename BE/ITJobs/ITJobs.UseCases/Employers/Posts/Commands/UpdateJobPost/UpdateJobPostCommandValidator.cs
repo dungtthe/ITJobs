@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITJobs.UseCases.Employers.Posts.Commands.AddJobPost
+namespace ITJobs.UseCases.Employers.Posts.Commands.UpdateJobPost
 {
-    public class AddJobPostCommandValidator: AbstractValidator<AddJobPostCommand>
+    public class UpdateJobPostCommandValidator:AbstractValidator<UpdateJobPostCommand>
     {
-        public AddJobPostCommandValidator()
+        public UpdateJobPostCommandValidator()
         {
             RuleFor(x => x.Title)
                .NotEmpty().WithMessage("Tiêu đề không được để trống")

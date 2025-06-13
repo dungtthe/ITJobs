@@ -46,5 +46,31 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
+
+        [HttpPut("job/update")]
+        public async Task<IActionResult> UpdateJobPostAsync([FromBody] ITJobs.UseCases.Employers.Posts.Commands.UpdateJobPost.UpdateJobPostCommand command)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            command.UserId = userId.Value;
+            await _mediator.Send(command);
+            return Ok(new {});
+        }
+
+        [HttpGet("job/{postId}")]
+        public async Task<IActionResult> GetJobPostByIdAsync([FromRoute] Guid postId)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            var query = new ITJobs.UseCases.Employers.Posts.Queries.GetJobPostById.GetJobPostByIdQuery { PostId = postId, UserId = userId.Value };
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 }
