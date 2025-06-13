@@ -33,6 +33,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<List<Candidates.Posts.Queries.GetRandomBlogPostsSummary.BlogPostSummaryDto>> GetRandomBlogPostsSummaryForCandidateAsync(GetRandomBlogPostsSummaryQuery request);
         Task<ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.BlogPostDto> GetBlogPostByIdForCandidate(ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById.GetBlogPostByIdQuery request);
         Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryByUserIdForCandidateAsync(Guid userId);
+        Task <UseCases.Candidates.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdForCandidateAsync(Guid postId);
+        Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryRandomForCandidateAsync(Guid? excludePostId, int count);
         #endregion
 
         #region employer

@@ -1,5 +1,6 @@
 ﻿using ITJobs.Entities;
 using ITJobs.Entities.Enums;
+using ITJobs.Infrastructure.SqlServer.Models;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary;
@@ -169,7 +170,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             };
         }
 
-        public async Task<Guid> AddJobPostAsync(Guid userId, Post postEntity)
+        public async Task<Guid> AddJobPostAsync(Guid userId, Entities.Post postEntity)
         {
 
             var post = new Models.Post()
@@ -504,5 +505,133 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             }
             return result;
         }
+
+        public async Task<UseCases.Candidates.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdForCandidateAsync(Guid postId)
+        {
+            var fPost = await _dbContext.Posts.Include(p=>p.User).FirstOrDefaultAsync(p=>p.Id==postId && !p.IsDeleted && p.PostType == PostType.JobPosting && p.EndDate>DateTime.Now);
+            if (fPost == null)
+            {
+                throw new Entities.Exceptions.PostNotFoundException();
+            }
+
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e=>e.UserId==fPost.UserId);
+            if (fEmployer == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+
+            var searchFilterPostWorkType = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == postId && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE).FirstOrDefaultAsync();
+            var searchFilterPostLocation = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == postId && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY).FirstOrDefaultAsync();
+            var searchFilterPostSkill = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == postId && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL).FirstOrDefaultAsync();
+
+            var jobPost = new UseCases.Candidates.Posts.Queries.GetJobPostById.JobPostDto()
+            {
+                Id = fPost.Id,
+                Title = fPost.Title,
+                Content = fPost.Content,
+                CreateAt = fPost.CreatedAt,
+                EndDate = fPost.EndDate.Value,
+            };
+
+            if (searchFilterPostWorkType != null)
+            {
+                jobPost.WorkTypes = JsonConvert.DeserializeObject<List<string>>(searchFilterPostWorkType.Values);
+            }
+            if (searchFilterPostLocation != null)
+            {
+                jobPost.LocationNames = JsonConvert.DeserializeObject<List<string>>(searchFilterPostLocation.Values);
+            }
+            if (searchFilterPostSkill != null)
+            {
+                jobPost.Skills = JsonConvert.DeserializeObject<List<string>>(searchFilterPostSkill.Values);
+            }
+
+
+            //employer 
+            jobPost.UserId = fPost.UserId;
+            jobPost.CompanyName = fPost.User.FullName;
+            jobPost.CompanyImage = fPost.User.Image;
+            jobPost.GeneralInfo = JsonConvert.DeserializeObject<List<Entities.GeneralInfoItem>>(fEmployer.GeneralInfo);
+
+            //review
+            var reviews = await _dbContext.Reviews
+                                            .Where(r => r.EmployerId == fEmployer.Id)
+                                            .Select(r => new { r.RatingType, r.IsRecommend })
+                                            .ToListAsync();
+
+            jobPost.TotalReviews = reviews.Count;
+            jobPost.TotalRecommended = reviews.Count(r => r.IsRecommend);
+            jobPost.AverageRating = reviews.Count > 0 ? (float)reviews.Average(r => (int)r.RatingType) : 0;
+            return jobPost;
+        }
+
+        public async Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryRandomForCandidateAsync(Guid? excludePostId, int count)
+        {
+            var now = DateTime.Now;
+
+            var query = _dbContext.Posts
+                .Include(p => p.User)
+                .Where(p => !p.IsDeleted
+                            && p.PostType == Entities.Enums.PostType.JobPosting
+                            && p.EndDate > now);
+
+            if (excludePostId.HasValue)
+            {
+                query = query.Where(p => p.Id != excludePostId.Value);
+            }
+
+            var activeJobPosts = await query
+                .OrderBy(p => Guid.NewGuid())
+                .Take(count)
+                .ToListAsync();
+
+            var result = new List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>();
+
+            foreach (var item in activeJobPosts)
+            {
+                var searchFilterPostWorkType = await _dbContext.SearchFilter_Posts
+                    .Where(s => s.PostId == item.Id
+                                && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE)
+                    .FirstOrDefaultAsync();
+
+                var searchFilterPostLocation = await _dbContext.SearchFilter_Posts
+                    .Where(s => s.PostId == item.Id
+                                && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY)
+                    .FirstOrDefaultAsync();
+
+                var searchFilterPostSkill = await _dbContext.SearchFilter_Posts
+                    .Where(s => s.PostId == item.Id
+                                && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL)
+                    .FirstOrDefaultAsync();
+
+                var jobSummary = new UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto
+                {
+                    UserId = item.UserId,
+                    CompanyName = item.User.FullName,
+                    Image = item.User.Image,
+                    PostId = item.Id,
+                    Title = item.Title,
+                    CreateAt = item.CreatedAt,
+                };
+
+                if (searchFilterPostWorkType != null)
+                {
+                    jobSummary.WorkTypes = JsonConvert.DeserializeObject<List<string>>(searchFilterPostWorkType.Values);
+                }
+                if (searchFilterPostLocation != null)
+                {
+                    jobSummary.LocationNames = JsonConvert.DeserializeObject<List<string>>(searchFilterPostLocation.Values);
+                }
+                if (searchFilterPostSkill != null)
+                {
+                    jobSummary.Skills = JsonConvert.DeserializeObject<List<string>>(searchFilterPostSkill.Values);
+                }
+
+                result.Add(jobSummary);
+            }
+
+            return result;
+        }
+
     }
 }
