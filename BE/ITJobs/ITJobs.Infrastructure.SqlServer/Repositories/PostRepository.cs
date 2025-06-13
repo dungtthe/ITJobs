@@ -358,5 +358,68 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 AuthorAvatar = post.User.Image
             };
         }
+
+        public async Task<PagedResult<UseCases.Employers.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>> GetJobPostsSummaryForEmployerAsync(UseCases.Employers.Posts.Queries.GetJobPostsSummary.GetJobPostsSummaryQuery request)
+        {
+            var query = _dbContext.Posts
+                            .Include(p => p.User)
+                            .Where(p => p.PostType == PostType.JobPosting && p.UserId == request.UserId.Value && !p.IsDeleted);
+          
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                query = query.Where(p =>
+                    p.Title.ToLower().Contains(request.SearchTerm.ToLower()));
+            }
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
+
+            var postIds = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var applicationCounts = await _dbContext.JobApplications
+                .Where(ja => postIds.Contains(ja.PostId))
+                .GroupBy(ja => ja.PostId)
+                .Select(g => new
+                {
+                    PostId = g.Key,
+                    Count = g.Count()
+                })
+                .ToDictionaryAsync(x => x.PostId, x => x.Count);
+
+            var items = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => new UseCases.Employers.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    CreateAt = p.CreatedAt,
+                    EndDate = p.EndDate.Value,
+                    ViewCount = p.ViewCount,
+                    PostingFee = p.PostingFee.ToString(),
+                    JobApplicationCount = 0,
+                })
+                .ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.JobApplicationCount = applicationCounts.GetValueOrDefault(item.Id, 0);
+            }
+
+            return new PagedResult<UseCases.Employers.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>
+            {
+                Items = items,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
+        }
     }
 }

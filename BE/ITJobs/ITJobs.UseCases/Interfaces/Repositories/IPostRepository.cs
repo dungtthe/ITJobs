@@ -35,6 +35,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
 
         #region employer
         Task<Guid> AddJobPostAsync(Guid userId, Entities.Post postEntity);
+        Task<PagedResult<Employers.Posts.Queries.GetJobPostsSummary.JobPostSummaryDto>> GetJobPostsSummaryForEmployerAsync(Employers.Posts.Queries.GetJobPostsSummary.GetJobPostsSummaryQuery request);
         #endregion
     }
 }

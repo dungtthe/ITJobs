@@ -1,8 +1,10 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
+using ITJobs.UseCases.Employers.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Shared.Posts.Commands.CreateBlogPost;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ITJobs.Infrastructure.APIs.Areas.Employers
 {
@@ -28,6 +30,20 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             }
             command.UserId = userId.Value;
             var rs = await _mediator.Send(command);
+            return Ok(rs);
+        }
+
+
+        [HttpGet("job")]
+        public async Task<IActionResult> GetJobPostsSummarAsync([FromQuery] GetJobPostsSummaryQuery query)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            query.UserId = userId.Value;
+            var rs = await _mediator.Send(query);
             return Ok(rs);
         }
     }
