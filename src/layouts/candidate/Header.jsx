@@ -17,8 +17,9 @@ import "./style.css";
 import Logo from "@/components/my-components/candidate/Logo";
 import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
-
+import { useNavigate } from "react-router-dom";
 export default function Header() {
+  const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
   let name = null;
@@ -38,7 +39,7 @@ export default function Header() {
         <div className="flex justify-between items-center px-25">
           <div className="flex items-center">
             {/* logo */}
-            <Logo as="h1" size="medium" />
+            <Logo as="h1" size="medium" onClick={() => navigate("/")} />
             <div className="ml-8">
               <Link className="text-secondary-foreground/80">Việc làm IT</Link>
               <Link to="/blog" className="ml-5 text-secondary-foreground/80">

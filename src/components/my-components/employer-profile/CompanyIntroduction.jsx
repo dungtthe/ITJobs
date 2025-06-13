@@ -6,6 +6,7 @@ export const CompanyIntroduction = ({
   companyIntroduction,
   handleEdit,
   isEnabledEdit,
+  bg = "bg-background",
   isCanEdit,
   ...props
 }) => {
@@ -19,7 +20,7 @@ export const CompanyIntroduction = ({
 
   return (
     <>
-      <div className="bg-background p-5 rounded-lg">
+      <div className={`${bg} p-5 rounded-lg`}>
         <div className="flex justify-between">
           <h3 className="text-xl font-medium mb-3">Giới thiệu công ty</h3>
           {isCanEdit && !isEnabledEdit && (

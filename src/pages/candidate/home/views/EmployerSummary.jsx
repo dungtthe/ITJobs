@@ -1,9 +1,12 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { FaMapMarkerAlt, FaBriefcase } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const EmployerSummary = ({ employer, ratio }) => {
+  const navigate = useNavigate();
+
   const handleClick = (userId) => {
-    alert(userId);
+    navigate(`/company/${userId}`);
   };
 
   const locationName = employer.locationNames.map((item) => item).join(", ");

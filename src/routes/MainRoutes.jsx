@@ -27,6 +27,9 @@ import Test from "@/pages/test.jsx";
 import Blog from "@/pages/candidate/posts/blog/views/Index.jsx";
 import DetailBlog from "@/pages/candidate/posts/blog/views/Detail.jsx";
 import Infomation from "@/pages/candidate/profile/views/Index.jsx";
+import CompanyDetail from "@/pages/candidate/employer/views/Index.jsx";
+import CompanyProfiles from "@/pages/candidate/employer/views/CompanyProfiles/Index.jsx";
+import CompanyReviews from "@/pages/candidate/employer/views/CompanyReviews/Index.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -57,6 +60,10 @@ export default function MainRoutes() {
           <Route path="blog" element={<Blog />} />
           <Route path="blog/:id" element={<DetailBlog />} />
           <Route path="profile" element={<Infomation />} />
+          <Route path="company/:userId" element={<CompanyDetail />}>
+            <Route index element={<CompanyProfiles />} />
+            <Route path="reviews" element={<CompanyReviews />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

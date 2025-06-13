@@ -49,7 +49,7 @@ function LocationMarker({ onLocationSelected, selectMode }) {
   return null;
 }
 
-export const Locations = ({ locations, isCanEdit }) => {
+export const Locations = ({ locations, isCanEdit, bg = "bg-background" }) => {
   const locationsDataDefault = useRef(
     locations.map((item) => ({
       ...item,
@@ -414,7 +414,7 @@ export const Locations = ({ locations, isCanEdit }) => {
   const locationToDisplay = isAddingNew ? newLocation : selectedLocation;
 
   return (
-    <div className="bg-background p-5 rounded-lg">
+    <div className={`${bg} p-5 rounded-lg`}>
       <div className="flex justify-between items-center">
         <div className="flex gap-2 justify-center hover:cursor-pointer">
           <h3 className="text-xl font-medium mb-3">Địa điểm</h3>

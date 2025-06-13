@@ -10,7 +10,13 @@ import {
   showSuccessToastHasTitle,
 } from "@/components/my-components/MyToast";
 import { updateGeneralInfos } from "@/pages/employer/company-profile/services/updateGeneralInfos";
-export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
+export const GeneralInfo = ({
+  generalInfo,
+  classNameRow,
+  isCanEdit,
+  bg = "bg-background",
+  padding = "p-5",
+}) => {
   const defaultDataGeneralInfo = generalInfo.map((item) => ({
     ...item,
     id: crypto.randomUUID(),
@@ -114,10 +120,10 @@ export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
 
   return (
     <>
-      <div className="bg-background p-5 rounded-lg">
+      <div className={`${bg} ${padding} rounded-lg`}>
         <div className="flex justify-between">
           <div className="flex gap-2 justify-center hover:cursor-pointer">
-            <h3 className="text-xl font-medium mb-3">Thông tin chung</h3>
+            <h3 className="text-xl font-medium mb-1">Thông tin chung</h3>
             {isEnableEdit && (
               <>
                 <IconAdd onClick={handleAdd}></IconAdd>
@@ -133,7 +139,7 @@ export const GeneralInfo = ({ generalInfo, classNameRow, isCanEdit }) => {
         {/* line */}
         <div className="border border-dashed w-full h-[1px]"></div>
         {/* content */}
-        <div className="px-4 mt-5 flex flex-wrap">
+        <div className="px-4 mt-1 flex flex-wrap">
           {generalInfoData.map((item) => (
             <div key={item.id} className={classNameRow}>
               <div className="flex">

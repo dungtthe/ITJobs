@@ -237,11 +237,7 @@ export const OverviewInformation = ({
         <div className="px-4 mt-5 flex">
           {/* logo */}
           <div className="flex gap-2 border-r pr-10 ">
-            <CompanyLogo
-              image={imageData}
-              maxWidth="350px"
-              maxHeight="350px"
-            ></CompanyLogo>
+            <CompanyLogo image={imageData} size="200px"></CompanyLogo>
             {isCanEdit}
             {
               //   nếu để trong thằng {isCanEdit && !isEnableEditLogo là khi render lại ô input này mất nên filechange k được gọi

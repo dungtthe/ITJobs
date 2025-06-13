@@ -29,7 +29,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
+export const OurSkills = ({
+  title,
+  skills,
+  classNameRow,
+  isCanEdit,
+  bg = "bg-background",
+}) => {
   const defaultSkillsData = skills.map((item) => ({
     skillName: item,
     id: crypto.randomUUID(),
@@ -161,7 +167,7 @@ export const OurSkills = ({ title, skills, classNameRow, isCanEdit }) => {
   };
 
   return (
-    <div className="bg-background p-5 rounded-lg">
+    <div className={`${bg} p-5 rounded-lg`}>
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
           <h3 className="text-xl font-medium">{title}</h3>

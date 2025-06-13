@@ -258,7 +258,11 @@ export const Overview = ({ isCanEdit = false, profile }) => {
         <div className="flex flex-col gap-2 border-r pr-12">
           <div className="relative w-[200px] h-[200px] rounded-full overflow-hidden">
             <Avatar className="size-[200px]">
-              <AvatarImage src={imageData} alt="Avatar" />
+              {imageData === "no_img_user.png" ? (
+                <AvatarImage src={no_img_user} />
+              ) : (
+                <AvatarImage src={imageData} alt="Avatar" />
+              )}
             </Avatar>
           </div>
 
