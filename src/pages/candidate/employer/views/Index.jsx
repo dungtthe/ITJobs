@@ -10,6 +10,9 @@ import StarRatings from "react-star-ratings";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Outlet } from "react-router-dom";
 import { NavLink, useLocation } from "react-router-dom";
+import { JobPostSummaryCard } from "../../shared-card/JobPostSummaryCard";
+import { getActiveJobPostsSummaryByUserId } from "../services/getActiveJobPostsSummaryByUserId";
+import emptyjob from "@/assets/images/emptyjob.svg";
 
 export default function Index() {
   const location = useLocation();
@@ -17,6 +20,7 @@ export default function Index() {
 
   const { userId } = useParams();
   const [employerSummary, setEmployerSummary] = useState(null);
+  const [activeJobPosts, setActiveJobPosts] = useState([]);
   useEffect(() => {
     getEmployerSummary(
       userId,
@@ -30,6 +34,16 @@ export default function Index() {
       (exception) => {
         console.error("Exception fetching employer summary:", exception);
       }
+    );
+
+    getActiveJobPostsSummaryByUserId(
+      userId,
+      (data) => {
+        setActiveJobPosts(data);
+        console.log("Active Job Posts Data:", data);
+      },
+      (error) => {},
+      (exception) => {}
     );
   }, []);
 
@@ -154,7 +168,32 @@ export default function Index() {
             </div>
           </div>
           {/* job posts */}
-          <div className="w-[27%] "></div>
+          <div className="w-[27%] ">
+            {activeJobPosts.length === 0 ? (
+              <div className="flex gap-2 items-center bg-card rounded-xl">
+                <img src={emptyjob}></img>
+                <p className="font-bold text-foreground/40 text-lg">
+                  Hiện tại {employerSummary.companyName} không có vị trí tuyển
+                  dụng nào
+                </p>
+              </div>
+            ) : (
+              <div className="sticky top-18">
+                <h5 className="mb-5 font-semibold text-foreground/70 text-xl">
+                  {employerSummary.companyName} hiện có {activeJobPosts.length}{" "}
+                  vị trí tuyển dụng
+                </h5>
+                <div className="flex flex-col gap-5 overflow-y-auto max-h-[100vh] scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent">
+                  {activeJobPosts.map((jobPost) => (
+                    <JobPostSummaryCard
+                      key={jobPost.postId}
+                      jobPost={jobPost}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

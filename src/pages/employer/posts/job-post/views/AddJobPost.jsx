@@ -22,11 +22,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { differenceInCalendarDays, addDays } from "date-fns";
+import { getSearchFilters } from "@/shared-services/search-filters/getSearchFilters.js";
+
 import { getJobPostFeePerDay } from "@/shared-services/system-value/getJobPostFeePerDay.js";
 import { formatVND } from "@/utils/formatUtils.js";
 export default function AddJobPost() {
   const navigate = useNavigate();
-
+  const [searchFiltersMetadata, setSearchFiltersMetadata] = useState({
+    ranges: [],
+    checkboxs: [],
+    comboboxs: [],
+  });
   const setAccountBalance = useAccountBalanceStore(
     (state) => state.setAccountBalance
   );
@@ -42,7 +48,15 @@ export default function AddJobPost() {
       setJobPostFeePerDay(data.fee);
     });
   }, []);
-
+  useEffect(() => {
+    getSearchFilters((data) => {
+      setSearchFiltersMetadata({
+        ranges: data.searchFilterRanges || [],
+        checkboxs: data.searchFilterCheckBoxs || [],
+        comboboxs: data.searchFilterComboboxs || [],
+      });
+    });
+  }, []);
   const handleDateSelect = (selectedDate) => {
     setDate(selectedDate);
     if (selectedDate) {
@@ -119,25 +133,48 @@ export default function AddJobPost() {
         title: title,
         content: content,
         endDate: format(date, "yyyy-MM-dd"),
-        SearchFilterRanges: Object.entries(selectedRangeFiltersRef.current).map(
-          ([id, range]) => ({
+        SearchFilterRanges: Object.entries(selectedRangeFiltersRef.current)
+          .filter(([id, range]) => {
+            const filterMetadata = searchFiltersMetadata.ranges.find(
+              (filter) => filter.id.toString() === id
+            );
+
+            if (!filterMetadata) return false;
+
+            return (
+              range &&
+              range.min !== undefined &&
+              range.max !== undefined &&
+              range.min <= range.max &&
+              range.min > filterMetadata.min &&
+              range.max < filterMetadata.max
+            );
+          })
+          .map(([id, range]) => ({
             SearchFilterId: id,
             Min: range.min.toString(),
             Max: range.max.toString(),
-          })
-        ),
+          })),
         SearchFilterCheckBoxs: Object.entries(
           selectedCheckboxFiltersRef.current
-        ).map(([id, values]) => ({
-          SearchFilterId: id,
-          Values: values,
-        })),
+        )
+          .filter(([id, values]) => {
+            return values && Array.isArray(values) && values.length > 0;
+          })
+          .map(([id, values]) => ({
+            SearchFilterId: id,
+            Values: values,
+          })),
         SearchFilterComboboxs: Object.entries(
           selectedComboboxFiltersRef.current
-        ).map(([id, value]) => ({
-          SearchFilterId: id,
-          Value: value,
-        })),
+        )
+          .filter(([id, value]) => {
+            return value && value.toString().trim() !== "";
+          })
+          .map(([id, value]) => ({
+            SearchFilterId: id,
+            Value: value,
+          })),
       };
 
       console.log("data:", jobPostData);

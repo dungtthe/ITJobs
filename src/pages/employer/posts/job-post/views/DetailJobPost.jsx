@@ -198,25 +198,48 @@ export default function DetailJobPost() {
         postId: id,
         title: editTitle,
         content: editContent,
-        SearchFilterRanges: Object.entries(selectedRangeFiltersRef.current).map(
-          ([id, range]) => ({
+        SearchFilterRanges: Object.entries(selectedRangeFiltersRef.current)
+          .filter(([id, range]) => {
+            const filterMetadata = searchFiltersMetadata.ranges.find(
+              (filter) => filter.id.toString() === id
+            );
+
+            if (!filterMetadata) return false;
+
+            return (
+              range &&
+              range.min !== undefined &&
+              range.max !== undefined &&
+              range.min <= range.max &&
+              range.min > filterMetadata.min &&
+              range.max < filterMetadata.max
+            );
+          })
+          .map(([id, range]) => ({
             SearchFilterId: id,
             Min: range.min.toString(),
             Max: range.max.toString(),
-          })
-        ),
+          })),
         SearchFilterCheckBoxs: Object.entries(
           selectedCheckboxFiltersRef.current
-        ).map(([id, values]) => ({
-          SearchFilterId: id,
-          Values: values,
-        })),
+        )
+          .filter(([id, values]) => {
+            return values && Array.isArray(values) && values.length > 0;
+          })
+          .map(([id, values]) => ({
+            SearchFilterId: id,
+            Values: values,
+          })),
         SearchFilterComboboxs: Object.entries(
           selectedComboboxFiltersRef.current
-        ).map(([id, value]) => ({
-          SearchFilterId: id,
-          Value: value,
-        })),
+        )
+          .filter(([id, value]) => {
+            return value && value.toString().trim() !== "";
+          })
+          .map(([id, value]) => ({
+            SearchFilterId: id,
+            Value: value,
+          })),
       };
 
       updateJobPost(
