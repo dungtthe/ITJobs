@@ -1,9 +1,11 @@
-﻿using ITJobs.Entities;
+﻿using Azure.Core;
+using ITJobs.Entities;
 using ITJobs.Entities.Enums;
 using ITJobs.Infrastructure.SqlServer.Models;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.GetActiveJobPostsSummaryBySearchFilters;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
 using ITJobs.UseCases.Employers.Posts.Queries.GetJobPostById;
@@ -15,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ITJobs.Infrastructure.SqlServer.Repositories
@@ -472,7 +475,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             var activeJosPosts = await _dbContext.Posts.Include(p => p.User).Where(p => p.UserId == userId
                                                             && !p.IsDeleted
                                                             && p.PostType == Entities.Enums.PostType.JobPosting && p.EndDate > now).ToListAsync();
-            foreach(var item in activeJosPosts)
+            foreach (var item in activeJosPosts)
             {
                 var searchFilterPostWorkType = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == item.Id && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE).FirstOrDefaultAsync();
                 var searchFilterPostLocation = await _dbContext.SearchFilter_Posts.Where(s => s.PostId == item.Id && s.SearchFilterId == ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY).FirstOrDefaultAsync();
@@ -508,13 +511,13 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         public async Task<UseCases.Candidates.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdForCandidateAsync(Guid postId)
         {
-            var fPost = await _dbContext.Posts.Include(p=>p.User).FirstOrDefaultAsync(p=>p.Id==postId && !p.IsDeleted && p.PostType == PostType.JobPosting && p.EndDate>DateTime.Now);
+            var fPost = await _dbContext.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == postId && !p.IsDeleted && p.PostType == PostType.JobPosting && p.EndDate > DateTime.Now);
             if (fPost == null)
             {
                 throw new Entities.Exceptions.PostNotFoundException();
             }
 
-            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e=>e.UserId==fPost.UserId);
+            var fEmployer = await _dbContext.Employers.FirstOrDefaultAsync(e => e.UserId == fPost.UserId);
             if (fEmployer == null)
             {
                 throw new Entities.Exceptions.UserNotFoundException();
@@ -632,6 +635,162 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
             return result;
         }
+
+        public async Task<PagedResult<JobPostsSummaryDto>> GetActiveJobPostsSummaryBySearchFiltersForCandidateAsync(GetActiveJobPostsSummaryBySearchFiltersQuery request)
+        {
+            var now = DateTime.UtcNow;
+
+            IQueryable<Models.Post> posts = _dbContext.Posts
+                .Where(p => !p.IsDeleted &&
+                            p.PostType == PostType.JobPosting &&
+                            p.EndDate > now);
+
+            // tìm theo SearchTerm
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                var term = request.SearchTerm.Trim().ToLower();
+
+                var skillPostIds = (await _dbContext.SearchFilter_Posts
+                        .Where(sf => sf.SearchFilterId ==
+                            ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL)
+                        .ToListAsync())
+                    .Where(sf => JsonConvert.DeserializeObject<List<string>>(sf.Values)
+                        .Any(s => s.ToLower().Contains(term)))
+                    .Select(sf => sf.PostId)
+                    .ToList();
+
+                posts = posts.Where(p =>
+                    p.User.FullName.ToLower().Contains(term) ||
+                    skillPostIds.Contains(p.Id) || p.Title.ToLower().Contains(term)); 
+            }
+
+            // lọc theo range
+            foreach (var range in request.SearchFilterRanges)
+            {
+                if (!long.TryParse(range.Min, out var min) || !long.TryParse(range.Max, out var max))
+                    continue;
+
+                var postIdsInRange = (await _dbContext.SearchFilter_Posts
+                        .Where(sf => sf.SearchFilterId == range.SearchFilterId)
+                        .ToListAsync())
+                    .Where(sf => ValueInRange(sf.Values, min, max))
+                    .Select(sf => sf.PostId)
+                    .ToList();
+
+                posts = posts.Where(p => postIdsInRange.Contains(p.Id));
+            }
+
+            // lọc theo combobox
+            foreach (var cbb in request.SearchFilterComboboxs.Where(c => !string.IsNullOrEmpty(c.Value)))
+            {
+                posts = posts.Where(p => _dbContext.SearchFilter_Posts.Any(sf =>
+                    sf.PostId == p.Id &&
+                    sf.SearchFilterId == cbb.SearchFilterId &&
+                    sf.Values == cbb.Value));
+            }
+
+            // lọc theo checkbox
+            foreach (var cb in request.SearchFilterCheckBoxs.Where(c => c.Values?.Any() == true))
+            {
+                var postIdsWithCheckbox = (await _dbContext.SearchFilter_Posts
+                        .Where(sf => sf.SearchFilterId == cb.SearchFilterId)
+                        .ToListAsync())
+                    .Where(sf => JsonConvert.DeserializeObject<List<string>>(sf.Values)
+                        .Any(v => cb.Values.Contains(v)))
+                    .Select(sf => sf.PostId)
+                    .ToList();
+
+                posts = posts.Where(p => postIdsWithCheckbox.Contains(p.Id));
+            }
+
+            var totalRecords = await posts.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
+
+            var postIds = await posts
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var allSearchFilterData = await _dbContext.SearchFilter_Posts
+                .Where(sf => postIds.Contains(sf.PostId) &&
+                            (sf.SearchFilterId ==
+                                 ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL ||
+                             sf.SearchFilterId ==
+                                 ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE ||
+                             sf.SearchFilterId ==
+                                 ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY))
+                .ToListAsync();
+
+            var postDetails = await _dbContext.Posts
+                .Include(p => p.User)
+                .Where(p => postIds.Contains(p.Id))
+                .ToListAsync();
+
+            var result = new List<JobPostsSummaryDto>();
+
+            foreach (var post in postDetails)
+            {
+                var jobSummary = new JobPostsSummaryDto
+                {
+                    UserId = post.UserId,
+                    CompanyName = post.User.FullName,
+                    Image = post.User.Image,
+                    PostId = post.Id,
+                    Title = post.Title,
+                    CreateAt = post.CreatedAt
+                };
+
+                var workTypeFilter = allSearchFilterData.FirstOrDefault(sf =>
+                    sf.PostId == post.Id &&
+                    sf.SearchFilterId ==
+                        ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_WORK_TYPE);
+
+                if (workTypeFilter != null)
+                    jobSummary.WorkTypes =
+                        JsonConvert.DeserializeObject<List<string>>(workTypeFilter.Values) ?? new List<string>();
+
+                var locationFilter = allSearchFilterData.FirstOrDefault(sf =>
+                    sf.PostId == post.Id &&
+                    sf.SearchFilterId ==
+                        ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_CITY);
+
+                if (locationFilter != null)
+                    jobSummary.LocationNames =
+                        JsonConvert.DeserializeObject<List<string>>(locationFilter.Values) ?? new List<string>();
+
+                var skillFilter = allSearchFilterData.FirstOrDefault(sf =>
+                    sf.PostId == post.Id &&
+                    sf.SearchFilterId ==
+                        ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_SKILL);
+
+                if (skillFilter != null)
+                    jobSummary.Skills =
+                        JsonConvert.DeserializeObject<List<string>>(skillFilter.Values) ?? new List<string>();
+
+                result.Add(jobSummary);
+            }
+
+            return new PagedResult<JobPostsSummaryDto>
+            {
+                Items = result,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords
+            };
+        }
+
+        private static bool ValueInRange(string value, long minWanted, long maxWanted)
+        {
+            var parts = value.Split('_');
+            if (parts.Length != 2) return false;
+            if (!long.TryParse(parts[0], out var min) ||
+                !long.TryParse(parts[1], out var max)) return false;
+            return minWanted <= max && maxWanted >= min;
+        }
+
 
     }
 }

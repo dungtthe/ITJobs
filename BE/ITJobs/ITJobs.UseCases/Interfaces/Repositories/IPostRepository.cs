@@ -2,6 +2,7 @@
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Admins.Posts.Queries.GetJobPostsSummary;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary;
+using ITJobs.UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.GetActiveJobPostsSummaryBySearchFilters;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetRandomBlogPostsSummary;
 using ITJobs.UseCases.Helpers.Paginations;
@@ -35,6 +36,8 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryByUserIdForCandidateAsync(Guid userId);
         Task <UseCases.Candidates.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdForCandidateAsync(Guid postId);
         Task<List<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryRandomForCandidateAsync(Guid? excludePostId, int count);
+        
+        Task<PagedResult<UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.JobPostsSummaryDto>> GetActiveJobPostsSummaryBySearchFiltersForCandidateAsync(GetActiveJobPostsSummaryBySearchFiltersQuery request);
         #endregion
 
         #region employer
@@ -44,5 +47,7 @@ namespace ITJobs.UseCases.Interfaces.Repositories
         Task UpdateJobPostAsync(Guid postId, string title, string content);
         Task<UseCases.Employers.Posts.Queries.GetJobPostById.JobPostDto> GetJobPostByIdAsync(Guid postId);
         #endregion
+
+
     }
 }

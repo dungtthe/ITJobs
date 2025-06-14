@@ -83,6 +83,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var rs = await _mediator.Send(command);
             return Ok(rs);
         }
+
+        [HttpPost("job/search")]
+        public async Task<IActionResult> GetActiveJobPostsSummaryBySearchFilters([FromBody] UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.GetActiveJobPostsSummaryBySearchFilters.GetActiveJobPostsSummaryBySearchFiltersQuery query)
+        {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 
 }
