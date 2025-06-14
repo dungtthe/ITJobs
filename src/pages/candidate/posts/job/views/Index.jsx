@@ -25,13 +25,24 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useLocation } from "react-router-dom";
+
 import { SearchFilter } from "@/components/my-components/search-filter/SearchFilter";
 import { Search, Filter, X } from "lucide-react";
 import { getActiveJobPostsSummaryBySearchFilters } from "../services/getActiveJobPostsSummaryBySearchFilters";
 import { JobPostSummaryCard } from "@/pages/candidate/shared-card/JobPostSummaryCard";
 import { getSearchFilters } from "@/shared-services/search-filters/getSearchFilters.js";
+import { CiSearch } from "react-icons/ci";
 
 export default function Index() {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state && location.state.search) {
+      setSearchTerm(location.state.search);
+    } else {
+      setSearchTerm("");
+    }
+  }, [location.state]);
   const [paginatedData, setPaginatedData] = useState({
     items: [],
     pageNumber: 1,
@@ -282,18 +293,18 @@ export default function Index() {
             <h1 className="text-secondary-foreground text-3xl font-bold mb-2">
               Tìm kiếm việc làm
             </h1>
-            <p className="text-secondary-foreground/80">
+            {/* <p className="text-secondary-foreground/80">
               Khám phá hàng nghìn cơ hội việc làm IT phù hợp với kỹ năng của bạn
-            </p>
+            </p> */}
           </div>
 
           <div className="flex flex-col md:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
+              {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" /> */}
+              <input
                 type="search"
                 placeholder="Tìm kiếm theo chức danh, công ty, kỹ năng..."
-                className="pl-10 h-12 bg-background"
+                className="pl-5 h-[55px] bg-muted w-full rounded-md px-6"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -306,7 +317,10 @@ export default function Index() {
               modal={false}
             >
               <DialogTrigger asChild>
-                <Button variant="outline" className="h-12 gap-2 bg-background">
+                <Button
+                  variant="outline"
+                  className="h-[55px] gap-2 bg-background"
+                >
                   <Filter className="h-5 w-5" />
                   Bộ lọc
                   {activeFilterCount > 0 && (
@@ -387,14 +401,23 @@ export default function Index() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-
+            {/* 
             <Button
-              className="h-12"
+              className="flex items-center justify-center gap-2 bg-primary w-[180px] h-[55px] text-muted rounded-md cursor-pointer hover:bg-primary/90 transition-colors"
               onClick={handleSearch}
               disabled={isSearching}
             >
+              <CiSearch className="size-6"></CiSearch>
               {isSearching ? "Đang tìm kiếm..." : "Tìm kiếm"}
-            </Button>
+            </Button> */}
+
+            <div
+              className="flex items-center justify-center gap-2 bg-primary w-[180px] h-[55px] text-muted rounded-md cursor-pointer hover:bg-primary/90 transition-colors"
+              onClick={handleSearch}
+            >
+              <CiSearch className="size-6" />
+              <div>{isSearching ? "Đang tìm kiếm..." : "Tìm kiếm"}</div>
+            </div>
           </div>
 
           {activeFilterCount > 0 && (
@@ -434,20 +457,23 @@ export default function Index() {
           </div>
         )}
 
-        <Card>
-          <CardHeader className="border-b bg-muted/50">
+        <div>
+          <div className="border-b bg-muted/50">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Kết quả tìm kiếm</h2>
               <span className="text-sm text-muted-foreground">
                 {paginatedData.totalRecords} việc làm
               </span>
             </div>
-          </CardHeader>
+          </div>
           <CardContent className="p-6">
             {isSearching ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <Skeleton key={i} className="h-64 w-full rounded-xl" />
+                  <Skeleton
+                    key={i}
+                    className="h-64 w-full rounded-xl bg-accent/10"
+                  />
                 ))}
               </div>
             ) : paginatedData.items.length === 0 ? (
@@ -546,7 +572,7 @@ export default function Index() {
               </Pagination>
             </CardFooter>
           )}
-        </Card>
+        </div>
       </div>
     </>
   );

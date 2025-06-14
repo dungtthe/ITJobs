@@ -12,11 +12,18 @@ import { getTopEmployersByApplicationsSummary } from "../services/getTopEmployer
 import { EmployerSummary } from "./EmployerSummary.jsx";
 import { getTopBlogPostsByViewCountSummary } from "../services/getTopBlogPostsByViewCountSummary";
 import { BlogPostSummary } from "../../shared-card/BlogCard.jsx";
+import { useNavigate } from "react-router-dom";
 export default function Index() {
+  const navigate = useNavigate();
+
   const [skillsSuggested, SetSkillsSuggested] = useState([]);
   const [employersTop, SetEmployersTop] = useState([]);
   const [blogsTop, SetBlogsTop] = useState([]);
-
+  const onSearch = (inputSearch) => {
+    if (inputSearch) {
+      navigate("/job/search", { state: { search: inputSearch } });
+    }
+  };
   useEffect(() => {
     getSuggestedSkills(
       8,
@@ -54,7 +61,10 @@ export default function Index() {
           <h2 className="text-secondary-foreground text-3xl font-bold mb-8">
             1,006 Việc làm IT cho Developer "Chất"
           </h2>
-          <SearchFilterInput placeholder="Nhập từ khóa theo kỹ năng, công ty,..."></SearchFilterInput>
+          <SearchFilterInput
+            onSearch={onSearch}
+            placeholder="Nhập từ khóa theo kỹ năng, công ty,..."
+          ></SearchFilterInput>
           {/* recommend skill*/}
           <div className="flex text-secondary-foreground/80 justify-start items-center mt-5">
             <div>Gợi ý cho bạn</div>

@@ -19,9 +19,15 @@ import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
 import { useNavigate } from "react-router-dom";
 export default function Header() {
-  const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
-
+  const clearUser = useUserStore((state) => state.clearUser);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    //tam thoi nhu nay da
+    navigate("/login");
+    clearUser();
+    removeJwtToken();
+  };
   let name = null;
   let image = null;
 
@@ -41,7 +47,9 @@ export default function Header() {
             {/* logo */}
             <Logo as="h1" size="medium" onClick={() => navigate("/")} />
             <div className="ml-8">
-              <Link className="text-secondary-foreground/80">Việc làm IT</Link>
+              <Link to="/job/search" className="text-secondary-foreground/80">
+                Việc làm IT
+              </Link>
               <Link to="/blog" className="ml-5 text-secondary-foreground/80">
                 Blog
               </Link>
@@ -104,7 +112,10 @@ export default function Header() {
                   </DropdownMenuItem> */}
 
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="hover:cursor-pointer ">
+                  <DropdownMenuItem
+                    className="hover:cursor-pointer "
+                    onClick={handleLogout}
+                  >
                     <CiLogout className="size-5 text-destructive"></CiLogout>
                     <Link className="text-destructive text-sm">Đăng xuất</Link>
                   </DropdownMenuItem>
