@@ -4,6 +4,7 @@ import { MdDashboard, MdLibraryBooks, MdOutlineSettings } from "react-icons/md";
 import { FaUserCog } from "react-icons/fa";
 import { PiReadCvLogoFill } from "react-icons/pi";
 import { RiFilterFill } from "react-icons/ri";
+import { IoChatboxEllipses } from "react-icons/io5";
 
 const employerMenuConfig = [
   {
@@ -11,6 +12,12 @@ const employerMenuConfig = [
     label: "Dashboard",
     icon: <MdDashboard />,
     key: "dashboard",
+  },
+  {
+    path: "/employer/conversation",
+    label: "Cuộc trò chuyện",
+    icon: <IoChatboxEllipses />,
+    key: "conversation",
   },
   {
     path: "/employer",
