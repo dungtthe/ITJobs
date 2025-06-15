@@ -8,6 +8,8 @@ import { IconEdit } from "@/components/my-components/icon/IconEdit";
 import { Skeleton } from "@/components/ui/skeleton";
 import { sanitizeHtml } from "@/utils/sanitizeHtmlUtils";
 import { formatDate, formatVND } from "@/utils/formatUtils.js";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import {
   showErrorToastHasTitle,
   showSuccessToastHasTitle,
@@ -16,6 +18,7 @@ import { getJobPostById } from "../services/getJobPostById";
 import { updateJobPost } from "../services/updateJobPost";
 import { ArrowLeft } from "lucide-react";
 import { getSearchFilters } from "@/shared-services/search-filters/getSearchFilters.js";
+import { JobApplications } from "./JobApplications";
 
 export default function DetailJobPost() {
   const { id } = useParams();
@@ -25,6 +28,7 @@ export default function DetailJobPost() {
   const [loading, setLoading] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState("details");
 
   // Edit states
   const [editTitle, setEditTitle] = useState("");
@@ -121,6 +125,7 @@ export default function DetailJobPost() {
 
   const handleEdit = () => {
     setIsEditMode(true);
+    setActiveTab("details");
     setKeyRenderFilter((prev) => prev + 1);
   };
 
@@ -160,9 +165,6 @@ export default function DetailJobPost() {
   };
 
   const handleSaveContent = (editorContent) => {
-    //alert(editorContent);
-
-    //  setEditContent(editorContent);
     handleSubmit(editorContent);
   };
 
@@ -250,7 +252,7 @@ export default function DetailJobPost() {
             "Đã cập nhật bài đăng tuyển dụng"
           );
           setIsEditMode(false);
-          fetchJobPost(); // Reload data
+          fetchJobPost();
         },
         (fail) => {
           showErrorToastHasTitle("Lỗi", fail.message || "Đã có lỗi xảy ra");
@@ -354,7 +356,154 @@ export default function DetailJobPost() {
       </div>
 
       <div className="p-4">
-        {isEditMode ? (
+        {!isEditMode && (
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="details">Thông tin bài đăng</TabsTrigger>
+              <TabsTrigger
+                value="applications"
+                className="flex items-center gap-2"
+              >
+                Đơn ứng tuyển
+                <Badge variant="secondary" className="text-primary -ml-2">
+                  {jobPost?.applicationCount || 0}
+                </Badge>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="details" className="mt-6">
+              <div className="bg-muted/30 p-6 rounded-lg mb-6">
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-2xl font-bold">{jobPost.title}</h2>
+                  {getJobStatus(jobPost.endDate)}
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 ">
+                  <div className="flex items-center gap-2">
+                    <label className="text-foreground/80 text-sm">
+                      Ngày đăng:
+                    </label>
+                    <p>{formatDate(jobPost.createAt)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-foreground/80 text-sm">
+                      Ngày cập nhật:
+                    </label>
+                    <p>{formatDate(jobPost.updateAt)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-foreground/80 text-sm">
+                      Ngày kết thúc:
+                    </label>
+                    <p>{formatDate(jobPost.endDate)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-foreground/80 text-sm">
+                      Lượt xem:
+                    </label>
+                    <p>{jobPost.viewCount}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-foreground/80 text-sm">
+                      Phí đăng tin:
+                    </label>
+                    <p>{formatVND(jobPost.postingFee)}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-background border rounded-lg p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-semibold">Nội dung bài đăng</h3>
+                </div>
+                <div className="border border-dashed w-full h-[1px] mb-6"></div>
+                <div
+                  className="tinymce-content"
+                  dangerouslySetInnerHTML={{
+                    __html: processedContent || jobPost.content,
+                  }}
+                />
+              </div>
+
+              {(jobPost.searchFilterRanges?.length > 0 ||
+                jobPost.searchFilterCheckBoxs?.length > 0 ||
+                jobPost.searchFilterComboboxs?.length > 0) && (
+                <div className="bg-background border rounded-lg p-6 mt-6">
+                  <h3 className="text-xl font-semibold mb-4">
+                    Bộ lọc tìm kiếm
+                  </h3>
+                  <div className="border border-dashed w-full h-[1px] mb-6"></div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* Range Filters */}
+                    {jobPost.searchFilterRanges?.map((filter, index) => (
+                      <div
+                        key={`range-${index}`}
+                        className="bg-muted/30 p-4 rounded-lg"
+                      >
+                        <label className="text-foreground/80 text-sm mb-2">
+                          {getFilterName(filter.searchFilterId, "range")}
+                        </label>
+                        <p>
+                          {formatRangeValue(
+                            filter.min,
+                            filter.max,
+                            getFilterName(filter.searchFilterId, "range")
+                          )}
+                        </p>
+                      </div>
+                    ))}
+
+                    {/* Checkbox Filters */}
+                    {jobPost.searchFilterCheckBoxs?.map((filter, index) => (
+                      <div
+                        key={`checkbox-${index}`}
+                        className="bg-muted/30 p-4 rounded-lg"
+                      >
+                        <label className="text-foreground/80 text-sm mb-2">
+                          {getFilterName(filter.searchFilterId, "checkbox")}
+                        </label>
+                        <div className="flex flex-wrap gap-1">
+                          {filter.values
+                            .map((value, valueIndex) => (
+                              <p key={valueIndex}>{value}</p>
+                            ))
+                            .reduce((acc, curr, index) => {
+                              if (index === 0) return [curr];
+                              return [...acc, ", ", curr];
+                            }, [])}
+                        </div>
+                      </div>
+                    ))}
+                    {/* Combobox Filters */}
+                    {jobPost.searchFilterComboboxs?.map((filter, index) => (
+                      <div
+                        key={`combobox-${index}`}
+                        className="bg-muted/30 p-4 rounded-lg"
+                      >
+                        <label className="text-foreground/80 text-sm mb-2">
+                          {getFilterName(filter.searchFilterId, "combobox")}
+                        </label>
+                        <p>{filter.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="applications" className="mt-6">
+              <JobApplications postId={id} />
+            </TabsContent>
+          </Tabs>
+        )}
+
+        {/* Edit Mode */}
+        {isEditMode && (
           <>
             {/* Title Input */}
             <div className="flex">
@@ -403,129 +552,6 @@ export default function DetailJobPost() {
                 />
               </div>
             </div>
-          </>
-        ) : (
-          // View Mode
-          <>
-            {/* Job Info */}
-            <div className="bg-muted/30 p-6 rounded-lg mb-6">
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-2xl font-bold">{jobPost.title}</h2>
-                {getJobStatus(jobPost.endDate)}
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 ">
-                <div className="flex items-center gap-2">
-                  <label className="text-foreground/80 text-sm">
-                    Ngày đăng:
-                  </label>
-                  <p>{formatDate(jobPost.createAt)}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-foreground/80 text-sm">
-                    Ngày cập nhật:
-                  </label>
-                  <p>{formatDate(jobPost.updateAt)}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-foreground/80 text-sm">
-                    Ngày kết thúc:
-                  </label>
-                  <p>{formatDate(jobPost.endDate)}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-foreground/80 text-sm">
-                    Lượt xem:
-                  </label>
-                  <p>{jobPost.viewCount}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-foreground/80 text-sm">
-                    Phí đăng tin:
-                  </label>
-                  <p>{formatVND(jobPost.postingFee)}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Job Content */}
-            <div className="bg-background border rounded-lg p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold">Nội dung bài đăng</h3>
-              </div>
-              <div className="border border-dashed w-full h-[1px] mb-6"></div>
-              <div
-                className="tinymce-content"
-                dangerouslySetInnerHTML={{
-                  __html: processedContent || jobPost.content,
-                }}
-              />
-            </div>
-
-            {/* Search Filters Display */}
-            {(jobPost.searchFilterRanges?.length > 0 ||
-              jobPost.searchFilterCheckBoxs?.length > 0 ||
-              jobPost.searchFilterComboboxs?.length > 0) && (
-              <div className="bg-background border rounded-lg p-6 mt-6">
-                <h3 className="text-xl font-semibold mb-4">Bộ lọc tìm kiếm</h3>
-                <div className="border border-dashed w-full h-[1px] mb-6"></div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {/* Range Filters */}
-                  {jobPost.searchFilterRanges?.map((filter, index) => (
-                    <div
-                      key={`range-${index}`}
-                      className="bg-muted/30 p-4 rounded-lg"
-                    >
-                      <label className="text-foreground/80 text-sm mb-2">
-                        {getFilterName(filter.searchFilterId, "range")}
-                      </label>
-                      <p>
-                        {formatRangeValue(
-                          filter.min,
-                          filter.max,
-                          getFilterName(filter.searchFilterId, "range")
-                        )}
-                      </p>
-                    </div>
-                  ))}
-
-                  {/* Checkbox Filters */}
-                  {jobPost.searchFilterCheckBoxs?.map((filter, index) => (
-                    <div
-                      key={`checkbox-${index}`}
-                      className="bg-muted/30 p-4 rounded-lg"
-                    >
-                      <label className="text-foreground/80 text-sm mb-2">
-                        {getFilterName(filter.searchFilterId, "checkbox")}
-                      </label>
-                      <div className="flex flex-wrap gap-1">
-                        {filter.values
-                          .map((value, valueIndex) => (
-                            <p key={valueIndex}>{value}</p>
-                          ))
-                          .reduce((acc, curr, index) => {
-                            if (index === 0) return [curr];
-                            return [...acc, ", ", curr];
-                          }, [])}
-                      </div>
-                    </div>
-                  ))}
-                  {/* Combobox Filters */}
-                  {jobPost.searchFilterComboboxs?.map((filter, index) => (
-                    <div
-                      key={`combobox-${index}`}
-                      className="bg-muted/30 p-4 rounded-lg"
-                    >
-                      <label className="text-foreground/80 text-sm mb-2">
-                        {getFilterName(filter.searchFilterId, "combobox")}
-                      </label>
-                      <p>{filter.value}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
         )}
       </div>

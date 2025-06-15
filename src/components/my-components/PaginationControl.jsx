@@ -27,14 +27,34 @@ export const PaginationControl = ({
 
   const renderPageNumbers = () => {
     const pages = [];
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => handlePageChange(i)}
+              isActive={i === currentPage}
+              className={
+                i === currentPage
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 border-none"
+                  : "border border-input hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors cursor-pointer"
+              }
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+      return pages;
+    }
+
     const maxPages = Math.min(maxVisiblePages, totalPages);
 
     for (let i = 0; i < maxPages; i++) {
       let pageToShow;
 
-      if (totalPages <= maxVisiblePages) {
-        pageToShow = i + 1;
-      } else if (currentPage <= 3) {
+      if (currentPage <= 3) {
         pageToShow = i + 1;
       } else if (currentPage >= totalPages - 2) {
         pageToShow = totalPages - maxVisiblePages + 1 + i;
@@ -62,6 +82,27 @@ export const PaginationControl = ({
     return pages;
   };
 
+  const shouldShowEllipsis = () => {
+    return (
+      showEllipsis &&
+      totalPages > maxVisiblePages + 1 &&
+      currentPage < totalPages - 2
+    );
+  };
+
+  const shouldShowLastPage = () => {
+    if (!shouldShowEllipsis()) return false;
+
+    const lastVisiblePage =
+      currentPage <= 3
+        ? maxVisiblePages
+        : currentPage >= totalPages - 2
+        ? totalPages
+        : currentPage + 2;
+
+    return lastVisiblePage < totalPages;
+  };
+
   return (
     <div className={`flex justify-center ${className}`}>
       <Pagination>
@@ -79,23 +120,22 @@ export const PaginationControl = ({
 
           {renderPageNumbers()}
 
-          {showEllipsis &&
-            totalPages > maxVisiblePages &&
-            currentPage < totalPages - 2 && (
-              <>
-                <PaginationItem className="flex pb-2">
-                  <PaginationEllipsis className="text-foreground/70 items-end" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    onClick={() => handlePageChange(totalPages)}
-                    className="border border-input hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors cursor-pointer"
-                  >
-                    {totalPages}
-                  </PaginationLink>
-                </PaginationItem>
-              </>
-            )}
+          {shouldShowEllipsis() && (
+            <PaginationItem className="flex pb-2">
+              <PaginationEllipsis className="text-foreground/70 items-end" />
+            </PaginationItem>
+          )}
+
+          {shouldShowLastPage() && (
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => handlePageChange(totalPages)}
+                className="border border-input hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors cursor-pointer"
+              >
+                {totalPages}
+              </PaginationLink>
+            </PaginationItem>
+          )}
 
           <PaginationItem>
             <PaginationNext
