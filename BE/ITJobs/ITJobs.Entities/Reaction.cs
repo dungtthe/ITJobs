@@ -10,23 +10,9 @@ namespace ITJobs.Entities
 {
     public class Reaction
     {
-        public AppUser AppUser { get; set; }
+        //public AppUser AppUser { get; set; }
+        public Guid UserId { get; set; }
 
-        private ReactionType reactionType;
-        public ReactionType ReactionType
-        {
-            get
-            {
-                return reactionType;
-            }
-            set
-            {
-                if (value == ReactionType.None)
-                {
-                    throw new InvalidReactionException();
-                }
-                reactionType = value;
-            }
-        }
+        public ReactionType ReactionType { get; set; }
     }
 }

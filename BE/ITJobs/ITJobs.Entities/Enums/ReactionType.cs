@@ -8,7 +8,6 @@ namespace ITJobs.Entities.Enums
 {
     public enum ReactionType : byte
     {
-        None = 0,       
         Like = 1,       
         Love = 2,      
         Haha = 3,       

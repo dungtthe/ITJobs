@@ -361,7 +361,9 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
                 UserId = post.UserId,
                 AuthorName = post.User.FullName,
-                AuthorAvatar = post.User.Image
+                AuthorAvatar = post.User.Image,
+
+                Reactions = JsonConvert.DeserializeObject<List<Entities.Reaction>>(post.ReactionType_UserId_Ids)
             };
         }
 

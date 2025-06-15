@@ -9,7 +9,6 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
 {
     [Route("api/post")]
     [ApiController]
-    [Authorize]
     public class PostController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,6 +17,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost("blog/add")]
         public async Task<IActionResult> AddBlogPostAsync([FromBody] CreateBlogPostCommand command)
         {
@@ -30,6 +30,12 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
 
             var rs = await _mediator.Send(command);
             return Ok(new { id = rs });
+        }
+
+        [HttpGet("comment/{postId}")]
+        public async Task<IActionResult> GetCommentAsync([FromRoute] UseCases.Shared.Posts.Queries.GetCommentsByPostId.GetCommentsByPostIdQuery query)
+        {
+           return Ok(await _mediator.Send(query));
         }
     }
 }

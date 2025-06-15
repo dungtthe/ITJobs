@@ -28,13 +28,12 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         [ForeignKey(nameof(ParrentMessageId))]
         public virtual Message ParrentMessage { get; set; }
 
-        public ReactionType ReactionType { get; set; }
+        public ReactionType ?ReactionType { get; set; }
         public bool IsRevoked { get; set; }
         public bool IsRead { get; set; }
 
         public Message()
         {
-            ReactionType = ReactionType.None;
             CreatedAt = DateTime.Now;
         }
     }

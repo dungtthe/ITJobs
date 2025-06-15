@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITJobs.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,8 @@ namespace ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostById
         public Guid UserId { get; set; }
         public string AuthorName { get; set; }
         public string AuthorAvatar { get; set; }
+
+
+        public List<Reaction> Reactions { get; set; } = new List<Reaction>();
     }
 }

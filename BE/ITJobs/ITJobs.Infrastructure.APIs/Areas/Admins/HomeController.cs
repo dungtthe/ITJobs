@@ -355,44 +355,140 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
 
 
             //job post
-            var jopPostMbBank = await _context.Posts.FirstOrDefaultAsync(p => p.Id == new Guid("55FCE878-34DF-406B-9D2F-08DDAA536BAD"));
-            if (jopPostMbBank != null)
+            //var jopPostMbBank = await _context.Posts.FirstOrDefaultAsync(p => p.Id == new Guid("55FCE878-34DF-406B-9D2F-08DDAA536BAD"));
+            //if (jopPostMbBank != null)
+            //{
+            //    var searchFilterPosts = await _context.SearchFilter_Posts.Where(s => s.PostId == jopPostMbBank.Id).ToListAsync();
+            //    //for(int i = 0; i < 15; i++)
+            //    //{
+            //    //    var postIdNew = Guid.NewGuid();
+            //    //    var now = DateTime.Now;
+            //    //    await _context.Posts.AddAsync(new Post()
+            //    //    {
+            //    //        Id = postIdNew,
+            //    //        UserId = jopPostMbBank.UserId,
+            //    //        Title = "Lập trình viên .NET " +i,
+            //    //        ShortContent="a",
+            //    //        MainImage=null,
+            //    //        Content = jopPostMbBank.Content,
+            //    //        CreatedAt = now,
+            //    //        UpdatedAt = now,
+            //    //        PostType = Entities.Enums.PostType.JobPosting,
+            //    //        EndDate = now.AddDays(random.Next(10, 20)),
+            //    //        PostingFee = 50000 * random.Next(1,20)
+            //    //    });
+            //    //}
+
+            //    var posts = await _context.Posts.Where(p => p.Title.Contains("Lập trình viên .NET")).ToListAsync();
+            //    foreach(var item in  posts)
+            //    {
+            //        foreach(var searchFilterPost in searchFilterPosts)
+            //        {
+            //            await _context.SearchFilter_Posts.AddAsync(new SearchFilter_Post()
+            //            {
+            //                SearchFilterId = searchFilterPost.SearchFilterId,
+            //                PostId = item.Id,
+            //                Values = searchFilterPost.Values
+            //            });
+            //        }
+            //    }
+
+            //}
+
+
+            //seed comment
+            //var users = await _context.Users.ToListAsync();
+            //var posts = await _context.Posts.ToListAsync();
+            //foreach (var post in posts)
+            //{
+            //    var  comments = new List<SqlServer.Models.Comment>();
+
+            //    //comment to post
+            //    for (int i = 0; i < users.Count; i++)
+            //    {
+            //        var randomUser = users[random.Next(users.Count)];
+
+            //        var reactionsRandom = new List<Entities.Reaction>();
+            //        var shuffledUserIds = users.Select(u => u.Id).OrderBy(_ => random.Next()).ToList();
+            //        int reactionCount = Math.Min(random.Next(1, 6), shuffledUserIds.Count);
+            //        for (int j = 0; j < reactionCount; j++)
+            //        {
+            //            var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7)); 
+            //            reactionsRandom.Add(new Entities.Reaction
+            //            {
+            //                UserId = shuffledUserIds[j],
+            //                ReactionType = randomReactionType
+            //            });
+            //        }
+
+            //        var comment = new SqlServer.Models.Comment()
+            //        {
+            //            Id = Guid.NewGuid(),
+            //            PostId = post.Id,
+            //            Content = $"Đây là bình luận mẫu {i} của {randomUser.FullName} về bài đăng {post.Title}.",
+            //            CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 30)),
+            //            SenderId = randomUser.Id,
+            //            ParrentCommentId = null,
+            //            ReactionType_UserId_Ids = JsonConvert.SerializeObject(reactionsRandom),
+            //            IsRevoked = false
+            //        };
+            //        comments.Add(comment);
+            //        await _context.Comments.AddAsync(comment);
+            //    }
+
+            //    //reply to comment
+            //    foreach (var comment in comments)
+            //    {
+            //        for (int i = 0; i < random.Next(1, 5); i++) 
+            //        {
+            //            var randomUser = users[random.Next(users.Count)];
+
+            //            var reactionsRandom = new List<Entities.Reaction>();
+            //            var shuffledUserIds = users.Select(u => u.Id).OrderBy(_ => random.Next()).ToList();
+            //            int reactionCount = Math.Min(random.Next(1, 6), shuffledUserIds.Count);
+            //            for (int j = 0; j < reactionCount; j++)
+            //            {
+            //                var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7));
+            //                reactionsRandom.Add(new Entities.Reaction
+            //                {
+            //                    UserId = shuffledUserIds[j],
+            //                    ReactionType = randomReactionType
+            //                });
+            //            }
+
+            //            var replyComment = new SqlServer.Models.Comment()
+            //            {
+            //                Id = Guid.NewGuid(),
+            //                PostId = post.Id,
+            //                Content = $"Đây là bình luận trả lời mẫu {i} của {randomUser.FullName} về bình luận {comment.Content}.",
+            //                CreatedAt = comment.CreatedAt.AddMinutes(random.Next(1, 60)),
+            //                SenderId = randomUser.Id,
+            //                ParrentCommentId = comment.Id,
+            //                ReactionType_UserId_Ids = JsonConvert.SerializeObject(reactionsRandom),
+            //                IsRevoked = false
+            //            };
+            //            await _context.Comments.AddAsync(replyComment);
+            //        }
+            //    }
+            //}
+
+
+            //Reaction to post
+            var posts = await _context.Posts.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            foreach (var post in posts)
             {
-                var searchFilterPosts = await _context.SearchFilter_Posts.Where(s => s.PostId == jopPostMbBank.Id).ToListAsync();
-                //for(int i = 0; i < 15; i++)
-                //{
-                //    var postIdNew = Guid.NewGuid();
-                //    var now = DateTime.Now;
-                //    await _context.Posts.AddAsync(new Post()
-                //    {
-                //        Id = postIdNew,
-                //        UserId = jopPostMbBank.UserId,
-                //        Title = "Lập trình viên .NET " +i,
-                //        ShortContent="a",
-                //        MainImage=null,
-                //        Content = jopPostMbBank.Content,
-                //        CreatedAt = now,
-                //        UpdatedAt = now,
-                //        PostType = Entities.Enums.PostType.JobPosting,
-                //        EndDate = now.AddDays(random.Next(10, 20)),
-                //        PostingFee = 50000 * random.Next(1,20)
-                //    });
-                //}
-
-                var posts = await _context.Posts.Where(p => p.Title.Contains("Lập trình viên .NET")).ToListAsync();
-                foreach(var item in  posts)
+                var reactions = new List<Entities.Reaction>();
+                foreach (var user in users)
                 {
-                    foreach(var searchFilterPost in searchFilterPosts)
+                    var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7));
+                    reactions.Add(new Entities.Reaction
                     {
-                        await _context.SearchFilter_Posts.AddAsync(new SearchFilter_Post()
-                        {
-                            SearchFilterId = searchFilterPost.SearchFilterId,
-                            PostId = item.Id,
-                            Values = searchFilterPost.Values
-                        });
-                    }
+                        UserId = user.Id,
+                        ReactionType = randomReactionType
+                    });
                 }
-
+                post.ReactionType_UserId_Ids = JsonConvert.SerializeObject(reactions);
             }
 
             await _context.SaveChangesAsync();
