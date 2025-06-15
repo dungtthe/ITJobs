@@ -39,5 +39,13 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpGet("company-profile/reviews/{userId}")]
+        public async Task<IActionResult> GetCompanyProfileReviewsAsync([FromRoute] Guid userId, [FromQuery] UseCases.Shared.Employers.Queries.GetReviewsByUserId.GetReviewsByUserIdQuery query)
+        {
+            query.UserId = userId;
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

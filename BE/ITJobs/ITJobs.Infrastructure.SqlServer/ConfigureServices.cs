@@ -43,6 +43,7 @@ namespace ITJobs.Infrastructure.SqlServer
             services.AddScoped<ICertificationRepository, CertificationRepository>();
             services.AddScoped<IAwardRepository, AwardRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
 
             //unit of work
