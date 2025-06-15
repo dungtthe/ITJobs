@@ -401,7 +401,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //var posts = await _context.Posts.ToListAsync();
             //foreach (var post in posts)
             //{
-            //    var  comments = new List<SqlServer.Models.Comment>();
+            //    var comments = new List<SqlServer.Models.Comment>();
 
             //    //comment to post
             //    for (int i = 0; i < users.Count; i++)
@@ -413,7 +413,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //        int reactionCount = Math.Min(random.Next(1, 6), shuffledUserIds.Count);
             //        for (int j = 0; j < reactionCount; j++)
             //        {
-            //            var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7)); 
+            //            var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7));
             //            reactionsRandom.Add(new Entities.Reaction
             //            {
             //                UserId = shuffledUserIds[j],
@@ -439,7 +439,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //    //reply to comment
             //    foreach (var comment in comments)
             //    {
-            //        for (int i = 0; i < random.Next(1, 5); i++) 
+            //        for (int i = 0; i < random.Next(1, 5); i++)
             //        {
             //            var randomUser = users[random.Next(users.Count)];
 
@@ -474,22 +474,46 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
 
 
             //Reaction to post
-            var posts = await _context.Posts.ToListAsync();
-            var users = await _context.Users.ToListAsync();
-            foreach (var post in posts)
-            {
-                var reactions = new List<Entities.Reaction>();
-                foreach (var user in users)
-                {
-                    var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7));
-                    reactions.Add(new Entities.Reaction
-                    {
-                        UserId = user.Id,
-                        ReactionType = randomReactionType
-                    });
-                }
-                post.ReactionType_UserId_Ids = JsonConvert.SerializeObject(reactions);
-            }
+            //var posts = await _context.Posts.ToListAsync();
+            //var users = await _context.Users.ToListAsync();
+            //foreach (var post in posts)
+            //{
+            //    var reactions = new List<Entities.Reaction>();
+            //    foreach (var user in users)
+            //    {
+            //        var randomReactionType = (Entities.Enums.ReactionType)(random.Next(1, 7));
+            //        reactions.Add(new Entities.Reaction
+            //        {
+            //            UserId = user.Id,
+            //            ReactionType = randomReactionType
+            //        });
+            //    }
+            //    post.ReactionType_UserId_Ids = JsonConvert.SerializeObject(reactions);
+            //}
+
+
+
+            //seed job applications
+            //var candidates = await _context.Candidates.ToListAsync();
+            //var jobPosts = await _context.Posts.Where(p => p.PostType == Entities.Enums.PostType.JobPosting).ToListAsync();
+            //foreach (var candidate in candidates)
+            //{
+            //    for (int i = 0; i < jobPosts.Count; i++)
+            //    {
+            //        var jobPost = jobPosts[i];
+            //        var jobApplication = new SqlServer.Models.JobApplication
+            //        {
+            //            Id = Guid.NewGuid(),
+            //            CandidateId = candidate.Id,
+            //            PostId = jobPost.Id,
+            //            StatusJobApplication = (Entities.Enums.StatusJobApplication)random.Next(1,4),
+            //            CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 30)),
+            //            CoverLetter = $"Đây là thư xin việc mẫu của {candidate.User.FullName} cho bài tuyển dụng {jobPost.Title}.",
+            //            CVLink = $"abc"
+            //        };
+            //        await _context.JobApplications.AddAsync(jobApplication);
+            //    }
+            //}
 
             await _context.SaveChangesAsync();
             return Ok("OK");

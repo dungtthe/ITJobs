@@ -1,4 +1,6 @@
 ﻿using ITJobs.UseCases.Candidates.JobApplications.Commands.AddJobApplication;
+using ITJobs.UseCases.Employers.JobApplications.Queries.GetJobApplicationsByPostId;
+using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,6 +50,55 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 CoverLetter = request.CoverLetter,
                 StatusJobApplication = Entities.Enums.StatusJobApplication.Submitted
             });
+        }
+
+        public async Task<PagedResult<JobApplicationDto>> GetJobApplicationsByPostIdAsync(GetJobApplicationsByPostIdQuery request)
+        {
+
+            var query = _dbContext.JobApplications.Include(ja => ja.Candidate)
+                                                  .Include(ja => ja.Candidate.User)
+                                                  .Include(ja => ja.Post)
+                                                  .Where(ja => ja.PostId == request.PostId && !ja.Post.IsDeleted);
+            if(request.StatusJobApplication.HasValue)
+            {
+                query = query.Where(ja => ja.StatusJobApplication == request.StatusJobApplication.Value);
+            }
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                string searchTerm = request.SearchTerm.Trim().ToLower();
+                query = query.Where(ja => ja.Candidate.User.FullName.ToLower().Contains(request.SearchTerm) || ja.Candidate.User.Email.ToLower().Contains(request.SearchTerm));
+            }
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / request.PageSize);
+
+            var items = await query
+                .OrderByDescending(ja => ja.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(ja => new JobApplicationDto
+                {
+                    Id = ja.Id,
+                    PostId = ja.PostId,
+                    CVLink = ja.CVLink,
+                    CoverLetter = ja.CoverLetter,
+                    StatusJobApplication = ja.StatusJobApplication,
+                    CreatedAt = ja.CreatedAt,
+
+                    UserId = ja.Candidate.UserId,
+                    CandidateEmail = ja.Candidate.User.Email,
+                    CandidateFullName = ja.Candidate.User.FullName,
+                    CandidateImage = ja.Candidate.User.Image
+                })
+                .ToListAsync();
+            return new PagedResult<JobApplicationDto>
+            {
+                Items = items,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
         }
 
         public async Task<List<(Guid PostId, int ApplicationCount)>> GetTopPostsByApplicationsCountAsync()

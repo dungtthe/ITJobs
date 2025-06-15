@@ -17,6 +17,7 @@ namespace ITJobs.UseCases.Employers.Posts.Queries.GetJobPostById
         public DateTime EndDate { get; set; }
         public long ViewCount { get; set; }
         public string PostingFee { get; set; }
+        public int ApplicationCount { get; set; }
 
         //phan searchFilter
 

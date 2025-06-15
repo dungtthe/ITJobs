@@ -465,7 +465,8 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 UpdateAt = post.UpdatedAt,
                 EndDate = post.EndDate.Value,
                 ViewCount = post.ViewCount,
-                PostingFee = post.PostingFee.ToString()
+                PostingFee = post.PostingFee.ToString(),
+                ApplicationCount = await _dbContext.JobApplications.CountAsync(ja => ja.PostId == post.Id),
             };
         }
 

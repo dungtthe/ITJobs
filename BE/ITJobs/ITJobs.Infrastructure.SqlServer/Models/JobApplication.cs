@@ -25,9 +25,12 @@ namespace ITJobs.Infrastructure.SqlServer.Models
         [MaxLength(2000)]
         public string CoverLetter { get; set; }
         public StatusJobApplication StatusJobApplication { get; set; }
+        public DateTime CreatedAt { get; set; }
+
         public JobApplication()
         {
             StatusJobApplication = StatusJobApplication.Submitted; 
+            CreatedAt = DateTime.Now;
         }
     }
 }

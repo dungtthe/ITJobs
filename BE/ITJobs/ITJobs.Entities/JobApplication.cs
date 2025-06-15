@@ -13,5 +13,6 @@ namespace ITJobs.Entities
         public string CVLink { get; set; }
         public string CoverLetter { get; set; }
         public StatusJobApplication StatusJobApplication { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

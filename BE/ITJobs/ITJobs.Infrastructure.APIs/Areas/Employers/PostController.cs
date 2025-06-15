@@ -72,5 +72,19 @@ namespace ITJobs.Infrastructure.APIs.Areas.Employers
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
+
+
+        [HttpGet("job/job-application")]
+        public async Task<IActionResult> GetJobApplicationsByPostIdAsync([FromQuery] UseCases.Employers.JobApplications.Queries.GetJobApplicationsByPostId.GetJobApplicationsByPostIdQuery query)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            query.UserId = userId.Value;
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
     }
 }
