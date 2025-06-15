@@ -21,7 +21,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
 
         public async Task<PagedResult<UseCases.Shared.Posts.Queries.GetCommentsByPostId.CommentDto>> GetCommentsByPostId(GetCommentsByPostIdQuery query)
         {
-            var totalRecords = await _dbContext.Comments.CountAsync(c => c.PostId == query.PostId);
+            var totalRecords = await _dbContext.Comments.CountAsync(c => c.PostId == query.PostId && c.ParrentCommentId==null);
             var totalPages = (int)Math.Ceiling((double)totalRecords / query.PageSize);
 
             var items = await _dbContext.Comments
