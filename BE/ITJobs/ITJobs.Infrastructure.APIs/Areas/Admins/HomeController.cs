@@ -17,7 +17,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
     {
         private readonly ITJobsDbContext _context;
         private IMediator _mediator;
-        public HomeController(ITJobsDbContext context,IMediator mediator)
+        public HomeController(ITJobsDbContext context, IMediator mediator)
         {
             _context = context;
             _mediator = mediator;
@@ -514,6 +514,86 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
             //        await _context.JobApplications.AddAsync(jobApplication);
             //    }
             //}
+
+
+            //conversation
+            //var userCandidates = await _context.Users.Where(u => u.RoleType == Entities.Enums.RoleType.Candidate).ToListAsync();
+            //var userEmployers = await _context.Users.Where(u => u.RoleType == Entities.Enums.RoleType.Employer).ToListAsync();
+
+            //var convarsationsAdd = new List<SqlServer.Models.Conversation>();
+            //foreach (var candidate in userCandidates)
+            //{
+            //    foreach (var employer in userEmployers)
+            //    {
+            //        var conversation = new SqlServer.Models.Conversation
+            //        {
+            //            Id = Guid.NewGuid(),
+            //            UserId1 = candidate.Id,
+            //            UserId2 = employer.Id,
+            //        };
+            //        convarsationsAdd.Add(conversation);
+            //    }
+            //}
+
+            //var messagesAdd = new List<SqlServer.Models.Message>();
+            //foreach (var conversation in convarsationsAdd)
+            //{
+            //    var ranMessageCount = random.Next(15, 20);
+            //    for (int i = 0; i < ranMessageCount; i++)
+            //    {
+            //        var senderId = random.Next(0, 2) == 0 ? conversation.UserId1 : conversation.UserId2;
+            //        var user1 = await _context.Users.FindAsync(conversation.UserId1);
+            //        var user2 = await _context.Users.FindAsync(conversation.UserId2);
+            //        var message = new SqlServer.Models.Message
+            //        {
+            //            Id = Guid.NewGuid(),
+            //            ConversationId = conversation.Id,
+            //            SenderId = senderId,
+            //            Content = $"Tin nhắn mẫu {i + 1} trong cuộc trò chuyện giữa {user1.FullName} và {user2.FullName}.",
+            //            CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 60)),
+            //            IsRead = true,
+            //            IsRevoked = false
+            //        };
+            //        if (random.Next(0, 2) == 1)
+            //        {
+            //            message.ReactionType = (Entities.Enums.ReactionType)random.Next(1, 7);
+            //        }
+            //        messagesAdd.Add(message);
+            //    }
+            //}
+
+            //foreach (var conversation in convarsationsAdd)
+            //{
+            //    var messages = messagesAdd.Where(m => m.ConversationId == conversation.Id).ToList();
+            //    foreach (var message in messages)
+            //    {
+            //        if (random.Next(0, 2) == 1)
+            //        {
+            //            var senderId = random.Next(0, 2) == 0 ? conversation.UserId1 : conversation.UserId2;
+
+            //            var msgSend = new SqlServer.Models.Message
+            //            {
+            //                Id = Guid.NewGuid(),
+            //                ConversationId = conversation.Id,
+            //                SenderId = senderId,
+            //                Content = $"Đây là tin nhắn trả lời cho tin nhắn: {message.Content}",
+            //                CreatedAt = message.CreatedAt.AddMinutes(random.Next(1, 60)),
+            //                IsRead = true,
+            //                IsRevoked = false
+            //            };
+            //            if (random.Next(0, 2) == 1)
+            //            {
+            //                msgSend.ReactionType = (Entities.Enums.ReactionType)random.Next(1, 7);
+            //            }
+
+            //            msgSend.ParrentMessageId = message.Id; 
+            //            messagesAdd.Add(msgSend);
+            //        }
+            //    }
+            //}
+
+            //await _context.Conversations.AddRangeAsync(convarsationsAdd);
+            //await _context.Messages.AddRangeAsync(messagesAdd);
 
             await _context.SaveChangesAsync();
             return Ok("OK");
