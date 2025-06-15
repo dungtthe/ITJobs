@@ -1,6 +1,7 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.UseCases.Admins.Posts.Queries.GetBlogPostsSummary;
 using ITJobs.UseCases.Shared.Posts.Commands.CreateBlogPost;
+using ITJobs.UseCases.Shared.Posts.Queries.GetCommentsByPostId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +34,10 @@ namespace ITJobs.Infrastructure.APIs.Areas.Shared
         }
 
         [HttpGet("comment/{postId}")]
-        public async Task<IActionResult> GetCommentAsync([FromRoute] UseCases.Shared.Posts.Queries.GetCommentsByPostId.GetCommentsByPostIdQuery query)
+        public async Task<IActionResult> GetCommentAsync([FromRoute] Guid postId, [FromQuery] GetCommentsByPostIdQuery query)
         {
-           return Ok(await _mediator.Send(query));
+            query.PostId = postId;
+            return Ok(await _mediator.Send(query));
         }
     }
 }
