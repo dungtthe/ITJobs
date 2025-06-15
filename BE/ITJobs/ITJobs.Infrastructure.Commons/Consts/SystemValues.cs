@@ -14,6 +14,7 @@ namespace ITJobs.Infrastructure.Commons.Consts
         public static readonly Guid ID_SEARCH_FILTER_SKILL = Guid.Parse("A2DDC797-B678-4B18-B056-4A92FF31F4A1");//lưu trữ id của search fillter skill để phục vụ truy vấn 
         public static readonly Guid ID_SEARCH_FILTER_COMPANY_TYPE = Guid.Parse("DEC3A352-FA24-4FA2-9928-EE02556FA769");//tuong tu
         public static readonly Guid ID_SEARCH_FILTER_WORK_TYPE = Guid.Parse("F7044317-9C08-4426-12C7-08DDA0F3B0A9");//tuong tu
+        public static readonly Guid ID_SEARCH_FILTER_POSITION = Guid.Parse("B2C02E14-6395-463C-98B4-761D97013B85");//tuong tu
 
     }
 }

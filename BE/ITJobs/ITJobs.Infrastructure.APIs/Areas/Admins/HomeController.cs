@@ -594,6 +594,45 @@ namespace ITJobs.Infrastructure.APIs.Areas.Admins
 
             //await _context.Conversations.AddRangeAsync(convarsationsAdd);
             //await _context.Messages.AddRangeAsync(messagesAdd);
+            // job positions
+//            var positionNames = new List<string>
+//{
+//    "Frontend Developer",
+//    "Backend Developer",
+//    "Full-stack Developer",
+//    "Mobile Developer (iOS/Android)",
+//    "DevOps Engineer",
+//    "QA/QC Engineer",
+//    "Automation Tester",
+//    "UI/UX Designer",
+//    "Product Designer",
+//    "Data Engineer",
+//    "Data Analyst",
+//    "Machine Learning Engineer",
+//    "AI Researcher",
+//    "Solution Architect",
+//    "Project Manager",
+//    "Scrum Master",
+//    "Business Analyst",
+//    "System Administrator",
+//    "Security Engineer",
+//    "Technical Lead",
+//    "Engineering Manager",
+//    "CTO"
+//};
+
+//            // tạo search-filter cho vị trí
+//            var searchFilterPosition = new SearchFilter()
+//            {
+//                Id = ITJobs.Infrastructure.Commons.Consts.SystemValues.ID_SEARCH_FILTER_POSITION, // tạo hằng số riêng
+//                Name = "Danh sách vị trí",
+//                SearchFilterType = Entities.Enums.SearchFilterType.Checkbox,
+//                Values = JsonConvert.SerializeObject(positionNames),
+//                ViewOrder = 3,
+//                IsCreatedBySystem = true
+//            };
+
+//            await _context.SearchFilters.AddAsync(searchFilterPosition);
 
             await _context.SaveChangesAsync();
             return Ok("OK");

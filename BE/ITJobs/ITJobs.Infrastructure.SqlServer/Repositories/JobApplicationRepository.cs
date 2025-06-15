@@ -1,4 +1,5 @@
 ﻿using ITJobs.UseCases.Candidates.JobApplications.Commands.AddJobApplication;
+using ITJobs.UseCases.Candidates.JobApplications.Queries.GetJobApplicationHistories;
 using ITJobs.UseCases.Employers.JobApplications.Queries.GetJobApplicationsByPostId;
 using ITJobs.UseCases.Helpers.Paginations;
 using ITJobs.UseCases.Interfaces.Repositories;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ITJobs.Infrastructure.SqlServer.Repositories
 {
-    public class JobApplicationRepository: IJobApplicationRepository
+    public class JobApplicationRepository : IJobApplicationRepository
     {
         private readonly ITJobsDbContext _dbContext;
 
@@ -35,7 +36,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                 throw new Entities.Exceptions.JobAlreadyAppliedException();
             }
 
-            var fJobPost = await _dbContext.Posts.FirstOrDefaultAsync(p=>p.Id==request.PostId && !p.IsDeleted && p.PostType == Entities.Enums.PostType.JobPosting && p.EndDate>DateTime.Now);
+            var fJobPost = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == request.PostId && !p.IsDeleted && p.PostType == Entities.Enums.PostType.JobPosting && p.EndDate > DateTime.Now);
             if (fJobPost == null)
             {
                 throw new Entities.Exceptions.PostNotFoundException();
@@ -52,6 +53,59 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
             });
         }
 
+        public async Task<PagedResult<JobApplicationHistoryDto>> GetJobApplicationHistoriesAsync(GetJobApplicationHistoriesQuery request)
+        {
+            var fUser = await _dbContext.Users.FindAsync(request.UserId.Value);
+            if (fUser == null)
+            {
+                throw new Entities.Exceptions.UserNotFoundException();
+            }
+
+            var query = _dbContext.JobApplications
+                .Include(ja => ja.Post)
+                .ThenInclude(p => p.User)
+                .Include(ja => ja.Candidate)
+                .Where(ja => ja.Candidate.UserId == request.UserId && !ja.Post.IsDeleted);
+
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                string searchTerm = request.SearchTerm.Trim().ToLower();
+                query = query.Where(ja => ja.Post.Title.ToLower().Contains(searchTerm) || ja.Post.User.FullName.ToLower().Contains(request.SearchTerm.ToLower()));
+            }
+
+
+            var totalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / request.PageSize);
+
+            var items = await query
+                .OrderByDescending(ja => ja.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(ja => new JobApplicationHistoryDto
+                {
+                    JobApplicationId = ja.Id,
+                    PostId = ja.PostId,
+                    PostTitle = ja.Post.Title,
+                    CVLink = ja.CVLink,
+                    CoverLetter = ja.CoverLetter,
+                    StatusJobApplication = ja.StatusJobApplication,
+                    CreatedAt = ja.CreatedAt,
+                    EmpoyerUserId = ja.Post.UserId,
+                    CompanyName = ja.Post.User.FullName,
+                    EmployerImage = ja.Post.User.Image
+                })
+                .ToListAsync();
+
+            return new PagedResult<JobApplicationHistoryDto>
+            {
+                Items = items,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+        }
+
         public async Task<PagedResult<JobApplicationDto>> GetJobApplicationsByPostIdAsync(GetJobApplicationsByPostIdQuery request)
         {
 
@@ -59,7 +113,7 @@ namespace ITJobs.Infrastructure.SqlServer.Repositories
                                                   .Include(ja => ja.Candidate.User)
                                                   .Include(ja => ja.Post)
                                                   .Where(ja => ja.PostId == request.PostId && !ja.Post.IsDeleted);
-            if(request.StatusJobApplication.HasValue)
+            if (request.StatusJobApplication.HasValue)
             {
                 query = query.Where(ja => ja.StatusJobApplication == request.StatusJobApplication.Value);
             }

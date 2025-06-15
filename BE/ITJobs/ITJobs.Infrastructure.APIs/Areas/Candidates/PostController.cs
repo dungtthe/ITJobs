@@ -1,6 +1,7 @@
 ﻿using ITJobs.Infrastructure.APIs.MyExtensions;
 using ITJobs.UseCases.Candidates.Posts.Queries.GetBlogPostsSummary;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITJobs.Infrastructure.APIs.Areas.Candidates
@@ -72,6 +73,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
 
 
         [HttpPost("job/apply")]
+        [Authorize]
         public async Task<IActionResult> ApplyJobPostAsync([FromBody] UseCases.Candidates.JobApplications.Commands.AddJobApplication.AddJobApplicationCommand command)
         {
             var userId = HttpContext.GetUserId();
@@ -79,7 +81,7 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
             {
                 return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
             }
-            command.UserId = userId.Value; 
+            command.UserId = userId.Value;
             var rs = await _mediator.Send(command);
             return Ok(rs);
         }
@@ -87,6 +89,20 @@ namespace ITJobs.Infrastructure.APIs.Areas.Candidates
         [HttpPost("job/search")]
         public async Task<IActionResult> GetActiveJobPostsSummaryBySearchFilters([FromBody] UseCases.Candidates.Posts.Queries.GetActiveJobPostsSummary.GetActiveJobPostsSummaryBySearchFilters.GetActiveJobPostsSummaryBySearchFiltersQuery query)
         {
+            var rs = await _mediator.Send(query);
+            return Ok(rs);
+        }
+
+        [HttpGet("job/apply-history")]
+        [Authorize]
+        public async Task<IActionResult> GetJobApplicationHistoriesAsync([FromQuery] UseCases.Candidates.JobApplications.Queries.GetJobApplicationHistories.GetJobApplicationHistoriesQuery query)
+        {
+            var userId = HttpContext.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "Vui lòng đăng nhập lại." });
+            }
+            query.UserId = userId.Value;
             var rs = await _mediator.Send(query);
             return Ok(rs);
         }
