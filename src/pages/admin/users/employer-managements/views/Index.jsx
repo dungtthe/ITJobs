@@ -14,7 +14,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { FaUser } from "react-icons/fa";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export default function Index() {
   // State cho dữ liệu phân trang
   const [paginatedData, setPaginatedData] = useState({
@@ -201,21 +202,12 @@ export default function Index() {
                         </div>
                       </td>
                       <td className="py-4 px-4">
-                        <div className="h-10 w-10 rounded-full overflow-hidden">
-                          {employer.image === "no_img_user.png" ? (
-                            <img
-                              src={no_img_user}
-                              alt="Avatar"
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <img
-                              src={employer.image}
-                              alt="Avatar"
-                              className="h-full w-full object-cover"
-                            />
-                          )}
-                        </div>
+                        <Avatar className="h-10 w-10 ">
+                          <AvatarImage src={employer.image} alt="Hình ảnh" />
+                          <AvatarFallback className="bg-muted">
+                            <FaUser className="h-6 w-6 text-muted-foreground" />
+                          </AvatarFallback>
+                        </Avatar>
                       </td>
                       <td className="py-4 px-4 text-sm overflow-hidden text-ellipsis">
                         {employer.companyName}

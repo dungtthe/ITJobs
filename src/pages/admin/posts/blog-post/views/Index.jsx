@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { FaEye } from "react-icons/fa";
 import no_img_user from "@/assets/images/no_img_user.png";
+import { FaUser } from "react-icons/fa";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import {
   Pagination,
   PaginationContent,
@@ -265,22 +268,15 @@ export default function Index() {
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-sm overflow-hidden ">
-                            {!post.authorAvatar ||
-                            post.authorAvatar === "no_img_user.png" ? (
-                              <img
-                                src={no_img_user}
-                                alt="Avatar"
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <img
-                                src={post.authorAvatar}
-                                alt="Avatar"
-                                className="h-full w-full object-cover"
-                              />
-                            )}
-                          </div>
+                          <Avatar className="h-10 w-10 ">
+                            <AvatarImage
+                              src={post.authorAvatar}
+                              alt="Hình ảnh"
+                            />
+                            <AvatarFallback className="bg-muted">
+                              <FaUser className="h-6 w-6 text-muted-foreground" />
+                            </AvatarFallback>
+                          </Avatar>
                           <span className="text-sm font-medium ml-1">
                             {post.authorName}
                           </span>

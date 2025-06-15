@@ -10,9 +10,6 @@ export default function HeaderAdmin() {
   if (user !== null) {
     name = user.name;
     image = user.image;
-    if (image === "no_img_user.png") {
-      image = no_img_user;
-    }
   }
 
   return (

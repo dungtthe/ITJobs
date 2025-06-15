@@ -1,10 +1,10 @@
 import { getComments } from "@/shared-services/posts/getComments";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/utils/formatUtils";
-import no_img_user from "@/assets/images/no_img_user.png";
 import { Reactions } from "../Reactions";
 import { PaginationControl } from "../PaginationControl";
-
+import { FaUser } from "react-icons/fa";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const Comments = ({ postId }) => {
   const [paginatedData, setPaginatedData] = useState({
     items: [],
@@ -113,12 +113,12 @@ const CommentItem = ({
         ${level > 0 ? "ml-6 border-l-2 pl-4 border-border/60" : ""}
       `}
     >
-      <img
-        src={item.senderImage || no_img_user}
-        alt={item.senderFullName}
-        className="w-10 h-10 rounded-full border border-border object-cover bg-background-secondary shadow-sm"
-        onError={(e) => (e.target.src = no_img_user)}
-      />
+      <Avatar className="h-14 w-14 border-2 border-border">
+        <AvatarImage src={item.senderImage} alt={item.senderFullName} />
+        <AvatarFallback className="bg-muted">
+          <FaUser className="h-6 w-6 text-muted-foreground" />
+        </AvatarFallback>
+      </Avatar>
       <div className="flex-1">
         <div
           className="

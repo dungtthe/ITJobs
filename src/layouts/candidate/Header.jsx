@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +17,8 @@ import Logo from "@/components/my-components/candidate/Logo";
 import { useUserStore } from "@/stores/authStore";
 import no_img_user from "@/assets/images/no_img_user.png";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FaUser } from "react-icons/fa";
 export default function Header() {
   const user = useUserStore((state) => state.user);
   const clearUser = useUserStore((state) => state.clearUser);
@@ -34,9 +35,6 @@ export default function Header() {
   if (user !== null) {
     name = user.name;
     image = user.image;
-    if (image === "no_img_user.png") {
-      image = no_img_user;
-    }
   }
 
   return (
@@ -69,8 +67,11 @@ export default function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-2 cursor-pointer">
-                    <Avatar className="size-11">
-                      <AvatarImage src={image} />
+                    <Avatar className="h-10 w-10 ">
+                      <AvatarImage src={image} alt="Hình ảnh" />
+                      <AvatarFallback className="bg-muted">
+                        <FaUser className="h-6 w-6 text-muted-foreground" />
+                      </AvatarFallback>
                     </Avatar>
                     <span className="text-primary-foreground">{name}</span>
                   </div>

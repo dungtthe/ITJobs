@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +12,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUserStore, removeJwtToken } from "@/stores/authStore";
 import { formatVND } from "@/utils/formatUtils";
+import { FaUser } from "react-icons/fa";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export default function Header({
   name,
   avatartLink,
@@ -42,8 +43,11 @@ export default function Header({
                     Số dư: {formatVND(accountBalance)}
                   </span>
                 )}
-                <Avatar className="size-11">
-                  <AvatarImage src={avatartLink} />
+                <Avatar className="h-10 w-10 ">
+                  <AvatarImage src={avatartLink} alt="Hình ảnh" />
+                  <AvatarFallback className="bg-muted">
+                    <FaUser className="h-6 w-6 text-muted-foreground" />
+                  </AvatarFallback>
                 </Avatar>
                 <span className="text-foreground/80">{name}</span>
               </div>
