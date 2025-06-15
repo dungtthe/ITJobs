@@ -217,6 +217,7 @@ export default function AddJobPost() {
             {/* input tieu de */}
             <div className="border rounded-lg p-4 flex-1">
               <label className="text-lg font-semibold ">Tiêu đề bài đăng</label>
+              <span className="text-destructive ml-1">*</span>
               <Input
                 className="mt-2"
                 placeholder="Nhập tiêu đề"
@@ -232,6 +233,7 @@ export default function AddJobPost() {
             <div className="flex-1 border rounded-lg p-4 ml-4 flex flex-col">
               <label className="text-lg font-semibold">
                 Ngày dừng tuyển dụng
+                <span className="text-destructive ml-1">*</span>
               </label>
               <div className="flex items-center mt-2">
                 <div className="flex-1">
@@ -292,6 +294,8 @@ export default function AddJobPost() {
             {/* texteditor */}
             <div className="w-2/3 pl-10">
               <label className="text-lg font-semibold">Nội dung bài đăng</label>
+              <span className="text-destructive ml-1">*</span>
+
               <TextEditor
                 handleHuy={handleHuy}
                 key={keyRenderImediately}

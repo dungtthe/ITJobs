@@ -135,6 +135,7 @@ export default function AddBlogPost() {
           {/* input tieu de */}
           <div>
             <label className="text-lg font-semibold">Tiêu đề bài đăng</label>
+            <span className="text-destructive ml-1">*</span>
             <Input
               placeHolder="Nhập tiêu đề"
               value={title}
@@ -147,6 +148,7 @@ export default function AddBlogPost() {
           {/* input main image */}
           <div className="mt-4">
             <label className="text-lg font-semibold">Ảnh chính</label>
+            <span className="text-destructive ml-1">*</span>
             <Button
               className="ml-5 hover:cursor-pointer mb-5"
               onClick={openFilePicker}
@@ -171,6 +173,7 @@ export default function AddBlogPost() {
 
           <div className="mt-4">
             <label className="text-lg font-semibold">Nội dung vắn tắt</label>
+            <span className="text-destructive ml-1">*</span>
             <div className="grid w-full">
               <Textarea
                 placeholder="Nội dung vắn tắt"

@@ -20,6 +20,12 @@ const employerMenuConfig = [
     key: "conversation",
   },
   {
+    path: "/employer/candidate",
+    label: "Quản lý ứng viên",
+    icon: <FaUserCog />,
+    key: "candidate",
+  },
+  {
     path: "/employer",
     label: "Quản lý bài đăng",
     icon: <MdLibraryBooks />,

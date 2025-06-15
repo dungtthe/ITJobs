@@ -54,12 +54,12 @@ const adminMenuConfig = [
     icon: <RiFilterFill />,
     key: "search-filter",
   },
-  {
-    path: "/admin/cv-template",
-    label: "Quản lý mẫu CV",
-    icon: <PiReadCvLogoFill />,
-    key: "cv-template",
-  },
+  // {
+  //   path: "/admin/cv-template",
+  //   label: "Quản lý mẫu CV",
+  //   icon: <PiReadCvLogoFill />,
+  //   key: "cv-template",
+  // },
   {
     path: "/admin/system-value",
     label: "Tham số hệ thống",
