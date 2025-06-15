@@ -19,6 +19,8 @@ import no_img_user from "@/assets/images/no_img_user.png";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
+import { PiReadCvLogo } from "react-icons/pi";
+
 export default function Header() {
   const user = useUserStore((state) => state.user);
   const clearUser = useUserStore((state) => state.clearUser);
@@ -83,7 +85,15 @@ export default function Header() {
                       Thông tin cá nhân
                     </Link>
                   </DropdownMenuItem>
-
+                  <DropdownMenuItem className="hover:cursor-pointer">
+                    <PiReadCvLogo className="size-5"></PiReadCvLogo>
+                    <Link
+                      to="/job/apply-history"
+                      className="text-foreground/70 text-sm"
+                    >
+                      Lịch sử ứng tuyển{" "}
+                    </Link>
+                  </DropdownMenuItem>
                   {/* <DropdownMenuItem className="hover:cursor-pointer">
                     <TbFileCv className="size-5"></TbFileCv>
                     <Link className="text-foreground/70 text-sm">

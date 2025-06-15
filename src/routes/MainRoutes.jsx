@@ -34,6 +34,7 @@ import CompanyProfiles from "@/pages/candidate/employer/views/CompanyProfiles/In
 import CompanyReviews from "@/pages/candidate/employer/views/CompanyReviews/Index.jsx";
 import DetailJob from "@/pages/candidate/posts/job/views/Detail.jsx";
 import JobPostSearch from "@/pages/candidate/posts/job/views/Index.jsx";
+import JobApplicationHistories from "@/pages/candidate/posts/job/views/JobApplicationHistories.jsx";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
@@ -72,6 +73,10 @@ export default function MainRoutes() {
           </Route>
           <Route path="job/:id" element={<DetailJob />} />
           <Route path="job/search" element={<JobPostSearch />} />
+          <Route
+            path="job/apply-history"
+            element={<JobApplicationHistories />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
